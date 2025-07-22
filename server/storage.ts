@@ -4,6 +4,7 @@ import {
   xrayAnalyses, 
   misinfoLogs, 
   chatConversations,
+  waitlist,
   type User, 
   type InsertUser,
   type Simulation,
@@ -13,7 +14,9 @@ import {
   type MisinfoLog,
   type InsertMisinfoLog,
   type ChatConversation,
-  type InsertChatConversation
+  type InsertChatConversation,
+  type Waitlist,
+  type InsertWaitlist
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
@@ -42,6 +45,12 @@ export interface IStorage {
   // Chat conversations
   createChatConversation(conversation: InsertChatConversation): Promise<ChatConversation>;
   getChatHistory(sessionId: string): Promise<ChatConversation[]>;
+  
+  // Waitlist operations
+  addToWaitlist(entry: InsertWaitlist): Promise<Waitlist>;
+  getWaitlistEntries(): Promise<Waitlist[]>;
+  updateWaitlistStatus(id: number, status: string): Promise<void>;
+  deleteWaitlistEntry(id: number): Promise<void>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -129,6 +138,32 @@ export class DatabaseStorage implements IStorage {
       .from(chatConversations)
       .where(eq(chatConversations.sessionId, sessionId))
       .orderBy(chatConversations.createdAt);
+  }
+
+  // Waitlist operations
+  async addToWaitlist(entry: InsertWaitlist): Promise<Waitlist> {
+    const [newEntry] = await db
+      .insert(waitlist)
+      .values(entry)
+      .returning();
+    return newEntry;
+  }
+
+  async getWaitlistEntries(): Promise<Waitlist[]> {
+    return await db.select()
+      .from(waitlist)
+      .orderBy(desc(waitlist.createdAt));
+  }
+
+  async updateWaitlistStatus(id: number, status: string): Promise<void> {
+    await db
+      .update(waitlist)
+      .set({ status, updatedAt: new Date() })
+      .where(eq(waitlist.id, id));
+  }
+
+  async deleteWaitlistEntry(id: number): Promise<void> {
+    await db.delete(waitlist).where(eq(waitlist.id, id));
   }
 }
 

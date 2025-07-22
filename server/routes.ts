@@ -7,7 +7,8 @@ import {
   insertSimulationSchema, 
   insertXrayAnalysisSchema, 
   insertMisinfoLogSchema,
-  insertChatConversationSchema 
+  insertChatConversationSchema,
+  insertWaitlistSchema
 } from "@shared/schema";
 import { 
   generateClinicalExplanation, 
@@ -296,6 +297,125 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error('Analytics error:', error);
       res.status(500).json({ message: "Failed to fetch analytics" });
+    }
+  });
+
+  // Waitlist endpoints
+  app.post('/api/waitlist', async (req, res) => {
+    try {
+      auditLog(`API Access: POST /api/waitlist - IP: ${req.ip}`, req);
+      
+      const validatedData = insertWaitlistSchema.parse(req.body);
+      
+      await storage.addToWaitlist(validatedData);
+      
+      res.json({ 
+        success: true, 
+        message: 'Successfully added to waitlist' 
+      });
+      
+    } catch (error) {
+      console.error("Error adding to waitlist:", error);
+      res.status(400).json({ 
+        error: error instanceof Error ? error.message : 'Failed to add to waitlist' 
+      });
+    }
+  });
+
+  // Admin login endpoint
+  app.post('/api/admin/login', async (req, res) => {
+    try {
+      auditLog(`API Access: POST /api/admin/login - IP: ${req.ip}`, req);
+      
+      const { username, password } = req.body;
+      
+      // Simple admin authentication (in production, use proper hashing)
+      if (username === 'admin' && password === 'pediasignal2024') {
+        res.json({ 
+          success: true, 
+          token: 'admin-authenticated',
+          message: 'Login successful' 
+        });
+      } else {
+        res.status(401).json({ 
+          error: 'Invalid credentials' 
+        });
+      }
+      
+    } catch (error) {
+      console.error("Admin login error:", error);
+      res.status(500).json({ 
+        error: 'Login failed' 
+      });
+    }
+  });
+
+  // Admin waitlist management
+  app.get('/api/admin/waitlist', async (req, res) => {
+    try {
+      auditLog(`API Access: GET /api/admin/waitlist - IP: ${req.ip}`, req);
+      
+      const waitlistEntries = await storage.getWaitlistEntries();
+      res.json(waitlistEntries);
+      
+    } catch (error) {
+      console.error("Error fetching waitlist:", error);
+      res.status(500).json({ 
+        error: 'Failed to fetch waitlist' 
+      });
+    }
+  });
+
+  app.patch('/api/admin/waitlist/:id/status', async (req, res) => {
+    try {
+      auditLog(`API Access: PATCH /api/admin/waitlist/${req.params.id}/status - IP: ${req.ip}`, req);
+      
+      const id = parseInt(req.params.id);
+      const { status } = req.body;
+      
+      if (!['pending', 'approved', 'rejected'].includes(status)) {
+        return res.status(400).json({ error: 'Invalid status' });
+      }
+      
+      await storage.updateWaitlistStatus(id, status);
+      res.json({ success: true });
+      
+    } catch (error) {
+      console.error("Error updating waitlist status:", error);
+      res.status(500).json({ 
+        error: 'Failed to update status' 
+      });
+    }
+  });
+
+  app.delete('/api/admin/waitlist/:id', async (req, res) => {
+    try {
+      auditLog(`API Access: DELETE /api/admin/waitlist/${req.params.id} - IP: ${req.ip}`, req);
+      
+      const id = parseInt(req.params.id);
+      await storage.deleteWaitlistEntry(id);
+      res.json({ success: true });
+      
+    } catch (error) {
+      console.error("Error deleting waitlist entry:", error);
+      res.status(500).json({ 
+        error: 'Failed to delete entry' 
+      });
+    }
+  });
+
+  app.get('/api/admin/waitlist/export', async (req, res) => {
+    try {
+      auditLog(`API Access: GET /api/admin/waitlist/export - IP: ${req.ip}`, req);
+      
+      const waitlistEntries = await storage.getWaitlistEntries();
+      res.json(waitlistEntries);
+      
+    } catch (error) {
+      console.error("Error exporting waitlist:", error);
+      res.status(500).json({ 
+        error: 'Failed to export waitlist' 
+      });
     }
   });
 

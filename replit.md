@@ -17,7 +17,7 @@ Security Requirements: End-to-end encryption, enterprise-grade security middlewa
 - **UI Library**: Shadcn/ui components built on Radix UI primitives
 - **Styling**: Tailwind CSS with custom medical theme variables
 - **State Management**: TanStack React Query for server state management
-- **Routing**: Wouter for client-side routing
+- **Routing**: Wouter for client-side routing (single page with anchor navigation)
 - **Build System**: Vite with ESM modules
 
 ### Backend Architecture
@@ -35,6 +35,7 @@ The system uses a PostgreSQL database with the following key tables:
 - **xrayAnalyses**: X-ray abuse detection results with confidence scores
 - **misinfoLogs**: Misinformation monitoring logs with risk classifications
 - **chatConversations**: Parent triage chatbot conversation history
+- **waitlist**: Platform access waitlist with approval workflow
 
 ## Key Components
 
@@ -51,10 +52,10 @@ The system uses a PostgreSQL database with the following key tables:
 - Historical analysis tracking for forensic purposes
 
 ### Misinformation Monitor
-- Real-time content scraping and classification
-- Transformer-based misinformation detection
-- Risk scoring system (0-1 scale) with category tagging
-- Dashboard for monitoring pediatric health misinformation trends
+- Chrome extension with pediatric content detection
+- Only activates when pediatric health keywords are detected
+- AI-powered misinformation pattern analysis
+- Risk scoring system with visual warnings for dangerous claims
 
 ### Triage Chatbot
 - Parent-facing symptom assessment interface
@@ -62,18 +63,18 @@ The system uses a PostgreSQL database with the following key tables:
 - Emergency escalation protocols
 - Session-based conversation tracking
 
-### Role-Based Access Control
-- **Medical Students**: Access to simulation module only
-- **Pediatricians**: Full access to all modules including analysis tools
-- **Administrators**: Complete system access with user management
+### Access Control
+- **Waitlist System**: All features are currently waitlisted, requiring approval for access
+- **Admin Panel**: Administrators can manage waitlist entries and approve users
+- **Single Page Design**: One long page with 6 sections: Features, How it works, AI Tools, Why, FAQ, Contact
 
 ## Data Flow
 
-1. **Authentication Flow**: Users authenticate and receive role-based access permissions
-2. **Simulation Flow**: User selects case → AI generates scenario → User applies interventions → AI provides clinical feedback → Results stored
-3. **X-ray Analysis Flow**: Image upload → Base64 encoding → AI analysis → Risk assessment → Results storage
-4. **Misinformation Monitoring**: Content scraping → AI classification → Risk scoring → Dashboard display
-5. **Chatbot Flow**: Parent input → OpenAI processing → Safety assessment → Response generation → Emergency routing if needed
+1. **Waitlist Flow**: User submits application → Admin reviews → Approval/rejection → Access granted
+2. **Landing Page Navigation**: Single page with anchor-based navigation between 6 main sections
+3. **Admin Management**: Admin login → Waitlist dashboard → Status updates → User management
+4. **Chrome Extension**: Page analysis → Pediatric content detection → Misinformation assessment → Risk warnings
+5. **Professional Design**: Consistent thin typography, no colorful elements, enterprise-grade appearance
 
 ## External Dependencies
 
