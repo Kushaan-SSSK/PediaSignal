@@ -236,71 +236,7 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Enterprise Security Section */}
-      <section className="py-16 section-animate bg-slate-800/20">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="professional-text text-slate-400 font-light text-sm tracking-widest mb-4">
-              ENTERPRISE SECURITY STANDARDS
-            </p>
-            <h2 className="professional-heading text-3xl md:text-4xl font-light text-white mb-6">
-              Enterprise-Grade <span className="text-gradient-blue">Protection</span>
-            </h2>
-            <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto leading-relaxed">
-              Your cognitive data protected by the highest international security standards and compliance frameworks, 
-              ensuring complete privacy and data integrity.
-            </p>
-          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
-              <CardContent className="p-8 text-center">
-                <Shield className="h-12 w-12 icon-blue mx-auto mb-6" />
-                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">AUDIT SCHEDULED</div>
-                <h3 className="professional-text text-lg font-light text-white mb-4">HIPAA Guidelines</h3>
-                <p className="professional-text text-slate-400 font-light text-sm">
-                  Built following HIPAA guidelines; third-party audit scheduled
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
-              <CardContent className="p-8 text-center">
-                <ShieldX className="h-12 w-12 icon-blue mx-auto mb-6" />
-                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">AES-256</div>
-                <h3 className="professional-text text-lg font-light text-white mb-4">End-to-End Encryption</h3>
-                <p className="professional-text text-slate-400 font-light text-sm">
-                  AES-256 encryption for all data transmission and storage
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
-              <CardContent className="p-8 text-center">
-                <Target className="h-12 w-12 icon-blue mx-auto mb-6" />
-                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">IN PROGRESS</div>
-                <h3 className="professional-text text-lg font-light text-white mb-4">ISO 27001</h3>
-                <p className="professional-text text-slate-400 font-light text-sm">
-                  Working toward ISO 27001 certification
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
-              <CardContent className="p-8 text-center">
-                <CheckCircle className="h-12 w-12 icon-blue mx-auto mb-6" />
-                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">AUDIT IN PROGRESS</div>
-                <h3 className="professional-text text-lg font-light text-white mb-4">SOC 2 Type II</h3>
-                <p className="professional-text text-slate-400 font-light text-sm">
-                  SOC 2 audit in progress. Annual security audits planned starting 2026
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      <div className="section-break"></div>
 
       {/* Features Section */}
       <section id="features" className="py-20 section-animate">
@@ -790,6 +726,72 @@ export default function Landing() {
                   • 43% encounter misinformation<br />
                   • 92.1% accuracy in detection
                 </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      <div className="section-break"></div>
+
+      {/* Enterprise Security Section */}
+      <section className="py-16 section-animate bg-slate-800/20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <p className="professional-text text-slate-400 font-light text-sm tracking-widest mb-4">
+              ENTERPRISE SECURITY STANDARDS
+            </p>
+            <h2 className="professional-heading text-3xl md:text-4xl font-light text-white mb-6">
+              Enterprise-Grade <span className="text-gradient-blue">Protection</span>
+            </h2>
+            <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto leading-relaxed">
+              Your cognitive data protected by the highest international security standards and compliance frameworks, 
+              ensuring complete privacy and data integrity.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
+              <CardContent className="p-8 text-center">
+                <Shield className="h-12 w-12 icon-blue mx-auto mb-6" />
+                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">PLANNED</div>
+                <h3 className="professional-text text-lg font-light text-white mb-4">HIPAA Guidelines</h3>
+                <p className="professional-text text-slate-400 font-light text-sm">
+                  Built following HIPAA guidelines; third-party audit planned
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
+              <CardContent className="p-8 text-center">
+                <ShieldX className="h-12 w-12 icon-blue mx-auto mb-6" />
+                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">AES-256</div>
+                <h3 className="professional-text text-lg font-light text-white mb-4">End-to-End Encryption</h3>
+                <p className="professional-text text-slate-400 font-light text-sm">
+                  AES-256 encryption for all data transmission and storage
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
+              <CardContent className="p-8 text-center">
+                <Target className="h-12 w-12 icon-blue mx-auto mb-6" />
+                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">PLANNED</div>
+                <h3 className="professional-text text-lg font-light text-white mb-4">ISO 27001</h3>
+                <p className="professional-text text-slate-400 font-light text-sm">
+                  Working toward ISO 27001 certification
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
+              <CardContent className="p-8 text-center">
+                <CheckCircle className="h-12 w-12 icon-blue mx-auto mb-6" />
+                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">PLANNED</div>
+                <h3 className="professional-text text-lg font-light text-white mb-4">SOC 2 Type II</h3>
+                <p className="professional-text text-slate-400 font-light text-sm">
+                  SOC 2 audit planned. Annual security audits planned starting 2026
+                </p>
               </CardContent>
             </Card>
           </div>
