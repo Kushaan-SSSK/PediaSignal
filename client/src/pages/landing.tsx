@@ -182,7 +182,6 @@ export default function Landing() {
         className="progress-bar" 
         style={{ width: `${scrollProgress}%` }}
       />
-
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/50" style={{ marginTop: '3px' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -211,7 +210,6 @@ export default function Landing() {
           </div>
         </div>
       </nav>
-
       {/* Hero Section */}
       <section className="min-h-screen flex items-center justify-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -235,9 +233,6 @@ export default function Landing() {
           </Button>
         </div>
       </section>
-
-
-
       {/* Features Section */}
       <section id="features" className="py-20 section-animate">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -346,9 +341,7 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       <div className="section-break"></div>
-
       {/* How It Works Section */}
       <section id="how-it-works" className="py-20 section-animate">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -446,9 +439,7 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       <div className="section-break"></div>
-
       {/* AI Tools Section */}
       <section id="ai-tools" className="py-20 section-animate">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -633,14 +624,12 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       <div className="section-break"></div>
-
       {/* Why Section */}
       <section id="why" className="py-20 section-animate">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 fade-in">
-            <h2 className="professional-heading text-3xl font-light text-white mb-4">
+            <h2 className="professional-heading text-3xl font-light text-white mt-[0px] mb-[0px]">
               Why PediaSignal AI
             </h2>
             <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto mb-8">
@@ -730,9 +719,7 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       <div className="section-break"></div>
-
       {/* Enterprise Security Section */}
       <section className="py-16 section-animate bg-slate-800/20">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -796,9 +783,7 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       <div className="section-break"></div>
-
       {/* FAQ Section */}
       <section id="faq" className="py-20 section-animate">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -818,9 +803,7 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       <div className="section-break"></div>
-
       {/* Contact & Waitlist Form Section */}
       <section id="contact" className="py-20 section-animate">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -909,7 +892,6 @@ export default function Landing() {
           </Card>
         </div>
       </section>
-
       {/* Contact Section */}
       <section id="contact" className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -979,7 +961,6 @@ export default function Landing() {
           </div>
         </div>
       </section>
-
       {/* Footer */}
       <footer className="py-12 border-t border-slate-700/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
