@@ -225,7 +225,7 @@ export default function Landing() {
             Empowering healthcare professionals with medical intelligence.
           </p>
           <Button 
-            onClick={() => scrollToSection('waitlist-form')}
+            onClick={() => scrollToSection('contact')}
             className="professional-text font-light px-10 py-5 text-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 border-0"
           >
             Request Early Access
