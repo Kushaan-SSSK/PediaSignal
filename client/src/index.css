@@ -1,0 +1,104 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: hsl(240, 10%, 3.9%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 3.7%, 15.9%);
+  --muted-foreground: hsl(240, 5%, 64.9%);
+  --popover: hsl(240, 10%, 3.9%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 3.9%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 3.7%, 15.9%);
+  --input: hsl(240, 3.7%, 15.9%);
+  --primary: hsl(207, 90%, 54%);
+  --primary-foreground: hsl(211, 100%, 99%);
+  --secondary: hsl(240, 3.7%, 15.9%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(240, 3.7%, 15.9%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(0, 62.8%, 30.6%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(240, 4.9%, 83.9%);
+  --radius: 0.75rem;
+  
+  /* Medical theme colors */
+  --medical-blue: hsl(232, 62%, 20%);
+  --medical-purple: hsl(262, 73%, 35%);
+  --accent-green: hsl(158, 64%, 52%);
+  --accent-amber: hsl(43, 96%, 56%);
+  --accent-red: hsl(0, 84%, 60%);
+  --gradient-start: hsl(232, 62%, 20%);
+  --gradient-end: hsl(262, 73%, 35%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-sans antialiased bg-gradient-to-br from-[hsl(232,62%,20%)] to-[hsl(262,73%,35%)] text-foreground min-h-screen;
+  }
+
+  .medical-gradient {
+    background: linear-gradient(135deg, hsl(232, 62%, 20%) 0%, hsl(262, 73%, 35%) 100%);
+  }
+
+  .card-gradient {
+    background: linear-gradient(135deg, hsl(215, 25%, 27%) 0%, hsl(220, 13%, 18%) 100%);
+  }
+
+  .card-hover {
+    transition: all 0.3s ease;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-2px);
+  }
+
+  .glow-effect {
+    box-shadow: 0 0 20px hsl(262, 73%, 55%, 0.3);
+  }
+
+  .vital-pulse {
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  .medical-card {
+    @apply bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl;
+  }
+
+  .intervention-button {
+    @apply w-full py-3 px-4 rounded-lg font-medium transition-all border;
+  }
+
+  .intervention-red {
+    @apply bg-red-600/20 hover:bg-red-600/30 border-red-600/50 text-red-300;
+  }
+
+  .intervention-blue {
+    @apply bg-blue-600/20 hover:bg-blue-600/30 border-blue-600/50 text-blue-300;
+  }
+
+  .intervention-green {
+    @apply bg-green-600/20 hover:bg-green-600/30 border-green-600/50 text-green-300;
+  }
+
+  .intervention-amber {
+    @apply bg-amber-600/20 hover:bg-amber-600/30 border-amber-600/50 text-amber-300;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
