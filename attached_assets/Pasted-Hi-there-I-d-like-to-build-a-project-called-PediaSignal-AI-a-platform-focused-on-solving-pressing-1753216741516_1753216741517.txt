@@ -1,0 +1,15 @@
+Hi there — I’d like to build a project called PediaSignal AI, a platform focused on solving pressing pediatric emergency and education problems using AI. Please scaffold the full stack for the following MVP modules:
+
+A Next.js-based Pediatric Emergency Simulator UI where medical trainees can select a case (e.g., febrile seizure or respiratory distress), view live-updating vitals, and apply interventions like "intubate" or "administer fluids." Each action should call a FastAPI backend route /simulate-case, which takes in case_type and intervention, returns updated vitals and a GPT-4-generated clinical explanation, and logs sessions to a Supabase DB.
+
+A Child Abuse Pattern Detector built with PyTorch (CNN model) served via a FastAPI route /analyze-xray. It should accept a base64-encoded pediatric X-ray image, return abuse likelihood (0–1), fracture type (e.g., spiral), and a short explanation. Results must be saved to a Supabase XrayAnalyses table and viewable in a simple UI with image upload support.
+
+A Global Pediatric Misinformation Monitor using a Python scraper (BeautifulSoup or Google News API) that extracts pediatric content, applies a transformer model (like roberta-base) to classify misinformation risk, and exposes a FastAPI endpoint /misinfo-scan that returns summaries, URLs, and misinformation scores. Results should be stored in the MisinfoLogs table in Supabase and displayed in a dashboard.
+
+Optionally, a parent-facing triage chatbot that sends symptom-based queries (e.g., “My child has 103°F fever”) to the OpenAI GPT-4 API with safety-first prompts, returning medical guidance and an emergency care warning if needed.
+
+Add role-based authentication using Clerk, with three user roles: medical_student, pediatrician, and admin. Each role sees different modules: students access the simulator only, pediatricians access all tools, and admins can manage users and analytics. Use Supabase for user and session storage with tables for Users, Simulations, XrayAnalyses, and MisinfoLogs.
+
+Deploy the frontend on Vercel, backend on Railway or Render (with GPU support if needed), and host the PostgreSQL DB on Supabase. Use .env.local to store Clerk, OpenAI, and Supabase environment variables securely. Make sure the frontend and backend are properly connected via CORS.
+
+Please scaffold this exact system and generate production-ready boilerplate code for each part. Thank you!
