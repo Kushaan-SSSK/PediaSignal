@@ -40,15 +40,18 @@ export default function AdminDashboard() {
     refetchInterval: 30000
   });
 
-  const waitlist = waitlistData || [];
+  const waitlist = Array.isArray(waitlistData) ? waitlistData : [];
 
   // Update status mutation
   const updateStatusMutation = useMutation({
     mutationFn: async ({ id, status }: { id: number; status: string }) => {
-      return apiRequest(`/api/admin/waitlist/${id}/status`, {
+      return fetch(`/api/admin/waitlist/${id}/status`, {
         method: "PATCH",
-        body: { status }
-      });
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status })
+      }).then(res => res.json());
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/waitlist'] });
@@ -69,9 +72,9 @@ export default function AdminDashboard() {
   // Delete entry mutation
   const deleteEntryMutation = useMutation({
     mutationFn: async (id: number) => {
-      return apiRequest(`/api/admin/waitlist/${id}`, {
+      return fetch(`/api/admin/waitlist/${id}`, {
         method: "DELETE"
-      });
+      }).then(res => res.json());
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['/api/admin/waitlist'] });
@@ -92,9 +95,7 @@ export default function AdminDashboard() {
   // Export waitlist mutation
   const exportMutation = useMutation({
     mutationFn: async () => {
-      return apiRequest("/api/admin/waitlist/export", {
-        method: "GET"
-      });
+      return fetch("/api/admin/waitlist/export").then(res => res.json());
     },
     onSuccess: (data) => {
       // Create and download CSV
@@ -175,6 +176,38 @@ export default function AdminDashboard() {
         return 'bg-red-900/30 text-red-300 border-red-600/30';
       default:
         return 'bg-slate-700/50 text-slate-300 border-slate-600/30';
+    }
+  };
+
+  const convertToCSV = (data: WaitlistEntry[]) => {
+    if (!data.length) return '';
+    
+    const headers = ['Name', 'Email', 'Role', 'Status', 'Created At'];
+    const csvContent = [
+      headers.join(','),
+      ...data.map(entry => [
+        entry.name,
+        entry.email,
+        entry.role,
+        entry.status,
+        entry.createdAt
+      ].map(field => `"${field}"`).join(','))
+    ].join('\n');
+    
+    return csvContent;
+  };
+
+  const downloadCSV = (csvContent: string, filename: string) => {
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', filename);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
   };
 
