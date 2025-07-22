@@ -46,32 +46,79 @@
   
   h1, h2, h3, h4, h5, h6 {
     font-weight: 200; /* Ultra-thin for headings */
-    letter-spacing: -0.035em;
+    letter-spacing: -0.04em;
+    line-height: 1.1;
   }
   
   .professional-text {
-    font-weight: 300;
-    letter-spacing: -0.025em;
-    line-height: 1.6;
+    font-weight: 200; /* Even thinner */
+    letter-spacing: -0.03em;
+    line-height: 1.5;
   }
   
   .professional-heading {
-    font-weight: 200;
-    letter-spacing: -0.035em;
-    line-height: 1.2;
+    font-weight: 100; /* Thinnest possible */
+    letter-spacing: -0.04em;
+    line-height: 1.1;
   }
 
   body {
     @apply font-sans antialiased bg-gradient-to-br from-[hsl(232,62%,20%)] to-[hsl(262,73%,35%)] text-foreground min-h-screen;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
-    font-weight: 300; /* Professional thin font */
-    letter-spacing: -0.025em;
+    font-weight: 200; /* Thinner base font */
+    letter-spacing: -0.03em;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
     font-variation-settings: 'opsz' auto;
   }
 
   .medical-gradient {
     background: linear-gradient(135deg, hsl(232, 62%, 20%) 0%, hsl(262, 73%, 35%) 100%);
+  }
+  
+  /* Override all font weights for professional appearance */
+  p, span, div, label, button, input, select, option, textarea, li, td, th {
+    font-weight: 200 !important;
+    letter-spacing: -0.02em;
+  }
+  
+  /* Navigation and header elements */
+  nav, header {
+    font-weight: 100 !important;
+    letter-spacing: -0.03em;
+  }
+  
+  /* Button elements */
+  button, .btn {
+    font-weight: 200 !important;
+    letter-spacing: -0.02em;
+  }
+  
+  /* Form elements */
+  input, select, textarea {
+    font-weight: 200 !important;
+    font-family: 'Inter', sans-serif !important;
+  }
+  
+  /* Card content */
+  .card, .card-content {
+    font-weight: 200 !important;
+  }
+  
+  /* Override Tailwind font weights */
+  .font-normal {
+    font-weight: 200 !important;
+  }
+  
+  .font-medium {
+    font-weight: 300 !important;
+  }
+  
+  .font-semibold {
+    font-weight: 300 !important;
+  }
+  
+  .font-bold {
+    font-weight: 400 !important;
   }
 
   .hero-background {
