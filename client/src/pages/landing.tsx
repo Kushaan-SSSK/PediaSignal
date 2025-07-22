@@ -254,19 +254,19 @@ export default function Landing() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               <div className="stat-item text-center">
                 <div className="professional-heading text-2xl font-light text-white">4</div>
-                <div className="professional-text text-slate-400 font-light text-sm">AI Tools Developed</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Core AI Tools</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">8</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Pilot Institutions</div>
+                <div className="professional-heading text-2xl font-light text-white">MVP</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Development Phase</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">127</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Training Scenarios</div>
+                <div className="professional-heading text-2xl font-light text-white">Beta</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Testing Stage</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">23</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Partner Hospitals</div>
+                <div className="professional-heading text-2xl font-light text-white">2025</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Launch Target</div>
               </div>
             </div>
           </div>
@@ -649,23 +649,23 @@ export default function Landing() {
               for pediatric cases. Our platform aims to improve diagnostic accuracy and training outcomes.
             </p>
 
-            {/* Training Statistics */}
+            {/* Development Focus */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">347</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Trauma Patterns Trained</div>
+                <div className="professional-heading text-2xl font-light text-white">Simulation</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Training Module</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">1,284</div>
-                <div className="professional-text text-slate-400 font-light text-sm">ED Cases Simulated</div>
+                <div className="professional-heading text-2xl font-light text-white">X-ray</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Analysis Tool</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">87.3%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Clinical Accuracy Rate</div>
+                <div className="professional-heading text-2xl font-light text-white">Monitor</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Content Safety</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">42</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Pediatric ERs Engaged</div>
+                <div className="professional-heading text-2xl font-light text-white">Triage</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Chatbot Assistant</div>
               </div>
             </div>
           </div>
