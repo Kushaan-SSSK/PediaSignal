@@ -651,13 +651,13 @@ export default function Landing() {
                   Critical Expertise Gap
                 </h3>
                 <p className="professional-text text-slate-300 font-light leading-relaxed mb-4">
-                  Training programs improve diagnostic accuracy by only 4.9%, achieving 82.1% final accuracy. 
+                  Pediatric healthcare requires specialized knowledge and rapid decision-making. 
                   Our AI simulation training aims to provide additional support for healthcare professionals 
                   treating pediatric emergencies, complementing existing medical education and protocols.
                 </p>
                 <div className="text-sm text-slate-400 font-light">
-                  • 75.4% sensitivity in current training methods<br />
-                  • 85.2% specificity with deliberate practice<br />
+                  • Interactive training scenarios<br />
+                  • Evidence-based protocols<br />
                   • Continuous learning platform
                 </div>
               </CardContent>
@@ -670,14 +670,14 @@ export default function Landing() {
                   Hidden Abuse Crisis
                 </h3>
                 <p className="professional-text text-slate-300 font-light leading-relaxed mb-4">
-                  Current screening detects only 0.5% of suspected abuse cases (35 out of 6,120 children screened). 
-                  Screening tools can achieve 100% sensitivity and 98.3% specificity. Our X-ray analysis tool 
-                  is designed to assist healthcare professionals in identifying suspicious injury patterns.
+                  Child abuse detection is a critical healthcare challenge requiring specialized training 
+                  and pattern recognition skills. Our X-ray analysis tool is designed to assist healthcare 
+                  professionals in identifying suspicious injury patterns as a supplementary diagnostic aid.
                 </p>
                 <div className="text-sm text-slate-400 font-light">
-                  • 372,613 children served by advocacy centers<br />
-                  • 5x higher detection with proper screening<br />
-                  • 99.2% accuracy achievable with tools
+                  • Pattern recognition assistance<br />
+                  • Clinical decision support<br />
+                  • Educational training component
                 </div>
               </CardContent>
             </Card>
@@ -689,13 +689,13 @@ export default function Landing() {
                   Misinformation Epidemic
                 </h3>
                 <p className="professional-text text-slate-300 font-light leading-relaxed mb-4">
-                  82.2% of parents use social media for pediatric health information. Health misinformation 
-                  ranges from 0.2% to 28.8% of content, with 25% of parents believing false vaccine claims. 
-                  Our monitoring tool helps identify inaccurate medical content.
+                  Parents increasingly turn to online sources for pediatric health information. 
+                  Our misinformation monitoring tool aims to help identify potentially inaccurate medical 
+                  content and provide alerts when reviewing pediatric health information online.
                 </p>
                 <div className="text-sm text-slate-400 font-light">
-                  • 25% believe MMR vaccine dangers<br />
-                  • 4.8x more misinformation found with negative search terms<br />
+                  • Content analysis tool<br />
+                  • Browser extension format<br />
                   • Educational alerts system
                 </div>
               </CardContent>
