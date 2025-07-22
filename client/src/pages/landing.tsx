@@ -186,28 +186,28 @@ export default function Landing() {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/50" style={{ marginTop: '3px' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-center items-center h-16">
-            <div className="flex items-center space-x-8">
-              <div className="flex items-center space-x-2">
-                <Heart className="h-6 w-6 text-slate-300" />
-                <h1 className="professional-heading text-xl font-light text-white">PediaSignal AI</h1>
-              </div>
-              <div className="hidden md:flex items-center space-x-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-2">
+              <Heart className="h-6 w-6 text-slate-300" />
+              <h1 className="professional-heading text-xl font-light text-white">PediaSignal AI</h1>
+            </div>
+            
+            <div className="hidden md:flex items-center space-x-8">
               <button onClick={() => scrollToSection('features')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">Features</button>
               <button onClick={() => scrollToSection('how-it-works')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">How it works</button>
               <button onClick={() => scrollToSection('ai-tools')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">AI Tools</button>
               <button onClick={() => scrollToSection('why')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">Why</button>
               <button onClick={() => scrollToSection('faq')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">FAQ</button>
               <button onClick={() => scrollToSection('contact')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">Contact</button>
-              <Button 
-                onClick={() => window.location.href = '/admin/login'}
-                variant="outline" 
-                className="professional-text font-light"
-              >
-                Admin
-              </Button>
-              </div>
             </div>
+
+            <Button 
+              onClick={() => window.location.href = '/admin/login'}
+              variant="outline" 
+              className="professional-text font-light"
+            >
+              Admin
+            </Button>
           </div>
         </div>
       </nav>
@@ -223,17 +223,9 @@ export default function Landing() {
           </div>
           <p className="professional-text text-xl md:text-2xl text-slate-300 font-light mb-10 max-w-4xl mx-auto leading-relaxed">
             Advanced AI platform for <span className="keyword-highlight">pediatric emergency training</span>, 
-            <span className="keyword-highlight">abuse detection</span>, and <span className="keyword-highlight">clinical decision support</span>. 
+            <span className="keyword-highlight"> abuse detection</span>, and <span className="keyword-highlight">clinical decision support</span>. 
             Empowering healthcare professionals with cutting-edge medical intelligence.
           </p>
-          <div className="flex items-center justify-center space-x-2 mb-12">
-            <Shield className="h-6 w-6 icon-blue" />
-            <span className="professional-text text-slate-400 font-light">
-              <span className="keyword-highlight">HIPAA Compliance</span> In Progress • 
-              <span className="keyword-highlight">SOC 2 Type II</span> In Progress • 
-              <span className="keyword-highlight">ISO 27001</span> In Progress
-            </span>
-          </div>
           <Button 
             onClick={() => scrollToSection('waitlist-form')}
             className="professional-text font-light px-10 py-5 text-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 border-0"
@@ -241,6 +233,70 @@ export default function Landing() {
             Request Early Access
             <ArrowRight className="h-6 w-6 ml-2 icon-cyan" />
           </Button>
+        </div>
+      </section>
+
+      {/* Enterprise Security Section */}
+      <section className="py-16 section-animate bg-slate-800/20">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <p className="professional-text text-slate-400 font-light text-sm tracking-widest mb-4">
+              ENTERPRISE SECURITY STANDARDS
+            </p>
+            <h2 className="professional-heading text-3xl md:text-4xl font-light text-white mb-6">
+              Enterprise-Grade <span className="text-gradient-blue">Protection</span>
+            </h2>
+            <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto leading-relaxed">
+              Your cognitive data protected by the highest international security standards and compliance frameworks, 
+              ensuring complete privacy and data integrity.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
+              <CardContent className="p-8 text-center">
+                <Shield className="h-12 w-12 icon-blue mx-auto mb-6" />
+                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">AUDIT SCHEDULED</div>
+                <h3 className="professional-text text-lg font-light text-white mb-4">HIPAA Guidelines</h3>
+                <p className="professional-text text-slate-400 font-light text-sm">
+                  Built following HIPAA guidelines; third-party audit scheduled
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
+              <CardContent className="p-8 text-center">
+                <ShieldX className="h-12 w-12 icon-blue mx-auto mb-6" />
+                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">AES-256</div>
+                <h3 className="professional-text text-lg font-light text-white mb-4">End-to-End Encryption</h3>
+                <p className="professional-text text-slate-400 font-light text-sm">
+                  AES-256 encryption for all data transmission and storage
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
+              <CardContent className="p-8 text-center">
+                <Target className="h-12 w-12 icon-blue mx-auto mb-6" />
+                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">IN PROGRESS</div>
+                <h3 className="professional-text text-lg font-light text-white mb-4">ISO 27001</h3>
+                <p className="professional-text text-slate-400 font-light text-sm">
+                  Working toward ISO 27001 certification
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
+              <CardContent className="p-8 text-center">
+                <CheckCircle className="h-12 w-12 icon-blue mx-auto mb-6" />
+                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">AUDIT IN PROGRESS</div>
+                <h3 className="professional-text text-lg font-light text-white mb-4">SOC 2 Type II</h3>
+                <p className="professional-text text-slate-400 font-light text-sm">
+                  SOC 2 audit in progress. Annual security audits planned starting 2026
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </section>
 
