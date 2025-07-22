@@ -629,7 +629,7 @@ export default function Landing() {
       <section id="why" className="py-20 section-animate">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 fade-in">
-            <h2 className="professional-heading text-3xl font-light text-white mt-[20px] mb-[20px]">
+            <h2 className="professional-heading text-3xl font-light text-white mt-[35px] mb-[35px]">
               Why PediaSignal AI
             </h2>
             <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto mb-8">
