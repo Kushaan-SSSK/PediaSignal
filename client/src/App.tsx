@@ -9,6 +9,7 @@ import Simulator from "@/pages/simulator";
 import XrayAnalysis from "@/pages/xray-analysis";
 import MisinformationMonitor from "@/pages/misinformation-monitor";
 import TriageChatbot from "@/pages/triage-chatbot";
+import CompliancePage from "@/pages/compliance";
 
 function Router() {
   return (
@@ -18,6 +19,7 @@ function Router() {
       <Route path="/xray-analysis" component={XrayAnalysis} />
       <Route path="/misinformation-monitor" component={MisinformationMonitor} />
       <Route path="/triage-chatbot" component={TriageChatbot} />
+      <Route path="/compliance" component={CompliancePage} />
       <Route component={NotFound} />
     </Switch>
   );

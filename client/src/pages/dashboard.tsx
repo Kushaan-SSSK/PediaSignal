@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import ComplianceFooter from "@/components/ComplianceFooter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -142,19 +143,19 @@ export default function Dashboard() {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Section */}
         <section className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+          <h2 className="professional-heading text-4xl md:text-5xl font-extralight mb-6 text-white">
             The Future of<br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
               Pediatric Medicine
             </span>
           </h2>
-          <p className="text-xl text-gray-300 mb-8 max-w-3xl mx-auto">
+          <p className="professional-text text-xl text-gray-300 mb-8 max-w-3xl mx-auto font-light">
             Advanced AI-powered tools for pediatric emergency training, diagnosis assistance, and global health monitoring. 
             Empowering medical professionals with cutting-edge technology.
           </p>
           <div className="flex justify-center space-x-4">
             <Button 
-              className="bg-indigo-600 hover:bg-indigo-700 px-8 py-3 glow-effect"
+              className="professional-text bg-indigo-600 hover:bg-indigo-700 px-8 py-3 glow-effect font-light"
               onClick={() => window.location.href = "/simulator"}
             >
               <Activity className="w-5 h-5 mr-2" />
@@ -162,7 +163,7 @@ export default function Dashboard() {
             </Button>
             <Button 
               variant="secondary"
-              className="bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600 px-8 py-3"
+              className="professional-text bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600 px-8 py-3 font-light"
               onClick={() => console.log("Navigate to analytics")}
             >
               <TrendingUp className="w-5 h-5 mr-2" />
@@ -175,32 +176,32 @@ export default function Dashboard() {
         <section className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
           <Card className="bg-gray-800/30 backdrop-blur-sm border-gray-700/50">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-blue-400">{analyticsData.totalSimulations}</div>
-              <div className="text-xs text-gray-400">Simulations Run</div>
+              <div className="professional-text text-2xl font-light text-blue-400">{analyticsData.totalSimulations}</div>
+              <div className="professional-text text-xs text-gray-400 font-light">Simulations Run</div>
             </CardContent>
           </Card>
           <Card className="bg-gray-800/30 backdrop-blur-sm border-gray-700/50">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-green-400">{analyticsData.totalXrayAnalyses}</div>
-              <div className="text-xs text-gray-400">X-rays Analyzed</div>
+              <div className="professional-text text-2xl font-light text-green-400">{analyticsData.totalXrayAnalyses}</div>
+              <div className="professional-text text-xs text-gray-400 font-light">X-rays Analyzed</div>
             </CardContent>
           </Card>
           <Card className="bg-gray-800/30 backdrop-blur-sm border-gray-700/50">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-red-400">{analyticsData.misinformationDetected}</div>
-              <div className="text-xs text-gray-400">Misinfo Detected</div>
+              <div className="professional-text text-2xl font-light text-red-400">{analyticsData.misinformationDetected}</div>
+              <div className="professional-text text-xs text-gray-400 font-light">Misinfo Detected</div>
             </CardContent>
           </Card>
           <Card className="bg-gray-800/30 backdrop-blur-sm border-gray-700/50">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-purple-400">{analyticsData.chatConversations}</div>
-              <div className="text-xs text-gray-400">Chat Sessions</div>
+              <div className="professional-text text-2xl font-light text-purple-400">{analyticsData.chatConversations}</div>
+              <div className="professional-text text-xs text-gray-400 font-light">Chat Sessions</div>
             </CardContent>
           </Card>
           <Card className="bg-gray-800/30 backdrop-blur-sm border-gray-700/50">
             <CardContent className="p-4 text-center">
-              <div className="text-2xl font-bold text-amber-400">{analyticsData.activeUsers}</div>
-              <div className="text-xs text-gray-400">Active Users</div>
+              <div className="professional-text text-2xl font-light text-amber-400">{analyticsData.activeUsers}</div>
+              <div className="professional-text text-xs text-gray-400 font-light">Active Users</div>
             </CardContent>
           </Card>
         </section>
@@ -213,23 +214,7 @@ export default function Dashboard() {
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="bg-gray-900/50 backdrop-blur-sm border-t border-gray-700/50 mt-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-2">
-              <Heart className="h-5 w-5 text-red-400" />
-              <span className="font-medium text-white">PediaSignal AI</span>
-              <span className="text-gray-500">© 2024</span>
-            </div>
-            <div className="flex space-x-6 text-sm text-gray-400">
-              <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-              <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-              <a href="#" className="hover:text-white transition-colors">Contact Support</a>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <ComplianceFooter />
     </div>
   );
 }

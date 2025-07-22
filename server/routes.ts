@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { setupSecurityMiddleware, auditLog } from "./security";
 import { z } from "zod";
 import { 
   insertSimulationSchema, 
@@ -32,6 +33,9 @@ const upload = multer({
 });
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  
+  // Setup security middleware for HIPAA/SOC 2 compliance
+  setupSecurityMiddleware(app);
   
   // Simulation endpoints
   app.post('/api/simulate-case', async (req, res) => {

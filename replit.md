@@ -7,6 +7,8 @@ PediaSignal AI is a comprehensive full-stack platform focused on solving pediatr
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+UI Design: Professional look with thin fonts (Inter font family), HIPAA/SOC 2/ISO 27001 compliance standards.
+Security Requirements: End-to-end encryption, enterprise-grade security middleware.
 
 ## System Architecture
 
