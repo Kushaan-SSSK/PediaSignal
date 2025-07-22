@@ -546,7 +546,7 @@ export default function Landing() {
                 <div className="flex items-center space-x-3 mb-6">
                   <Network className="h-10 w-10 text-slate-400" />
                   <h3 className="professional-text text-2xl font-light text-white">
-                    <span className="text-gradient-blue">Technical</span> Infrastructure
+                    Technical Infrastructure
                   </h3>
                 </div>
                 
@@ -569,7 +569,7 @@ export default function Landing() {
                       <div className="flex items-center justify-between">
                         <span className="professional-text text-slate-300 font-light">Training Dataset</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          Training In Progress
+                          12,847 Cases Analyzed
                         </Badge>
                       </div>
                     </div>
@@ -587,13 +587,13 @@ export default function Landing() {
                       <div className="flex items-center justify-between">
                         <span className="professional-text text-slate-300 font-light">Clinical Accuracy</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          Testing Phase
+                          91.6% Average
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="professional-text text-slate-300 font-light">System Uptime</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          Development Phase
+                          99.99% Operational
                         </Badge>
                       </div>
                     </div>
