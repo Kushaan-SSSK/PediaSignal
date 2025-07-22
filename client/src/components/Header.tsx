@@ -17,6 +17,9 @@ export default function Header({ user }: HeaderProps) {
 
   const navigation = [
     { name: "Dashboard", href: "/" },
+    { name: "How It Works", href: "/how-it-works" },
+    { name: "Why", href: "/why" },
+    { name: "Compliance", href: "/compliance" },
     { name: "Simulator", href: "/simulator" },
     { name: "Analysis", href: "/xray-analysis" },
     { name: "Monitor", href: "/misinformation-monitor" },
@@ -26,13 +29,13 @@ export default function Header({ user }: HeaderProps) {
   const getRoleBadgeColor = (role: string) => {
     switch (role) {
       case 'admin':
-        return 'bg-purple-600 text-white';
+        return 'bg-slate-600 text-slate-200 font-light';
       case 'pediatrician':
-        return 'bg-indigo-600 text-white';
+        return 'bg-slate-700 text-slate-200 font-light';
       case 'medical_student':
-        return 'bg-blue-600 text-white';
+        return 'bg-slate-800 text-slate-200 font-light';
       default:
-        return 'bg-gray-600 text-white';
+        return 'bg-slate-600 text-slate-200 font-light';
     }
   };
 
@@ -46,18 +49,18 @@ export default function Header({ user }: HeaderProps) {
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center space-x-4">
             <Link href="/" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
-              <Heart className="h-6 w-6 text-red-400" />
-              <h1 className="text-xl font-bold text-white">PediaSignal AI</h1>
+              <Heart className="h-6 w-6 text-slate-300" />
+              <h1 className="professional-heading text-xl font-light text-white">PediaSignal AI</h1>
             </Link>
             <nav className="hidden md:flex space-x-8 ml-8">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
-                  className={`transition-colors ${
+                  className={`professional-text font-light transition-colors ${
                     location === item.href 
-                      ? 'text-white border-b-2 border-blue-400' 
-                      : 'text-gray-300 hover:text-white'
+                      ? 'text-white border-b-2 border-slate-400' 
+                      : 'text-slate-300 hover:text-white'
                   }`}
                 >
                   {item.name}
@@ -72,7 +75,7 @@ export default function Header({ user }: HeaderProps) {
                   <Badge className={`text-xs font-medium ${getRoleBadgeColor(user.role)}`}>
                     {formatRoleName(user.role)}
                   </Badge>
-                  <span className="text-sm text-gray-300">{user.name}</span>
+                  <span className="professional-text text-sm text-slate-300 font-light">{user.name}</span>
                 </div>
                 <Avatar className="h-8 w-8">
                   <AvatarImage src={user.profileImage} alt="User profile" />

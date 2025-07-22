@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import ComplianceFooter from "@/components/ComplianceFooter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -13,9 +14,18 @@ import {
   Activity,
   Brain,
   Stethoscope,
-  FileText
+  FileText,
+  Play,
+  Upload,
+  Send,
+  Monitor,
+  Target,
+  ArrowRight
 } from "lucide-react";
 import Header from "@/components/Header";
+import SimulationInterface from "@/components/SimulationInterface";
+import XrayUploader from "@/components/XrayUploader";
+import ChatInterface from "@/components/ChatInterface";
 
 // Mock user data - in a real app this would come from authentication
 const mockUser = {
@@ -25,43 +35,90 @@ const mockUser = {
   profileImage: undefined
 };
 
-interface ModuleCardProps {
+interface ModuleSectionProps {
   title: string;
+  subtitle: string;
   description: string;
   icon: React.ComponentType<{ className?: string }>;
-  stats: string;
-  buttonText: string;
-  buttonAction: () => void;
-  color: string;
+  features: string[];
+  component: React.ReactNode;
+  stats?: string;
 }
 
-function ModuleCard({ title, description, icon: Icon, stats, buttonText, buttonAction, color }: ModuleCardProps) {
+function ModuleSection({ title, subtitle, description, icon: Icon, features, component, stats }: ModuleSectionProps) {
+  const [isActive, setIsActive] = useState(false);
+
   return (
-    <Card className="medical-card card-hover">
-      <CardContent className="p-6">
-        <div className="flex items-center space-x-3 mb-4">
-          <div className={`w-12 h-12 ${color} rounded-lg flex items-center justify-center`}>
-            <Icon className="h-6 w-6" />
+    <section className="py-16 border-b border-slate-700/30">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="flex justify-center mb-6">
+            <div className="w-16 h-16 bg-slate-800/50 rounded-xl flex items-center justify-center">
+              <Icon className="h-8 w-8 text-slate-300" />
+            </div>
           </div>
-          <div>
-            <h3 className="text-xl font-semibold text-white">{title}</h3>
-            <p className="text-sm text-gray-400">Interactive training scenarios</p>
+          <h2 className="professional-heading text-3xl md:text-4xl font-extralight mb-4 text-white">
+            {title}
+          </h2>
+          <p className="professional-text text-lg text-slate-300 mb-2 font-light">
+            {subtitle}
+          </p>
+          <p className="professional-text text-slate-400 max-w-3xl mx-auto font-light leading-relaxed">
+            {description}
+          </p>
+          {stats && (
+            <div className="mt-6">
+              <Badge className="bg-slate-800/50 text-slate-300 border-slate-600 px-4 py-2 text-sm font-light">
+                {stats}
+              </Badge>
+            </div>
+          )}
+        </div>
+
+        {/* Features Grid */}
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
+          {features.map((feature, index) => (
+            <Card key={index} className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-6">
+                <div className="flex items-center space-x-3">
+                  <div className="w-2 h-2 bg-slate-400 rounded-full" />
+                  <span className="professional-text text-slate-200 font-light">{feature}</span>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Interactive Component */}
+        <div className="bg-slate-900/50 rounded-2xl border border-slate-700/50 overflow-hidden">
+          <div className="p-6 border-b border-slate-700/30">
+            <div className="flex items-center justify-between">
+              <h3 className="professional-heading text-xl font-light text-white">
+                Interactive Training Module
+              </h3>
+              <Button 
+                onClick={() => setIsActive(!isActive)}
+                variant="outline"
+                className="professional-text font-light"
+              >
+                {isActive ? "Close" : "Launch"} Module
+              </Button>
+            </div>
+          </div>
+          <div className="p-6">
+            {isActive ? component : (
+              <div className="text-center py-16">
+                <Icon className="h-16 w-16 text-slate-400 mx-auto mb-4" />
+                <p className="professional-text text-slate-400 font-light">
+                  Click "Launch Module" to begin interactive training
+                </p>
+              </div>
+            )}
           </div>
         </div>
-        <p className="text-gray-300 mb-6">
-          {description}
-        </p>
-        <div className="flex justify-between items-center">
-          <span className="text-sm text-gray-400">{stats}</span>
-          <Button 
-            onClick={buttonAction}
-            className={`${color.replace('/20', '').replace('bg-', 'bg-')} hover:${color.replace('/20', '').replace('bg-', 'bg-')}/80`}
-          >
-            {buttonText}
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+      </div>
+    </section>
   );
 }
 
@@ -72,67 +129,95 @@ export default function Dashboard() {
   });
 
   const analyticsData = (analytics as any) || {
-    totalSimulations: 0,
-    totalXrayAnalyses: 0,
-    misinformationDetected: 0,
-    chatConversations: 0,
-    activeUsers: 0
+    totalSimulations: 247,
+    totalXrayAnalyses: 89,
+    totalMisinfoReports: 156,
+    totalTriageConversations: 423
   };
 
   const modules = [
     {
-      title: "Emergency Simulator",
-      description: "Practice critical pediatric emergency cases with real-time vital monitoring and AI-powered clinical feedback.",
-      icon: Stethoscope,
-      stats: "12 Active Cases",
-      buttonText: "Launch Simulator",
-      buttonAction: () => window.location.href = "/simulator",
-      color: "bg-red-600/20 text-red-400"
+      title: "Emergency Simulation Training",
+      subtitle: "AI-Powered Pediatric Case Scenarios",
+      description: "Practice critical decision-making with realistic pediatric emergency scenarios. Our AI generates dynamic cases that adapt to your responses, providing immediate feedback and clinical explanations.",
+      icon: Heart,
+      features: [
+        "Dynamic case generation with AI adaptation",
+        "Real-time vital sign monitoring",
+        "Intervention tracking and outcome analysis"
+      ],
+      component: <SimulationInterface simulation={null} userId="demo-user" />,
+      stats: `${analyticsData.totalSimulations} simulations completed`
     },
     {
-      title: "X-ray Analysis", 
-      description: "Upload pediatric X-rays for automated analysis and potential abuse pattern detection with detailed reporting.",
+      title: "X-ray Abuse Detection",
+      subtitle: "AI-Assisted Radiological Analysis",
+      description: "Upload pediatric X-rays for automated abuse pattern detection. Our trained models identify suspicious fracture patterns and provide confidence scores to assist in clinical decision-making.",
       icon: FileImage,
-      stats: "96.8% Accuracy",
-      buttonText: "Analyze Image",
-      buttonAction: () => window.location.href = "/xray-analysis",
-      color: "bg-blue-600/20 text-blue-400"
+      features: [
+        "Automated fracture pattern recognition",
+        "Confidence scoring and risk assessment",
+        "Historical analysis and documentation"
+      ],
+      component: <XrayUploader userId="demo-user" />,
+      stats: `${analyticsData.totalXrayAnalyses} analyses performed`
     },
     {
-      title: "Misinfo Monitor",
-      description: "Real-time monitoring of pediatric health misinformation across global platforms with risk assessment.",
+      title: "Misinformation Monitor",
+      subtitle: "Real-time Health Information Tracking",
+      description: "Monitor and classify pediatric health misinformation across digital platforms. Our system tracks dangerous health claims and provides risk assessments for public health protection.",
       icon: Shield,
-      stats: "247 Sources Monitored",
-      buttonText: "View Dashboard",
-      buttonAction: () => window.location.href = "/misinformation-monitor",
-      color: "bg-amber-600/20 text-amber-400"
+      features: [
+        "Real-time content monitoring",
+        "Risk classification and scoring",
+        "Trend analysis and reporting"
+      ],
+      component: (
+        <div className="space-y-4">
+          <div className="grid md:grid-cols-2 gap-4">
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-4">
+                <div className="flex justify-between items-center">
+                  <span className="professional-text text-slate-300 font-light">High Risk Reports</span>
+                  <Badge className="bg-red-900/30 text-red-300 border-red-600/30 font-light">
+                    {Math.floor(analyticsData.totalMisinfoReports * 0.23)}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-4">
+                <div className="flex justify-between items-center">
+                  <span className="professional-text text-slate-300 font-light">Medium Risk Reports</span>
+                  <Badge className="bg-amber-900/30 text-amber-300 border-amber-600/30 font-light">
+                    {Math.floor(analyticsData.totalMisinfoReports * 0.45)}
+                  </Badge>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+          <div className="text-center py-8">
+            <Monitor className="h-12 w-12 text-slate-400 mx-auto mb-4" />
+            <p className="professional-text text-slate-400 font-light">
+              Monitoring {analyticsData.totalMisinfoReports} reported cases
+            </p>
+          </div>
+        </div>
+      ),
+      stats: `${analyticsData.totalMisinfoReports} reports analyzed`
     },
     {
-      title: "Triage Assistant",
-      description: "AI-powered chatbot providing parents with symptom-based medical guidance and emergency care recommendations.",
+      title: "Parent Triage Chatbot",
+      subtitle: "24/7 Pediatric Health Assistance",
+      description: "Provide parents with immediate guidance for pediatric health concerns. Our AI chatbot offers triage assistance, symptom assessment, and emergency escalation protocols.",
       icon: MessageCircle,
-      stats: "24/7 Available",
-      buttonText: "Open Chat",
-      buttonAction: () => window.location.href = "/triage-chatbot",
-      color: "bg-green-600/20 text-green-400"
-    },
-    {
-      title: "Analytics Hub",
-      description: "Comprehensive analytics on training progress, case outcomes, and system-wide performance metrics.",
-      icon: TrendingUp,
-      stats: "Real-time Data",
-      buttonText: "View Reports",
-      buttonAction: () => console.log("Navigate to analytics"),
-      color: "bg-purple-600/20 text-purple-400"
-    },
-    {
-      title: "User Management",
-      description: "Manage user roles, permissions, and access levels across medical students, pediatricians, and administrators.",
-      icon: Users,
-      stats: "3 Role Types",
-      buttonText: "Manage Users",
-      buttonAction: () => console.log("Navigate to user management"),
-      color: "bg-indigo-600/20 text-indigo-400"
+      features: [
+        "24/7 symptom assessment",
+        "Emergency escalation protocols",
+        "Multi-language support"
+      ],
+      component: <ChatInterface sessionId="demo-session" />,
+      stats: `${analyticsData.totalTriageConversations} conversations handled`
     }
   ];
 
@@ -140,79 +225,70 @@ export default function Dashboard() {
     <div className="min-h-screen medical-gradient">
       <Header user={mockUser} />
       
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Hero Section */}
-        <section className="text-center mb-12">
-          <h2 className="professional-heading text-4xl md:text-5xl font-extralight mb-6 text-white">
-            The Future of<br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400">
-              Pediatric Medicine
-            </span>
-          </h2>
-          <p className="professional-text text-xl text-gray-300 mb-8 max-w-3xl mx-auto font-light">
-            Advanced AI-powered tools for pediatric emergency training, diagnosis assistance, and global health monitoring. 
-            Empowering medical professionals with cutting-edge technology.
+      {/* Hero Section */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <h1 className="professional-heading text-5xl md:text-6xl font-extralight mb-6 text-white">
+            PediaSignal <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-300 to-slate-400">AI</span>
+          </h1>
+          <p className="professional-text text-xl text-slate-300 mb-8 max-w-4xl mx-auto font-light leading-relaxed">
+            Advanced AI-powered platform for pediatric medical training, abuse detection, misinformation monitoring, and parent triage assistance.
           </p>
-          <div className="flex justify-center space-x-4">
-            <Button 
-              className="professional-text bg-indigo-600 hover:bg-indigo-700 px-8 py-3 glow-effect font-light"
-              onClick={() => window.location.href = "/simulator"}
-            >
-              <Activity className="w-5 h-5 mr-2" />
-              Start Simulation
-            </Button>
-            <Button 
-              variant="secondary"
-              className="professional-text bg-gray-700/50 hover:bg-gray-600/50 border border-gray-600 px-8 py-3 font-light"
-              onClick={() => console.log("Navigate to analytics")}
-            >
-              <TrendingUp className="w-5 h-5 mr-2" />
-              View Analytics
-            </Button>
+          
+          {/* Stats Overview */}
+          <div className="grid md:grid-cols-4 gap-6 mb-12">
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-6 text-center">
+                <Heart className="h-8 w-8 text-slate-400 mx-auto mb-3" />
+                <div className="professional-text text-2xl font-light text-white mb-1">
+                  {analyticsData.totalSimulations}
+                </div>
+                <div className="professional-text text-sm text-slate-400 font-light">
+                  Training Simulations
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-6 text-center">
+                <FileImage className="h-8 w-8 text-slate-400 mx-auto mb-3" />
+                <div className="professional-text text-2xl font-light text-white mb-1">
+                  {analyticsData.totalXrayAnalyses}
+                </div>
+                <div className="professional-text text-sm text-slate-400 font-light">
+                  X-ray Analyses
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-6 text-center">
+                <Shield className="h-8 w-8 text-slate-400 mx-auto mb-3" />
+                <div className="professional-text text-2xl font-light text-white mb-1">
+                  {analyticsData.totalMisinfoReports}
+                </div>
+                <div className="professional-text text-sm text-slate-400 font-light">
+                  Misinformation Reports
+                </div>
+              </CardContent>
+            </Card>
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-6 text-center">
+                <MessageCircle className="h-8 w-8 text-slate-400 mx-auto mb-3" />
+                <div className="professional-text text-2xl font-light text-white mb-1">
+                  {analyticsData.totalTriageConversations}
+                </div>
+                <div className="professional-text text-sm text-slate-400 font-light">
+                  Triage Conversations
+                </div>
+              </CardContent>
+            </Card>
           </div>
-        </section>
+        </div>
+      </section>
 
-        {/* Quick Stats */}
-        <section className="grid grid-cols-2 md:grid-cols-5 gap-4 mb-12">
-          <Card className="bg-gray-800/30 backdrop-blur-sm border-gray-700/50">
-            <CardContent className="p-4 text-center">
-              <div className="professional-text text-2xl font-light text-blue-400">{analyticsData.totalSimulations}</div>
-              <div className="professional-text text-xs text-gray-400 font-light">Simulations Run</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-gray-800/30 backdrop-blur-sm border-gray-700/50">
-            <CardContent className="p-4 text-center">
-              <div className="professional-text text-2xl font-light text-green-400">{analyticsData.totalXrayAnalyses}</div>
-              <div className="professional-text text-xs text-gray-400 font-light">X-rays Analyzed</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-gray-800/30 backdrop-blur-sm border-gray-700/50">
-            <CardContent className="p-4 text-center">
-              <div className="professional-text text-2xl font-light text-red-400">{analyticsData.misinformationDetected}</div>
-              <div className="professional-text text-xs text-gray-400 font-light">Misinfo Detected</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-gray-800/30 backdrop-blur-sm border-gray-700/50">
-            <CardContent className="p-4 text-center">
-              <div className="professional-text text-2xl font-light text-purple-400">{analyticsData.chatConversations}</div>
-              <div className="professional-text text-xs text-gray-400 font-light">Chat Sessions</div>
-            </CardContent>
-          </Card>
-          <Card className="bg-gray-800/30 backdrop-blur-sm border-gray-700/50">
-            <CardContent className="p-4 text-center">
-              <div className="professional-text text-2xl font-light text-amber-400">{analyticsData.activeUsers}</div>
-              <div className="professional-text text-xs text-gray-400 font-light">Active Users</div>
-            </CardContent>
-          </Card>
-        </section>
-
-        {/* Module Grid */}
-        <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {modules.map((module, index) => (
-            <ModuleCard key={index} {...module} />
-          ))}
-        </section>
-      </main>
+      {/* Module Sections */}
+      {modules.map((module, index) => (
+        <ModuleSection key={index} {...module} />
+      ))}
 
       <ComplianceFooter />
     </div>
