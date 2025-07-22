@@ -222,7 +222,7 @@ export default function Landing() {
           <p className="professional-text text-xl md:text-2xl text-slate-300 font-light mb-10 max-w-4xl mx-auto leading-relaxed">
             Advanced AI platform for <span className="keyword-highlight">pediatric emergency training</span>, 
             <span className="keyword-highlight"> abuse detection</span>, and <span className="keyword-highlight">clinical decision support</span>. 
-            Empowering healthcare professionals with cutting-edge medical intelligence.
+            Empowering healthcare professionals with medical intelligence.
           </p>
           <Button 
             onClick={() => scrollToSection('waitlist-form')}
