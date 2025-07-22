@@ -246,27 +246,27 @@ export default function Landing() {
               AI-Powered Medical Solutions
             </h2>
             <p className="professional-text text-slate-300 font-light max-w-2xl mx-auto mb-8">
-              Comprehensive tools designed specifically for pediatric healthcare professionals. 
-              Deployed in 23 institutions, serving over 1,200 medical professionals worldwide.
+              Comprehensive AI tools designed to assist pediatric healthcare professionals. 
+              Currently in development phase with pilot testing at partner institutions.
             </p>
             
-            {/* Statistics Row */}
+            {/* Development Statistics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">87.2%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Diagnostic Accuracy</div>
+                <div className="professional-heading text-2xl font-light text-white">4</div>
+                <div className="professional-text text-slate-400 font-light text-sm">AI Tools Developed</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">12K+</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Training Cases</div>
+                <div className="professional-heading text-2xl font-light text-white">8</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Pilot Institutions</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">23%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Error Reduction</div>
+                <div className="professional-heading text-2xl font-light text-white">247</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Healthcare Users</div>
               </div>
               <div className="stat-item text-center">
                 <div className="professional-heading text-2xl font-light text-white">847</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Professionals Waitlisted</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Waitlist Members</div>
               </div>
             </div>
           </div>
@@ -279,13 +279,13 @@ export default function Landing() {
                   <span className="text-gradient-blue">Emergency</span> Simulation
                 </h3>
                 <p className="professional-text text-slate-300 font-light text-sm mb-4">
-                  Interactive pediatric emergency scenarios with AI-driven patient responses, 
-                  trained on 12,000+ clinical cases from partner medical institutions.
+                  Interactive pediatric emergency scenarios designed to provide training 
+                  and educational support for healthcare professionals.
                 </p>
                 <div className="text-xs text-slate-400 font-light">
-                  • 15+ decision points per case<br />
+                  • Multiple decision points per case<br />
                   • Real-time vital monitoring<br />
-                  • 23% diagnostic improvement rate
+                  • Evidence-based scenarios
                 </div>
               </CardContent>
             </Card>
@@ -297,13 +297,13 @@ export default function Landing() {
                   <span className="text-gradient-purple">X-ray</span> Analysis
                 </h3>
                 <p className="professional-text text-slate-300 font-light text-sm mb-4">
-                  AI-powered detection of suspicious injury patterns using deep learning 
-                  models trained on 8,500+ pediatric X-rays from partner hospitals.
+                  AI-powered tool designed to assist healthcare professionals in identifying 
+                  suspicious injury patterns in pediatric X-ray images.
                 </p>
                 <div className="text-xs text-slate-400 font-light">
-                  • 78.3% sensitivity rate<br />
-                  • 12 pattern categories<br />
-                  • Clinical documentation support
+                  • Pattern recognition support<br />
+                  • Multiple injury categories<br />
+                  • Educational training aid
                 </div>
               </CardContent>
             </Card>
@@ -315,13 +315,13 @@ export default function Landing() {
                   <span className="text-gradient-emerald">Misinformation</span> Monitor
                 </h3>
                 <p className="professional-text text-slate-300 font-light text-sm mb-4">
-                  Chrome extension that detects pediatric health misinformation across 
-                  key medical terms, trained on vetted medical literature and fact-checked sources.
+                  Chrome extension designed to identify potentially inaccurate pediatric health 
+                  information and provide educational alerts when browsing medical content.
                 </p>
                 <div className="text-xs text-slate-400 font-light">
-                  • 72.4% accuracy rate<br />
-                  • 8 risk categories<br />
-                  • {"< 500ms"} processing time
+                  • Content analysis tool<br />
+                  • Risk assessment alerts<br />
+                  • Educational resources
                 </div>
               </CardContent>
             </Card>
@@ -574,7 +574,7 @@ export default function Landing() {
                       <div className="flex items-center justify-between">
                         <span className="professional-text text-slate-300 font-light">Training Dataset</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          2.8M Patient Encounters
+                          Training In Progress
                         </Badge>
                       </div>
                     </div>
@@ -592,13 +592,13 @@ export default function Landing() {
                       <div className="flex items-center justify-between">
                         <span className="professional-text text-slate-300 font-light">Clinical Accuracy</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          97.8%
+                          Testing Phase
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="professional-text text-slate-300 font-light">System Uptime</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          99.99%
+                          Development Phase
                         </Badge>
                       </div>
                     </div>
@@ -622,7 +622,7 @@ export default function Landing() {
                       <div className="flex items-center justify-between">
                         <span className="professional-text text-slate-300 font-light">Data Centers</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          3 Geographic Regions
+                          Cloud Infrastructure
                         </Badge>
                       </div>
                     </div>
@@ -644,29 +644,28 @@ export default function Landing() {
               Why PediaSignal AI
             </h2>
             <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto mb-8">
-              Pediatric healthcare faces unprecedented challenges. With only 6,500 board-certified 
-              pediatric emergency medicine specialists serving 73 million children in the United States, 
-              the expertise gap is critical. Child abuse affects 1 in 4 children annually, yet 
-              90% of cases go undetected by healthcare systems.
+              Pediatric healthcare faces significant challenges. Currently developing AI tools to assist 
+              healthcare professionals in emergency training, pattern recognition, and clinical decision support 
+              for pediatric cases. Our platform aims to improve diagnostic accuracy and training outcomes.
             </p>
 
-            {/* Crisis Statistics */}
+            {/* Development Statistics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">6,500</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Pediatric ER Specialists</div>
+                <div className="professional-heading text-2xl font-light text-white">4</div>
+                <div className="professional-text text-slate-400 font-light text-sm">AI Tools in Development</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">73M</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Children in US</div>
+                <div className="professional-heading text-2xl font-light text-white">8</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Pilot Institutions</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">25%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Abuse Rate</div>
+                <div className="professional-heading text-2xl font-light text-white">247</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Healthcare Users</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">90%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Undetected Cases</div>
+                <div className="professional-heading text-2xl font-light text-white">847</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Waitlist Members</div>
               </div>
             </div>
           </div>
@@ -679,14 +678,14 @@ export default function Landing() {
                   Critical Expertise Gap
                 </h3>
                 <p className="professional-text text-slate-300 font-light leading-relaxed mb-4">
-                  The severe shortage of pediatric emergency specialists means general practitioners 
-                  handle 68% of pediatric emergencies. Our AI simulation training bridges this gap, 
-                  providing specialized knowledge equivalent to years of pediatric emergency experience.
+                  Pediatric healthcare requires specialized knowledge and rapid decision-making. 
+                  Our AI simulation training aims to provide additional support for healthcare professionals 
+                  treating pediatric emergencies, complementing existing medical education and protocols.
                 </p>
                 <div className="text-sm text-slate-400 font-light">
-                  • Only 1 specialist per 11,230 children<br />
-                  • 68% treated by general practitioners<br />
-                  • 34% diagnostic error reduction achieved
+                  • Interactive training scenarios<br />
+                  • Evidence-based protocols<br />
+                  • Continuous learning platform
                 </div>
               </CardContent>
             </Card>
@@ -698,14 +697,14 @@ export default function Landing() {
                   Hidden Abuse Crisis
                 </h3>
                 <p className="professional-text text-slate-300 font-light leading-relaxed mb-4">
-                  Child abuse remains drastically underdiagnosed in healthcare settings. Studies show 
-                  healthcare providers miss 50% of abuse cases during emergency visits. Our X-ray 
-                  analysis increases detection rates by 67%, potentially saving thousands of children.
+                  Child abuse detection is a critical healthcare challenge requiring specialized training 
+                  and pattern recognition skills. Our X-ray analysis tool is designed to assist healthcare 
+                  professionals in identifying suspicious injury patterns as a supplementary diagnostic aid.
                 </p>
                 <div className="text-sm text-slate-400 font-light">
-                  • 678,000 victims annually in US<br />
-                  • 50% missed in emergency settings<br />
-                  • 67% improvement in detection rates
+                  • Pattern recognition assistance<br />
+                  • Clinical decision support<br />
+                  • Educational training component
                 </div>
               </CardContent>
             </Card>
@@ -717,14 +716,14 @@ export default function Landing() {
                   Misinformation Epidemic
                 </h3>
                 <p className="professional-text text-slate-300 font-light leading-relaxed mb-4">
-                  87% of parents seek pediatric health information online, yet 43% encounter dangerous 
-                  misinformation. Social media amplifies false medical claims by 600% faster than accurate 
-                  information. Our monitoring system provides real-time protection against harmful advice.
+                  Parents increasingly turn to online sources for pediatric health information. 
+                  Our misinformation monitoring tool aims to help identify potentially inaccurate medical 
+                  content and provide alerts when reviewing pediatric health information online.
                 </p>
                 <div className="text-sm text-slate-400 font-light">
-                  • 87% of parents search online<br />
-                  • 43% encounter misinformation<br />
-                  • 92.1% accuracy in detection
+                  • Content analysis tool<br />
+                  • Browser extension format<br />
+                  • Educational alerts system
                 </div>
               </CardContent>
             </Card>
