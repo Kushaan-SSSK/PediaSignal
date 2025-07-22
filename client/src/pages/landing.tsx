@@ -636,35 +636,11 @@ export default function Landing() {
             <h2 className="professional-heading text-3xl font-light text-white mt-[35px] mb-[35px]">
               Why PediaSignal AI
             </h2>
-            <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto mb-8">
+            <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto mb-12">
               Pediatric healthcare faces significant challenges. Our validated AI models assist 
               healthcare professionals in emergency training, pattern recognition, and clinical decision support 
               for pediatric cases. Proven performance metrics demonstrate improved diagnostic accuracy and training outcomes.
             </p>
-
-            {/* Model Performance */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
-              <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">94.3%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Emergency Simulation Training</div>
-                <div className="professional-text text-slate-500 font-light text-xs mt-1">Clinical scenario accuracy</div>
-              </div>
-              <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">91.7%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">X-ray Pattern Detection</div>
-                <div className="professional-text text-slate-500 font-light text-xs mt-1">Suspicious pattern identification</div>
-              </div>
-              <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">87.9%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Misinformation Analysis</div>
-                <div className="professional-text text-slate-500 font-light text-xs mt-1">Content risk classification</div>
-              </div>
-              <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">92.4%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Triage Assessment</div>
-                <div className="professional-text text-slate-500 font-light text-xs mt-1">Symptom severity evaluation</div>
-              </div>
-            </div>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
