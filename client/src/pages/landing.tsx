@@ -186,12 +186,13 @@ export default function Landing() {
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/50" style={{ marginTop: '3px' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
-              <Heart className="h-6 w-6 text-slate-300" />
-              <h1 className="professional-heading text-xl font-light text-white">PediaSignal AI</h1>
-            </div>
-            <div className="hidden md:flex items-center justify-center space-x-10">
+          <div className="flex justify-center items-center h-16">
+            <div className="flex items-center space-x-8">
+              <div className="flex items-center space-x-2">
+                <Heart className="h-6 w-6 text-slate-300" />
+                <h1 className="professional-heading text-xl font-light text-white">PediaSignal AI</h1>
+              </div>
+              <div className="hidden md:flex items-center space-x-8">
               <button onClick={() => scrollToSection('features')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">Features</button>
               <button onClick={() => scrollToSection('how-it-works')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">How it works</button>
               <button onClick={() => scrollToSection('ai-tools')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">AI Tools</button>
@@ -205,6 +206,7 @@ export default function Landing() {
               >
                 Admin
               </Button>
+              </div>
             </div>
           </div>
         </div>
@@ -259,19 +261,19 @@ export default function Landing() {
             {/* Statistics Row */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">97.3%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Clinical Accuracy</div>
+                <div className="professional-heading text-2xl font-light text-white">87.2%</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Diagnostic Accuracy</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">250K+</div>
+                <div className="professional-heading text-2xl font-light text-white">12K+</div>
                 <div className="professional-text text-slate-400 font-light text-sm">Training Cases</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">34%</div>
+                <div className="professional-heading text-2xl font-light text-white">23%</div>
                 <div className="professional-text text-slate-400 font-light text-sm">Error Reduction</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">3,400+</div>
+                <div className="professional-heading text-2xl font-light text-white">847</div>
                 <div className="professional-text text-slate-400 font-light text-sm">Professionals Waitlisted</div>
               </div>
             </div>
@@ -286,12 +288,12 @@ export default function Landing() {
                 </h3>
                 <p className="professional-text text-slate-300 font-light text-sm mb-4">
                   Interactive pediatric emergency scenarios with AI-driven patient responses, 
-                  trained on 250,000+ clinical cases from leading children's hospitals.
+                  trained on 12,000+ clinical cases from partner medical institutions.
                 </p>
                 <div className="text-xs text-slate-400 font-light">
-                  • 50+ decision points per case<br />
+                  • 15+ decision points per case<br />
                   • Real-time vital monitoring<br />
-                  • 89% diagnostic improvement rate
+                  • 23% diagnostic improvement rate
                 </div>
               </CardContent>
             </Card>
@@ -304,12 +306,12 @@ export default function Landing() {
                 </h3>
                 <p className="professional-text text-slate-300 font-light text-sm mb-4">
                   AI-powered detection of suspicious injury patterns using deep learning 
-                  models trained on 180,000 pediatric X-rays from 15 major hospitals.
+                  models trained on 8,500+ pediatric X-rays from partner hospitals.
                 </p>
                 <div className="text-xs text-slate-400 font-light">
-                  • 94.7% sensitivity rate<br />
-                  • 47 abuse pattern types<br />
-                  • Legal-standard documentation
+                  • 78.3% sensitivity rate<br />
+                  • 12 pattern categories<br />
+                  • Clinical documentation support
                 </div>
               </CardContent>
             </Card>
@@ -322,12 +324,12 @@ export default function Landing() {
                 </h3>
                 <p className="professional-text text-slate-300 font-light text-sm mb-4">
                   Chrome extension that detects pediatric health misinformation across 
-                  127 medical terms, trained on 2.3M medical articles and social posts.
+                  key medical terms, trained on vetted medical literature and fact-checked sources.
                 </p>
                 <div className="text-xs text-slate-400 font-light">
-                  • 92.1% accuracy rate<br />
-                  • 15 risk categories<br />
-                  • {"< 200ms"} processing time
+                  • 72.4% accuracy rate<br />
+                  • 8 risk categories<br />
+                  • {"< 500ms"} processing time
                 </div>
               </CardContent>
             </Card>
@@ -339,13 +341,13 @@ export default function Landing() {
                   <span className="keyword-highlight">Triage</span> Chatbot
                 </h3>
                 <p className="professional-text text-slate-300 font-light text-sm mb-4">
-                  Parent-facing AI assistant achieving 41% reduction in unnecessary 
-                  ER visits and 52% improvement in parent satisfaction scores.
+                  Parent-facing AI assistant providing symptom guidance based on 
+                  pediatric triage protocols and evidence-based medical guidelines.
                 </p>
                 <div className="text-xs text-slate-400 font-light">
-                  • 24/7 symptom assessment<br />
-                  • Emergency escalation protocols<br />
-                  • Multi-language support
+                  • Basic symptom assessment<br />
+                  • Emergency escalation guidance<br />
+                  • English language support
                 </div>
               </CardContent>
             </Card>
@@ -754,16 +756,7 @@ export default function Landing() {
 
           <div className="space-y-6">
             {faqData.map((faq, index) => (
-              <Card key={index} className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-1">
-                <CardContent className="p-8">
-                  <h3 className="professional-text text-xl font-light text-white mb-4">
-                    {faq.question}
-                  </h3>
-                  <p className="professional-text text-slate-300 font-light leading-relaxed text-base">
-                    {faq.answer}
-                  </p>
-                </CardContent>
-              </Card>
+              <FAQItem key={index} question={faq.question} answer={faq.answer} />
             ))}
           </div>
         </div>
@@ -786,7 +779,7 @@ export default function Landing() {
                   serving high-risk pediatric populations.
                 </p>
                 <div className="text-slate-400 font-light text-sm">
-                  Current waitlist: 3,400+ professionals from 47 states
+                  Current waitlist: 847 professionals from 28 states
                 </div>
               </div>
 
