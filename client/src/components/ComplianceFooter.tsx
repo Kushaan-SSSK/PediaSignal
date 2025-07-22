@@ -13,37 +13,37 @@ export default function ComplianceFooter() {
           <div className="grid md:grid-cols-4 gap-6">
             <Card className="bg-gray-800/30 border-gray-700/50">
               <CardContent className="p-6 text-center">
-                <Shield className="h-8 w-8 text-blue-400 mx-auto mb-4" />
-                <div className="professional-text text-white font-medium mb-2">HIPAA Compliant</div>
-                <div className="professional-text text-xs text-gray-400">
-                  Full compliance with Health Insurance Portability and Accountability Act for protected health information
+                <Shield className="h-8 w-8 text-slate-400 mx-auto mb-4" />
+                <div className="professional-text text-white font-light mb-2">HIPAA (In Progress)</div>
+                <div className="professional-text text-xs text-gray-400 font-light">
+                  Implementation of Health Insurance Portability and Accountability Act requirements underway
                 </div>
               </CardContent>
             </Card>
             <Card className="bg-gray-800/30 border-gray-700/50">
               <CardContent className="p-6 text-center">
-                <FileCheck className="h-8 w-8 text-green-400 mx-auto mb-4" />
-                <div className="professional-text text-white font-medium mb-2">SOC 2 Type II</div>
-                <div className="professional-text text-xs text-gray-400">
-                  Audited security, availability, processing integrity, confidentiality, and privacy controls
+                <FileCheck className="h-8 w-8 text-slate-400 mx-auto mb-4" />
+                <div className="professional-text text-white font-light mb-2">SOC 2 Type II (In Progress)</div>
+                <div className="professional-text text-xs text-gray-400 font-light">
+                  System and Organization Controls readiness assessment in development phase
                 </div>
               </CardContent>
             </Card>
             <Card className="bg-gray-800/30 border-gray-700/50">
               <CardContent className="p-6 text-center">
-                <Lock className="h-8 w-8 text-purple-400 mx-auto mb-4" />
-                <div className="professional-text text-white font-medium mb-2">End-to-End Encryption</div>
-                <div className="professional-text text-xs text-gray-400">
-                  AES-256 encryption for data at rest and TLS 1.3 for data in transit with perfect forward secrecy
+                <Lock className="h-8 w-8 text-slate-400 mx-auto mb-4" />
+                <div className="professional-text text-white font-light mb-2">Data Encryption</div>
+                <div className="professional-text text-xs text-gray-400 font-light">
+                  TLS 1.3 encryption for data transmission and secure session management implementation
                 </div>
               </CardContent>
             </Card>
             <Card className="bg-gray-800/30 border-gray-700/50">
               <CardContent className="p-6 text-center">
-                <Globe className="h-8 w-8 text-amber-400 mx-auto mb-4" />
-                <div className="professional-text text-white font-medium mb-2">ISO 27001</div>
-                <div className="professional-text text-xs text-gray-400">
-                  International standard for information security management systems and data protection
+                <Globe className="h-8 w-8 text-slate-400 mx-auto mb-4" />
+                <div className="professional-text text-white font-light mb-2">ISO 27001 (In Progress)</div>
+                <div className="professional-text text-xs text-gray-400 font-light">
+                  Information security management system development following international standards
                 </div>
               </CardContent>
             </Card>

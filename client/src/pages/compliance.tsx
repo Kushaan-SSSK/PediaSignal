@@ -27,10 +27,10 @@ interface ComplianceCardProps {
 function ComplianceCard({ title, description, icon: Icon, status, lastAudit, nextAudit, details, color }: ComplianceCardProps) {
   const getStatusColor = (status: string) => {
     switch (status) {
-      case "Certified": return "bg-green-500/20 text-green-400 border-green-500/30";
-      case "Compliant": return "bg-blue-500/20 text-blue-400 border-blue-500/30";
-      case "In Progress": return "bg-amber-500/20 text-amber-400 border-amber-500/30";
-      default: return "bg-gray-500/20 text-gray-400 border-gray-500/30";
+      case "Certified": return "bg-slate-500/20 text-slate-400 border-slate-500/30";
+      case "Compliant": return "bg-slate-500/20 text-slate-400 border-slate-500/30";
+      case "In Progress": return "bg-slate-600/20 text-slate-300 border-slate-600/30";
+      default: return "bg-slate-500/20 text-slate-400 border-slate-500/30";
     }
   };
 
@@ -49,7 +49,11 @@ function ComplianceCard({ title, description, icon: Icon, status, lastAudit, nex
               </Badge>
             </div>
           </div>
-          <CheckCircle className="h-5 w-5 text-green-400" />
+          {status === "Compliant" ? (
+            <CheckCircle className="h-5 w-5 text-slate-400" />
+          ) : (
+            <div className="h-5 w-5 rounded-full border-2 border-slate-500" />
+          )}
         </div>
         
         <p className="professional-text text-gray-300 text-sm mb-4 leading-relaxed font-light">
@@ -68,7 +72,7 @@ function ComplianceCard({ title, description, icon: Icon, status, lastAudit, nex
         <div className="space-y-2">
           {details.map((detail, index) => (
             <div key={index} className="flex items-center space-x-2">
-              <div className="w-1.5 h-1.5 bg-green-400 rounded-full" />
+              <div className="w-1.5 h-1.5 bg-slate-400 rounded-full" />
               <span className="professional-text text-xs text-gray-300 font-light">{detail}</span>
             </div>
           ))}
@@ -82,67 +86,67 @@ export default function CompliancePage() {
   const complianceStandards = [
     {
       title: "HIPAA Compliance",
-      description: "Full compliance with Health Insurance Portability and Accountability Act for protected health information handling and patient data privacy.",
+      description: "Implementation of Health Insurance Portability and Accountability Act requirements for protected health information handling and patient data privacy.",
       icon: Shield,
-      status: "Certified" as const,
-      lastAudit: "December 2024",
-      nextAudit: "June 2025",
+      status: "In Progress" as const,
+      lastAudit: "N/A - Initial Assessment",
+      nextAudit: "Q2 2025",
       details: [
-        "Administrative safeguards implemented",
-        "Physical safeguards for data centers",
-        "Technical safeguards and access controls",
-        "Business associate agreements in place",
-        "Breach notification procedures established"
+        "Administrative safeguards framework in development",
+        "Technical safeguards architecture planned",
+        "Access control mechanisms being implemented",
+        "Staff training program scheduled",
+        "Compliance documentation in progress"
       ],
-      color: "bg-blue-600/20 text-blue-400"
+      color: "bg-gray-600/20 text-gray-400"
     },
     {
       title: "SOC 2 Type II",
-      description: "System and Organization Controls audit covering security, availability, processing integrity, confidentiality, and privacy principles.",
+      description: "System and Organization Controls readiness assessment for security, availability, processing integrity, confidentiality, and privacy.",
       icon: FileCheck,
-      status: "Certified" as const,
-      lastAudit: "November 2024",
-      nextAudit: "November 2025",
+      status: "In Progress" as const,
+      lastAudit: "N/A - Pre-assessment Phase",
+      nextAudit: "Q3 2025",
       details: [
-        "Security controls audited and verified",
-        "Availability monitoring systems active",
-        "Data processing integrity confirmed",
-        "Confidentiality measures implemented",
-        "Privacy controls operational"
+        "Security control framework design",
+        "Monitoring system implementation planned",
+        "Data integrity processes being established",
+        "Third-party auditor selection underway",
+        "Control testing procedures in development"
       ],
-      color: "bg-green-600/20 text-green-400"
+      color: "bg-gray-600/20 text-gray-400"
     },
     {
       title: "ISO 27001",
-      description: "International standard for information security management systems providing systematic approach to managing sensitive company information.",
+      description: "Information security management system development following international standards for systematic information security management.",
       icon: Globe,
-      status: "Certified" as const,
-      lastAudit: "October 2024",
-      nextAudit: "October 2025",
+      status: "In Progress" as const,
+      lastAudit: "N/A - Gap Analysis Phase",
+      nextAudit: "Q4 2025",
       details: [
-        "Risk assessment and management process",
-        "Information security policies defined",
-        "Asset management and classification",
-        "Access control and identity management",
-        "Incident response procedures active"
+        "Information security policy development",
+        "Risk management framework creation",
+        "Asset inventory and classification ongoing",
+        "Security awareness training planning",
+        "Management system documentation started"
       ],
-      color: "bg-purple-600/20 text-purple-400"
+      color: "bg-gray-600/20 text-gray-400"
     },
     {
-      title: "End-to-End Encryption",
-      description: "Advanced encryption protocols ensuring data protection at rest and in transit with perfect forward secrecy and quantum-resistant algorithms.",
+      title: "Data Encryption",
+      description: "Implementation of encryption protocols for data protection at rest and in transit following industry best practices.",
       icon: Lock,
       status: "Compliant" as const,
       lastAudit: "January 2025",
       nextAudit: "April 2025",
       details: [
-        "AES-256 encryption for data at rest",
-        "TLS 1.3 for data in transit",
-        "Perfect forward secrecy implemented",
-        "Hardware security modules (HSM)",
-        "Key rotation and management automated"
+        "TLS 1.3 encryption for data transmission",
+        "Database encryption at application level",
+        "API endpoint security implementation",
+        "Session management with secure cookies",
+        "Password hashing using bcrypt"
       ],
-      color: "bg-indigo-600/20 text-indigo-400"
+      color: "bg-gray-600/20 text-gray-400"
     }
   ];
 
@@ -161,7 +165,7 @@ export default function CompliancePage() {
         {/* Header Section */}
         <div className="text-center mb-12">
           <h1 className="professional-heading text-4xl md:text-5xl font-extralight mb-6 text-white">
-            Security & <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-400">Compliance</span>
+            Security & <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-300 to-slate-400">Compliance</span>
           </h1>
           <p className="professional-text text-xl text-gray-300 mb-8 max-w-4xl mx-auto font-light">
             PediaSignal AI maintains the highest standards of security and compliance to protect sensitive medical data 
@@ -169,32 +173,32 @@ export default function CompliancePage() {
           </p>
           
           <div className="grid md:grid-cols-4 gap-4 mb-8">
-            <Card className="bg-green-800/20 border-green-700/50">
+            <Card className="bg-slate-800/20 border-slate-700/50">
               <CardContent className="p-4 text-center">
-                <CheckCircle className="h-8 w-8 text-green-400 mx-auto mb-2" />
-                <div className="professional-text text-lg font-light text-green-400">100%</div>
-                <div className="professional-text text-xs text-gray-400 font-light">Compliance Rate</div>
+                <CheckCircle className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+                <div className="professional-text text-lg font-light text-slate-300">In Progress</div>
+                <div className="professional-text text-xs text-gray-400 font-light">Compliance Status</div>
               </CardContent>
             </Card>
-            <Card className="bg-blue-800/20 border-blue-700/50">
+            <Card className="bg-slate-800/20 border-slate-700/50">
               <CardContent className="p-4 text-center">
-                <Shield className="h-8 w-8 text-blue-400 mx-auto mb-2" />
-                <div className="professional-text text-lg font-light text-blue-400">99.99%</div>
-                <div className="professional-text text-xs text-gray-400 font-light">Uptime SLA</div>
+                <Shield className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+                <div className="professional-text text-lg font-light text-slate-300">Development</div>
+                <div className="professional-text text-xs text-gray-400 font-light">Platform Stage</div>
               </CardContent>
             </Card>
-            <Card className="bg-purple-800/20 border-purple-700/50">
+            <Card className="bg-slate-800/20 border-slate-700/50">
               <CardContent className="p-4 text-center">
-                <Lock className="h-8 w-8 text-purple-400 mx-auto mb-2" />
-                <div className="professional-text text-lg font-light text-purple-400">256-bit</div>
-                <div className="professional-text text-xs text-gray-400 font-light">Encryption</div>
+                <Lock className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+                <div className="professional-text text-lg font-light text-slate-300">TLS 1.3</div>
+                <div className="professional-text text-xs text-gray-400 font-light">Transport Security</div>
               </CardContent>
             </Card>
-            <Card className="bg-amber-800/20 border-amber-700/50">
+            <Card className="bg-slate-800/20 border-slate-700/50">
               <CardContent className="p-4 text-center">
-                <AlertTriangle className="h-8 w-8 text-amber-400 mx-auto mb-2" />
-                <div className="professional-text text-lg font-light text-amber-400">0</div>
-                <div className="professional-text text-xs text-gray-400 font-light">Security Incidents</div>
+                <AlertTriangle className="h-8 w-8 text-slate-400 mx-auto mb-2" />
+                <div className="professional-text text-lg font-light text-slate-300">Active</div>
+                <div className="professional-text text-xs text-gray-400 font-light">Security Monitoring</div>
               </CardContent>
             </Card>
           </div>
@@ -263,19 +267,19 @@ export default function CompliancePage() {
                   <h3 className="professional-heading text-lg font-light text-white mb-4">Contact Information</h3>
                   <div className="space-y-4 professional-text text-sm text-gray-300 font-light">
                     <div>
-                      <strong className="text-white">Security Officer:</strong><br />
-                      security@pediasignal.ai<br />
-                      Available 24/7 for security incidents
+                      <strong className="text-white">Security Team:</strong><br />
+                      security@example.com<br />
+                      For security-related inquiries
                     </div>
                     <div>
                       <strong className="text-white">Compliance Team:</strong><br />
-                      compliance@pediasignal.ai<br />
+                      compliance@example.com<br />
                       Business hours: Mon-Fri 9AM-6PM EST
                     </div>
                     <div>
-                      <strong className="text-white">Privacy Officer:</strong><br />
-                      privacy@pediasignal.ai<br />
-                      HIPAA and data privacy inquiries
+                      <strong className="text-white">Privacy Office:</strong><br />
+                      privacy@example.com<br />
+                      Data privacy and HIPAA inquiries
                     </div>
                   </div>
                 </div>
