@@ -660,12 +660,12 @@ export default function Landing() {
                 <div className="professional-text text-slate-400 font-light text-sm">Analysis Tool</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">Monitor</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Content Safety</div>
+                <div className="professional-heading text-2xl font-light text-white">Content</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Safety Monitor</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">Triage</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Chatbot Assistant</div>
+                <div className="professional-heading text-2xl font-light text-white">Parent</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Triage Assistant</div>
               </div>
             </div>
           </div>
