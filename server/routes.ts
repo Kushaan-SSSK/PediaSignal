@@ -303,8 +303,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Waitlist endpoints
   app.post('/api/waitlist', async (req, res) => {
     try {
-      auditLog(`API Access: POST /api/waitlist - IP: ${req.ip}`, req);
-      
       const validatedData = insertWaitlistSchema.parse(req.body);
       
       await storage.addToWaitlist(validatedData);
@@ -324,10 +322,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Admin login endpoint
   app.post('/api/admin/login', async (req, res) => {
-    try {
-      auditLog(`API Access: POST /api/admin/login - IP: ${req.ip}`, req);
-      
+    try {      
       const { username, password } = req.body;
+      
+      console.log('Admin login attempt:', { username, password });
       
       // Simple admin authentication (in production, use proper hashing)
       if (username === 'admin' && password === 'pediasignal2024') {
@@ -353,8 +351,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin waitlist management
   app.get('/api/admin/waitlist', async (req, res) => {
     try {
-      auditLog(`API Access: GET /api/admin/waitlist - IP: ${req.ip}`, req);
-      
       const waitlistEntries = await storage.getWaitlistEntries();
       res.json(waitlistEntries);
       
@@ -368,8 +364,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.patch('/api/admin/waitlist/:id/status', async (req, res) => {
     try {
-      auditLog(`API Access: PATCH /api/admin/waitlist/${req.params.id}/status - IP: ${req.ip}`, req);
-      
       const id = parseInt(req.params.id);
       const { status } = req.body;
       
@@ -390,8 +384,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.delete('/api/admin/waitlist/:id', async (req, res) => {
     try {
-      auditLog(`API Access: DELETE /api/admin/waitlist/${req.params.id} - IP: ${req.ip}`, req);
-      
       const id = parseInt(req.params.id);
       await storage.deleteWaitlistEntry(id);
       res.json({ success: true });
@@ -406,8 +398,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   app.get('/api/admin/waitlist/export', async (req, res) => {
     try {
-      auditLog(`API Access: GET /api/admin/waitlist/export - IP: ${req.ip}`, req);
-      
       const waitlistEntries = await storage.getWaitlistEntries();
       res.json(waitlistEntries);
       

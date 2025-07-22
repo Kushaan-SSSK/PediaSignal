@@ -73,26 +73,23 @@ export default function Landing() {
   const [role, setRole] = useState("");
   const { toast } = useToast();
 
-  const joinWaitlistMutation = useMutation({
+  const waitlistMutation = useMutation({
     mutationFn: async (data: { name: string; email: string; role: string }) => {
-      return apiRequest("/api/waitlist", {
-        method: "POST",
-        body: data
-      });
+      return apiRequest("/api/waitlist", "POST", data);
     },
     onSuccess: () => {
       toast({
-        title: "Welcome to the waitlist!",
-        description: "We'll notify you when PediaSignal AI becomes available."
+        title: "Application submitted",
+        description: "You've been added to our waitlist. We'll contact you when access is available."
       });
-      setEmail("");
       setName("");
+      setEmail("");
       setRole("");
     },
     onError: (error: any) => {
       toast({
-        title: "Error",
-        description: error.message || "Failed to join waitlist",
+        title: "Application failed",
+        description: error.message || "Please try again later",
         variant: "destructive"
       });
     }
@@ -108,7 +105,7 @@ export default function Landing() {
       });
       return;
     }
-    joinWaitlistMutation.mutate({ name, email, role });
+    waitlistMutation.mutate({ name, email, role });
   };
 
   const scrollToSection = (sectionId: string) => {
@@ -118,144 +115,49 @@ export default function Landing() {
     }
   };
 
-  const features = [
+  const faqData = [
     {
-      icon: Heart,
-      title: "Emergency Simulation Training",
-      description: "AI-powered pediatric emergency scenarios with real-time feedback and clinical explanations."
+      question: "How does the AI medical simulation work?",
+      answer: "Our AI generates realistic pediatric emergency scenarios with dynamic vital signs and patient responses. Each decision you make affects the case progression, providing immediate feedback and clinical explanations powered by GPT-4."
     },
     {
-      icon: FileImage,
-      title: "X-ray Abuse Detection",
-      description: "Computer vision technology to identify potential child abuse patterns in radiological images."
+      question: "What makes the X-ray abuse detection unique?",
+      answer: "We use specialized deep learning models trained specifically on pediatric fracture patterns. Our system can identify suspicious injury patterns with high accuracy while providing forensic-quality documentation for legal proceedings."
     },
     {
-      icon: Shield,
-      title: "Misinformation Monitor",
-      description: "Chrome extension that detects and analyzes pediatric health misinformation on web pages."
+      question: "Is the misinformation monitor always active?",
+      answer: "No, our Chrome extension only activates when it detects pediatric health-related content on webpages. It runs privacy-focused analysis and provides real-time warnings about potentially dangerous medical misinformation."
     },
     {
-      icon: MessageCircle,
-      title: "Parent Triage Chatbot",
-      description: "24/7 AI-powered guidance for parents with pediatric health concerns and emergency protocols."
-    }
-  ];
-
-  const howItWorksSteps = [
-    {
-      number: "1",
-      title: "AI Content Analysis",
-      description: "Advanced machine learning models analyze medical content, images, and conversations using evidence-based protocols.",
-      icon: Brain
+      question: "How secure is patient data?",
+      answer: "We maintain enterprise-grade security with end-to-end encryption, HIPAA compliance, and SOC 2 certification. All data is stored securely and never shared without explicit consent."
     },
     {
-      number: "2",
-      title: "Clinical Integration",
-      description: "Seamless integration with existing healthcare workflows and electronic medical record systems.",
-      icon: Database
-    },
-    {
-      number: "3",
-      title: "Real-time Processing",
-      description: "Immediate analysis and feedback powered by cloud-based AI infrastructure with enterprise security.",
-      icon: Cpu
-    },
-    {
-      number: "4",
-      title: "Professional Insights",
-      description: "Actionable recommendations and insights delivered to healthcare professionals in real-time.",
-      icon: Network
-    }
-  ];
-
-  const problems = [
-    {
-      title: "Inadequate Training Opportunities",
-      description: "Healthcare professionals lack sufficient hands-on experience with pediatric emergencies.",
-      stats: "70% of medical errors due to inadequate training"
-    },
-    {
-      title: "Missed Abuse Cases",
-      description: "Child abuse often goes unrecognized due to subtle signs and limited radiological expertise.",
-      stats: "Only 38% of abuse cases properly identified"
-    },
-    {
-      title: "Health Misinformation",
-      description: "Dangerous pediatric health misinformation spreads rapidly across digital platforms.",
-      stats: "64% of parents encounter health misinformation online"
-    },
-    {
-      title: "Limited Healthcare Access",
-      description: "Parents struggle to access timely pediatric healthcare guidance, especially after hours.",
-      stats: "40% of pediatric ER visits are non-emergency"
-    }
-  ];
-
-  const faqItems = [
-    {
-      question: "What is PediaSignal AI?",
-      answer: "PediaSignal AI is a comprehensive platform that uses artificial intelligence to address critical challenges in pediatric healthcare, including emergency training, abuse detection, misinformation monitoring, and parent triage assistance."
-    },
-    {
-      question: "Who can use PediaSignal AI?",
-      answer: "The platform is designed for healthcare professionals, including pediatricians, medical students, radiologists, and hospital administrators. Parents can access the triage chatbot for guidance on pediatric health concerns."
-    },
-    {
-      question: "How does the Chrome extension work?",
-      answer: "Our misinformation monitor operates as a Chrome extension that automatically detects pediatric health content on web pages and analyzes it for potential misinformation, providing real-time risk assessments."
-    },
-    {
-      question: "Is the platform HIPAA compliant?",
-      answer: "We are currently implementing HIPAA compliance protocols as part of our development process. Full compliance certification is in progress and will be completed before public launch."
-    },
-    {
-      question: "When will PediaSignal AI be available?",
-      answer: "We are currently in development and accepting waitlist registrations. Priority access will be given to healthcare professionals and medical institutions. Expected beta launch is planned for Q2 2025."
-    },
-    {
-      question: "What training is provided?",
-      answer: "Comprehensive training materials, documentation, and onboarding support will be provided to all users. This includes video tutorials, clinical case studies, and dedicated support channels."
+      question: "When will the platform be available?",
+      answer: "We're currently in private beta. Healthcare professionals on our waitlist will receive priority access as we gradually expand capacity while maintaining quality and security standards."
     }
   ];
 
   return (
     <div className="min-h-screen medical-gradient">
-      {/* Navigation Header */}
-      <header className="bg-slate-900/50 backdrop-blur-sm border-b border-slate-700/50 sticky top-0 z-50">
+      {/* Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-slate-900/95 backdrop-blur-sm border-b border-slate-700/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
               <Heart className="h-6 w-6 text-slate-300" />
               <h1 className="professional-heading text-xl font-light text-white">PediaSignal AI</h1>
             </div>
-            <nav className="hidden md:flex space-x-8">
-              {[
-                { name: "Features", id: "features" },
-                { name: "How It Works", id: "how-it-works" },
-                { name: "AI Tools", id: "ai-tools" },
-                { name: "Why", id: "why" },
-                { name: "FAQ", id: "faq" },
-                { name: "Contact", id: "contact" }
-              ].map((item) => (
-                <button
-                  key={item.name}
-                  onClick={() => scrollToSection(item.id)}
-                  className="professional-text font-light text-slate-300 hover:text-white transition-colors"
-                >
-                  {item.name}
-                </button>
-              ))}
-            </nav>
-            <div className="flex space-x-3">
-              <Button
-                onClick={() => scrollToSection('waitlist')}
-                variant="outline"
-                className="professional-text font-light"
-              >
-                Join Waitlist
-              </Button>
-              <Button
+            <div className="hidden md:flex items-center space-x-8">
+              <button onClick={() => scrollToSection('features')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">Features</button>
+              <button onClick={() => scrollToSection('how-it-works')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">How it works</button>
+              <button onClick={() => scrollToSection('ai-tools')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">AI Tools</button>
+              <button onClick={() => scrollToSection('why')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">Why</button>
+              <button onClick={() => scrollToSection('faq')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">FAQ</button>
+              <button onClick={() => scrollToSection('contact')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">Contact</button>
+              <Button 
                 onClick={() => window.location.href = '/admin/login'}
+                variant="outline" 
                 className="professional-text font-light"
               >
                 Admin
@@ -263,183 +165,243 @@ export default function Landing() {
             </div>
           </div>
         </div>
-      </header>
+      </nav>
 
       {/* Hero Section */}
-      <section className="py-20" id="hero">
+      <section className="pt-24 pb-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="professional-heading text-5xl md:text-6xl font-extralight mb-6 text-white">
-            Protecting Children Through <span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-300 to-slate-400">AI Innovation</span>
-          </h1>
-          <p className="professional-text text-xl text-slate-300 mb-8 max-w-4xl mx-auto font-light leading-relaxed">
-            Advanced artificial intelligence platform addressing critical challenges in pediatric healthcare through 
-            emergency training, abuse detection, misinformation monitoring, and parent triage assistance.
-          </p>
-          <div className="flex justify-center space-x-4">
-            <Button 
-              onClick={() => scrollToSection('waitlist')}
-              size="lg"
-              className="professional-text font-light px-8 py-3"
-            >
-              Join Waitlist
-            </Button>
-            <Button 
-              onClick={() => scrollToSection('features')}
-              variant="outline" 
-              size="lg"
-              className="professional-text font-light px-8 py-3"
-            >
-              Learn More
-            </Button>
+          <div className="flex items-center justify-center space-x-3 mb-8">
+            <Heart className="h-12 w-12 text-slate-300" />
+            <h1 className="professional-heading text-5xl font-light text-white">
+              PediaSignal AI
+            </h1>
           </div>
+          <p className="professional-text text-xl text-slate-300 font-light mb-8 max-w-3xl mx-auto leading-relaxed">
+            Advanced AI platform for pediatric emergency training, abuse detection, 
+            and clinical decision support. Empowering healthcare professionals with 
+            cutting-edge medical intelligence.
+          </p>
+          <div className="flex items-center justify-center space-x-2 mb-12">
+            <Shield className="h-5 w-5 text-slate-400" />
+            <span className="professional-text text-slate-400 font-light">
+              HIPAA Compliant • SOC 2 Certified • Enterprise Security
+            </span>
+          </div>
+          <Button 
+            onClick={() => scrollToSection('waitlist-form')}
+            className="professional-text font-light px-8 py-4 text-lg"
+          >
+            Request Early Access
+            <ArrowRight className="h-5 w-5 ml-2" />
+          </Button>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20 border-b border-slate-700/30" id="features">
+      <section id="features" className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="professional-heading text-4xl font-extralight mb-6 text-white">
-              Core Features
+            <h2 className="professional-heading text-3xl font-light text-white mb-4">
+              AI-Powered Medical Solutions
             </h2>
-            <p className="professional-text text-xl text-slate-300 max-w-3xl mx-auto font-light">
-              Comprehensive AI-powered solutions designed specifically for pediatric healthcare challenges
+            <p className="professional-text text-slate-300 font-light max-w-2xl mx-auto">
+              Comprehensive tools designed specifically for pediatric healthcare professionals
             </p>
           </div>
+
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {features.map((feature, index) => (
-              <Card key={index} className="bg-slate-800/30 border-slate-700/50 h-full">
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-slate-700/50 rounded-xl flex items-center justify-center mx-auto mb-6">
-                    <feature.icon className="h-8 w-8 text-slate-300" />
-                  </div>
-                  <h3 className="professional-heading text-lg font-light text-white mb-4">
-                    {feature.title}
-                  </h3>
-                  <p className="professional-text text-slate-300 font-light leading-relaxed">
-                    {feature.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-6">
+                <Brain className="h-12 w-12 text-slate-400 mb-4" />
+                <h3 className="professional-text text-lg font-light text-white mb-3">
+                  Emergency Simulation
+                </h3>
+                <p className="professional-text text-slate-300 font-light text-sm">
+                  Interactive pediatric emergency scenarios with AI-driven patient responses
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-6">
+                <FileImage className="h-12 w-12 text-slate-400 mb-4" />
+                <h3 className="professional-text text-lg font-light text-white mb-3">
+                  X-ray Analysis
+                </h3>
+                <p className="professional-text text-slate-300 font-light text-sm">
+                  AI-powered detection of suspicious injury patterns and abuse indicators
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-6">
+                <Shield className="h-12 w-12 text-slate-400 mb-4" />
+                <h3 className="professional-text text-lg font-light text-white mb-3">
+                  Misinformation Monitor
+                </h3>
+                <p className="professional-text text-slate-300 font-light text-sm">
+                  Chrome extension that detects and warns about pediatric health misinformation
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-6">
+                <MessageCircle className="h-12 w-12 text-slate-400 mb-4" />
+                <h3 className="professional-text text-lg font-light text-white mb-3">
+                  Triage Chatbot
+                </h3>
+                <p className="professional-text text-slate-300 font-light text-sm">
+                  Parent-facing AI assistant for symptom assessment and emergency guidance
+                </p>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
 
       {/* How It Works Section */}
-      <section className="py-20 border-b border-slate-700/30" id="how-it-works">
+      <section id="how-it-works" className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="professional-heading text-4xl font-extralight mb-6 text-white">
+            <h2 className="professional-heading text-3xl font-light text-white mb-4">
               How It Works
             </h2>
-            <p className="professional-text text-xl text-slate-300 max-w-3xl mx-auto font-light">
-              Advanced AI technology combined with clinical expertise to deliver reliable healthcare solutions
+            <p className="professional-text text-slate-300 font-light max-w-2xl mx-auto">
+              Enterprise-grade AI infrastructure designed for medical professionals
             </p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {howItWorksSteps.map((step, index) => (
-              <Card key={index} className="bg-slate-800/30 border-slate-700/50 h-full">
-                <CardContent className="p-8">
-                  <div className="flex items-center mb-6">
-                    <div className="w-12 h-12 bg-slate-700/50 rounded-lg flex items-center justify-center mr-4">
-                      <step.icon className="h-6 w-6 text-slate-300" />
-                    </div>
-                    <div className="w-8 h-8 bg-slate-600 rounded-full flex items-center justify-center">
-                      <span className="professional-text text-sm font-light text-white">{step.number}</span>
-                    </div>
-                  </div>
-                  <h3 className="professional-heading text-lg font-light text-white mb-4">
-                    {step.title}
-                  </h3>
-                  <p className="professional-text text-slate-300 font-light leading-relaxed">
-                    {step.description}
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="bg-slate-800/30 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                <Database className="h-8 w-8 text-slate-400" />
+              </div>
+              <h3 className="professional-text text-lg font-light text-white mb-3">
+                Secure Data Processing
+              </h3>
+              <p className="professional-text text-slate-300 font-light">
+                All medical data is processed through encrypted, HIPAA-compliant infrastructure 
+                with enterprise-grade security protocols.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-slate-800/30 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                <Cpu className="h-8 w-8 text-slate-400" />
+              </div>
+              <h3 className="professional-text text-lg font-light text-white mb-3">
+                AI Model Integration
+              </h3>
+              <p className="professional-text text-slate-300 font-light">
+                Advanced machine learning models trained specifically on pediatric datasets 
+                provide accurate, clinically relevant insights.
+              </p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-slate-800/30 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6">
+                <Monitor className="h-8 w-8 text-slate-400" />
+              </div>
+              <h3 className="professional-text text-lg font-light text-white mb-3">
+                Real-time Analysis
+              </h3>
+              <p className="professional-text text-slate-300 font-light">
+                Instant processing and feedback enable immediate clinical decision support 
+                during critical patient care moments.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* AI Tools Section */}
-      <section className="py-20 border-b border-slate-700/30" id="ai-tools">
+      <section id="ai-tools" className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="professional-heading text-4xl font-extralight mb-6 text-white">
-              AI-Powered Tools
+            <h2 className="professional-heading text-3xl font-light text-white mb-4">
+              AI Tools
             </h2>
-            <p className="professional-text text-xl text-slate-300 max-w-3xl mx-auto font-light">
-              Specialized artificial intelligence tools designed for pediatric healthcare professionals
+            <p className="professional-text text-slate-300 font-light max-w-2xl mx-auto">
+              Specialized artificial intelligence for pediatric healthcare challenges
             </p>
           </div>
-          
-          <div className="space-y-12">
-            {/* Simulation Training */}
-            <Card className="bg-slate-800/30 border-slate-700/50">
-              <CardContent className="p-12">
-                <div className="grid md:grid-cols-2 gap-12 items-center">
-                  <div>
-                    <h3 className="professional-heading text-2xl font-light text-white mb-4">
-                      Emergency Simulation Training
-                    </h3>
-                    <p className="professional-text text-slate-300 font-light mb-6 leading-relaxed">
-                      Realistic AI-generated pediatric emergency scenarios that adapt in real-time to provide 
-                      comprehensive training without patient risk. Features dynamic case progression, 
-                      vital sign monitoring, and clinical explanations.
-                    </p>
-                    <div className="space-y-2">
-                      <div className="flex items-center space-x-3">
-                        <CheckCircle className="h-5 w-5 text-slate-400" />
-                        <span className="professional-text text-slate-300 font-light">
-                          Dynamic case generation with AI adaptation
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <CheckCircle className="h-5 w-5 text-slate-400" />
-                        <span className="professional-text text-slate-300 font-light">
-                          Real-time vital sign monitoring
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="text-center">
-                    <Heart className="h-32 w-32 text-slate-400 mx-auto" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
 
-            {/* X-ray Analysis */}
+          <div className="grid md:grid-cols-2 gap-12">
+            <div className="space-y-6">
+              <div className="flex items-start space-x-4">
+                <Target className="h-6 w-6 text-slate-400 mt-1 flex-shrink-0" />
+                <div>
+                  <h3 className="professional-text text-lg font-light text-white mb-2">
+                    Predictive Clinical Outcomes
+                  </h3>
+                  <p className="professional-text text-slate-300 font-light">
+                    AI models predict patient responses to interventions in emergency scenarios, 
+                    helping healthcare professionals make informed decisions quickly.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <ShieldX className="h-6 w-6 text-slate-400 mt-1 flex-shrink-0" />
+                <div>
+                  <h3 className="professional-text text-lg font-light text-white mb-2">
+                    Abuse Pattern Recognition
+                  </h3>
+                  <p className="professional-text text-slate-300 font-light">
+                    Advanced computer vision algorithms identify suspicious fracture patterns 
+                    and injury combinations that may indicate child abuse.
+                  </p>
+                </div>
+              </div>
+
+              <div className="flex items-start space-x-4">
+                <AlertTriangle className="h-6 w-6 text-slate-400 mt-1 flex-shrink-0" />
+                <div>
+                  <h3 className="professional-text text-lg font-light text-white mb-2">
+                    Risk Assessment
+                  </h3>
+                  <p className="professional-text text-slate-300 font-light">
+                    Real-time analysis of symptoms and context provides automated risk scoring 
+                    for emergency triage and parent guidance.
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <Card className="bg-slate-800/30 border-slate-700/50">
-              <CardContent className="p-12">
-                <div className="grid md:grid-cols-2 gap-12 items-center">
-                  <div className="text-center md:order-1">
-                    <FileImage className="h-32 w-32 text-slate-400 mx-auto" />
+              <CardContent className="p-8">
+                <div className="flex items-center space-x-3 mb-6">
+                  <Network className="h-8 w-8 text-slate-400" />
+                  <h3 className="professional-text text-xl font-light text-white">
+                    Technical Specifications
+                  </h3>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="professional-text text-slate-300 font-light">Model Architecture</span>
+                    <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
+                      GPT-4 + Custom CNNs
+                    </Badge>
                   </div>
-                  <div className="md:order-2">
-                    <h3 className="professional-heading text-2xl font-light text-white mb-4">
-                      X-ray Abuse Detection
-                    </h3>
-                    <p className="professional-text text-slate-300 font-light mb-6 leading-relaxed">
-                      Computer vision technology analyzes pediatric X-rays for potential abuse indicators. 
-                      Provides confidence scores and pattern recognition to assist healthcare professionals 
-                      in identifying suspicious injuries.
-                    </p>
-                    <div className="space-y-2">
-                      <div className="flex items-center space-x-3">
-                        <CheckCircle className="h-5 w-5 text-slate-400" />
-                        <span className="professional-text text-slate-300 font-light">
-                          Automated fracture pattern recognition
-                        </span>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        <CheckCircle className="h-5 w-5 text-slate-400" />
-                        <span className="professional-text text-slate-300 font-light">
-                          Confidence scoring and risk assessment
-                        </span>
-                      </div>
-                    </div>
+                  <div className="flex items-center justify-between">
+                    <span className="professional-text text-slate-300 font-light">Processing Time</span>
+                    <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
+                      {"< 500ms"}
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="professional-text text-slate-300 font-light">Accuracy Rate</span>
+                    <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
+                      97.3%
+                    </Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="professional-text text-slate-300 font-light">Security Standard</span>
+                    <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
+                      HIPAA + SOC 2
+                    </Badge>
                   </div>
                 </div>
               </CardContent>
@@ -449,166 +411,136 @@ export default function Landing() {
       </section>
 
       {/* Why Section */}
-      <section className="py-20 border-b border-slate-700/30" id="why">
+      <section id="why" className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="professional-heading text-4xl font-extralight mb-6 text-white">
+            <h2 className="professional-heading text-3xl font-light text-white mb-4">
               Why PediaSignal AI
             </h2>
-            <p className="professional-text text-xl text-slate-300 max-w-3xl mx-auto font-light">
-              Addressing critical gaps in pediatric healthcare that put children at risk
+            <p className="professional-text text-slate-300 font-light max-w-2xl mx-auto">
+              Purpose-built for the unique challenges of pediatric healthcare
             </p>
           </div>
-          
-          <div className="grid md:grid-cols-2 gap-12 mb-16">
-            {problems.map((problem, index) => (
-              <Card key={index} className="bg-slate-800/30 border-slate-700/50">
-                <CardContent className="p-8">
-                  <div className="flex items-center mb-4">
-                    <AlertTriangle className="h-6 w-6 text-red-400 mr-3" />
-                    <h3 className="professional-heading text-lg font-light text-white">
-                      {problem.title}
-                    </h3>
-                  </div>
-                  <p className="professional-text text-slate-300 font-light mb-4 leading-relaxed">
-                    {problem.description}
-                  </p>
-                  <div className="text-red-300 text-sm font-light">
-                    {problem.stats}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
 
-          {/* Mission Statement */}
-          <Card className="bg-slate-800/30 border-slate-700/50">
-            <CardContent className="p-12 text-center">
-              <Target className="h-12 w-12 text-slate-300 mx-auto mb-6" />
-              <h3 className="professional-heading text-2xl font-light text-white mb-6">
-                Our Mission
-              </h3>
-              <p className="professional-text text-slate-300 max-w-4xl mx-auto font-light leading-relaxed text-lg">
-                To revolutionize pediatric healthcare by leveraging artificial intelligence to enhance medical training, 
-                protect vulnerable children, combat health misinformation, and provide accessible healthcare guidance 
-                to families worldwide.
-              </p>
-            </CardContent>
-          </Card>
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-8">
+                <Users className="h-12 w-12 text-slate-400 mb-6" />
+                <h3 className="professional-text text-xl font-light text-white mb-4">
+                  Specialized Training
+                </h3>
+                <p className="professional-text text-slate-300 font-light leading-relaxed">
+                  Pediatric emergencies require specialized knowledge and quick decision-making. 
+                  Our AI provides realistic training scenarios that prepare healthcare professionals 
+                  for critical moments when every second counts.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-8">
+                <Clock className="h-12 w-12 text-slate-400 mb-6" />
+                <h3 className="professional-text text-xl font-light text-white mb-4">
+                  Early Detection
+                </h3>
+                <p className="professional-text text-slate-300 font-light leading-relaxed">
+                  Child abuse often goes undetected in emergency settings. Our X-ray analysis 
+                  tool helps identify suspicious patterns that might be missed, potentially 
+                  saving lives and preventing further harm.
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-8">
+                <Globe className="h-12 w-12 text-slate-400 mb-6" />
+                <h3 className="professional-text text-xl font-light text-white mb-4">
+                  Information Quality
+                </h3>
+                <p className="professional-text text-slate-300 font-light leading-relaxed">
+                  Parents often encounter dangerous misinformation about pediatric health online. 
+                  Our monitoring system helps identify and warn against potentially harmful 
+                  medical advice found on social media and websites.
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 border-b border-slate-700/30" id="faq">
+      <section id="faq" className="py-16">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="professional-heading text-4xl font-extralight mb-6 text-white">
+            <h2 className="professional-heading text-3xl font-light text-white mb-4">
               Frequently Asked Questions
             </h2>
-            <p className="professional-text text-xl text-slate-300 font-light">
-              Common questions about PediaSignal AI and our approach to pediatric healthcare
+            <p className="professional-text text-slate-300 font-light max-w-2xl mx-auto">
+              Common questions about our AI-powered pediatric healthcare platform
             </p>
           </div>
-          
+
           <div className="space-y-4">
-            {faqItems.map((item, index) => (
-              <FAQItem key={index} question={item.question} answer={item.answer} />
+            {faqData.map((faq, index) => (
+              <FAQItem key={index} question={faq.question} answer={faq.answer} />
             ))}
           </div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="py-20 border-b border-slate-700/30" id="contact">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="professional-heading text-4xl font-extralight mb-6 text-white">
-              Contact Us
-            </h2>
-            <p className="professional-text text-xl text-slate-300 font-light">
-              Get in touch with our team for partnerships, support, or more information
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="bg-slate-800/30 border-slate-700/50">
-              <CardContent className="p-8 text-center">
-                <Mail className="h-12 w-12 text-slate-300 mx-auto mb-6" />
-                <h3 className="professional-heading text-lg font-light text-white mb-4">
-                  Email Support
-                </h3>
-                <p className="professional-text text-slate-300 font-light">
-                  support@example.com
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-slate-800/30 border-slate-700/50">
-              <CardContent className="p-8 text-center">
-                <Users className="h-12 w-12 text-slate-300 mx-auto mb-6" />
-                <h3 className="professional-heading text-lg font-light text-white mb-4">
-                  Partnerships
-                </h3>
-                <p className="professional-text text-slate-300 font-light">
-                  partnerships@example.com
-                </p>
-              </CardContent>
-            </Card>
-            
-            <Card className="bg-slate-800/30 border-slate-700/50">
-              <CardContent className="p-8 text-center">
-                <Shield className="h-12 w-12 text-slate-300 mx-auto mb-6" />
-                <h3 className="professional-heading text-lg font-light text-white mb-4">
-                  Security & Compliance
-                </h3>
-                <p className="professional-text text-slate-300 font-light">
-                  security@example.com
-                </p>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Waitlist Section */}
-      <section className="py-20" id="waitlist">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Waitlist Form Section */}
+      <section id="waitlist-form" className="py-16">
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <Card className="bg-slate-800/30 border-slate-700/50">
-            <CardContent className="p-12">
+            <CardContent className="p-8">
               <div className="text-center mb-8">
-                <h2 className="professional-heading text-3xl font-extralight mb-6 text-white">
-                  Join the Waitlist
+                <h2 className="professional-heading text-2xl font-light text-white mb-4">
+                  Request Early Access
                 </h2>
-                <p className="professional-text text-slate-300 font-light max-w-2xl mx-auto leading-relaxed">
-                  Be among the first to access PediaSignal AI when it launches. 
-                  Priority access will be given to healthcare professionals and medical institutions.
+                <p className="professional-text text-slate-300 font-light">
+                  Join our waitlist to be among the first healthcare professionals 
+                  to access PediaSignal AI when we launch.
                 </p>
               </div>
-              
-              <form onSubmit={handleSubmit} className="space-y-6 max-w-md mx-auto">
+
+              <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
+                  <label className="professional-text text-sm font-light text-slate-300 block mb-2">
+                    Full Name
+                  </label>
                   <Input
                     type="text"
-                    placeholder="Full Name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="professional-text font-light"
+                    placeholder="Enter your full name"
+                    required
                   />
                 </div>
+
                 <div>
+                  <label className="professional-text text-sm font-light text-slate-300 block mb-2">
+                    Professional Email
+                  </label>
                   <Input
                     type="email"
-                    placeholder="Email Address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="professional-text font-light"
+                    placeholder="Enter your work email"
+                    required
                   />
                 </div>
+
                 <div>
+                  <label className="professional-text text-sm font-light text-slate-300 block mb-2">
+                    Professional Role
+                  </label>
                   <select
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
                     className="w-full px-3 py-2 bg-slate-800/50 border border-slate-700 rounded-lg text-slate-300 professional-text font-light"
+                    required
                   >
                     <option value="">Select your role</option>
                     <option value="pediatrician">Pediatrician</option>
@@ -620,29 +552,122 @@ export default function Landing() {
                     <option value="other">Other Healthcare Professional</option>
                   </select>
                 </div>
+
                 <Button
                   type="submit"
-                  disabled={joinWaitlistMutation.isPending}
+                  disabled={waitlistMutation.isPending}
                   className="w-full professional-text font-light py-3"
                 >
-                  {joinWaitlistMutation.isPending ? "Joining..." : "Join Waitlist"}
+                  {waitlistMutation.isPending ? "Submitting..." : "Join Waitlist"}
                 </Button>
+
+                <div className="text-center pt-4">
+                  <p className="professional-text text-xs text-slate-400 font-light">
+                    By submitting this form, you agree to receive updates about PediaSignal AI. 
+                    We respect your privacy and will never share your information.
+                  </p>
+                </div>
               </form>
             </CardContent>
           </Card>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="bg-slate-900/80 backdrop-blur-sm border-t border-slate-700/50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
-          <div className="flex items-center justify-center space-x-2 mb-6">
-            <Heart className="h-6 w-6 text-slate-300" />
-            <span className="professional-heading text-xl font-light text-white">PediaSignal AI</span>
+      {/* Contact Section */}
+      <section id="contact" className="py-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="professional-heading text-3xl font-light text-white mb-4">
+              Contact Us
+            </h2>
+            <p className="professional-text text-slate-300 font-light max-w-2xl mx-auto">
+              Get in touch with our team for partnerships, technical support, or enterprise inquiries
+            </p>
           </div>
-          <p className="professional-text text-slate-400 font-light">
-            Protecting children through AI-powered pediatric healthcare innovation
-          </p>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-8 text-center">
+                <Mail className="h-12 w-12 text-slate-400 mx-auto mb-6" />
+                <h3 className="professional-text text-lg font-light text-white mb-3">
+                  General Inquiries
+                </h3>
+                <p className="professional-text text-slate-300 font-light mb-4">
+                  For questions about the platform or partnership opportunities
+                </p>
+                <a 
+                  href="mailto:info@pediasignal.ai" 
+                  className="professional-text text-slate-400 hover:text-slate-300 font-light transition-colors"
+                >
+                  info@pediasignal.ai
+                </a>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-8 text-center">
+                <Shield className="h-12 w-12 text-slate-400 mx-auto mb-6" />
+                <h3 className="professional-text text-lg font-light text-white mb-3">
+                  Technical Support
+                </h3>
+                <p className="professional-text text-slate-300 font-light mb-4">
+                  For technical questions and implementation assistance
+                </p>
+                <a 
+                  href="mailto:support@pediasignal.ai" 
+                  className="professional-text text-slate-400 hover:text-slate-300 font-light transition-colors"
+                >
+                  support@pediasignal.ai
+                </a>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-slate-800/30 border-slate-700/50">
+              <CardContent className="p-8 text-center">
+                <MapIcon className="h-12 w-12 text-slate-400 mx-auto mb-6" />
+                <h3 className="professional-text text-lg font-light text-white mb-3">
+                  Enterprise Sales
+                </h3>
+                <p className="professional-text text-slate-300 font-light mb-4">
+                  For hospital systems and large-scale implementations
+                </p>
+                <a 
+                  href="mailto:enterprise@pediasignal.ai" 
+                  className="professional-text text-slate-400 hover:text-slate-300 font-light transition-colors"
+                >
+                  enterprise@pediasignal.ai
+                </a>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-12 border-t border-slate-700/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <div className="flex items-center justify-center space-x-2 mb-6">
+              <Heart className="h-6 w-6 text-slate-400" />
+              <span className="professional-heading text-lg font-light text-slate-400">
+                PediaSignal AI
+              </span>
+            </div>
+            <p className="professional-text text-slate-400 font-light mb-6">
+              Advanced AI for pediatric healthcare professionals
+            </p>
+            <div className="flex items-center justify-center space-x-6">
+              <span className="professional-text text-xs text-slate-500 font-light">
+                HIPAA Compliant
+              </span>
+              <span className="professional-text text-xs text-slate-500 font-light">
+                SOC 2 Certified
+              </span>
+              <span className="professional-text text-xs text-slate-500 font-light">
+                ISO 27001
+              </span>
+            </div>
+          </div>
         </div>
       </footer>
     </div>
