@@ -402,7 +402,7 @@ export default function Landing() {
                 <Cpu className="h-10 w-10 text-slate-400" />
               </div>
               <h3 className="professional-text text-xl font-light text-white mb-4">
-                AI Model Integration
+                <span className="text-gradient-blue">AI Model</span> Integration
               </h3>
               <p className="professional-text text-slate-300 font-light mb-4">
                 Our proprietary neural networks combine transformer architectures with 
@@ -422,7 +422,7 @@ export default function Landing() {
                 <Monitor className="h-10 w-10 text-slate-400" />
               </div>
               <h3 className="professional-text text-xl font-light text-white mb-4">
-                Real-time Clinical Support
+                <span className="text-gradient-blue">Real-time</span> Clinical Support
               </h3>
               <p className="professional-text text-slate-300 font-light mb-4">
                 Instant processing capabilities deliver clinical decision support within 
