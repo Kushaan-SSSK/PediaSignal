@@ -453,23 +453,27 @@ export default function Landing() {
               data points monthly, supporting clinical decisions across 47 states and 12 countries.
             </p>
 
-            {/* AI Performance Statistics */}
+            {/* Individual AI Model Accuracy Rates */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">15M+</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Monthly Data Points</div>
+                <div className="professional-heading text-3xl font-light text-gradient-blue">94.3%</div>
+                <div className="professional-text text-slate-300 font-light text-sm">Emergency Simulation</div>
+                <div className="professional-text text-slate-500 font-light text-xs mt-1">Training Module Accuracy</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">97.8%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Prediction Accuracy</div>
+                <div className="professional-heading text-3xl font-light text-gradient-purple">91.7%</div>
+                <div className="professional-text text-slate-300 font-light text-sm">X-ray Analysis</div>
+                <div className="professional-text text-slate-500 font-light text-xs mt-1">Abuse Pattern Detection</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">23%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Better Than Traditional</div>
+                <div className="professional-heading text-3xl font-light text-gradient-emerald">87.9%</div>
+                <div className="professional-text text-slate-300 font-light text-sm">Content Analysis</div>
+                <div className="professional-text text-slate-500 font-light text-xs mt-1">Misinformation Detection</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">47</div>
-                <div className="professional-text text-slate-400 font-light text-sm">States Deployed</div>
+                <div className="professional-heading text-3xl font-light text-gradient-cyan">92.4%</div>
+                <div className="professional-text text-slate-300 font-light text-sm">Triage Chatbot</div>
+                <div className="professional-text text-slate-500 font-light text-xs mt-1">Symptom Assessment</div>
               </div>
             </div>
           </div>
@@ -642,19 +646,23 @@ export default function Landing() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               <div className="stat-item text-center">
                 <div className="professional-heading text-2xl font-light text-white">94.3%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Simulation Accuracy</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Emergency Simulation Training</div>
+                <div className="professional-text text-slate-500 font-light text-xs mt-1">Clinical scenario accuracy</div>
               </div>
               <div className="stat-item text-center">
                 <div className="professional-heading text-2xl font-light text-white">91.7%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">X-ray Detection</div>
+                <div className="professional-text text-slate-400 font-light text-sm">X-ray Pattern Detection</div>
+                <div className="professional-text text-slate-500 font-light text-xs mt-1">Suspicious pattern identification</div>
               </div>
               <div className="stat-item text-center">
                 <div className="professional-heading text-2xl font-light text-white">87.9%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Content Analysis</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Misinformation Analysis</div>
+                <div className="professional-text text-slate-500 font-light text-xs mt-1">Content risk classification</div>
               </div>
               <div className="stat-item text-center">
                 <div className="professional-heading text-2xl font-light text-white">92.4%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Triage Accuracy</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Triage Assessment</div>
+                <div className="professional-text text-slate-500 font-light text-xs mt-1">Symptom severity evaluation</div>
               </div>
             </div>
           </div>
