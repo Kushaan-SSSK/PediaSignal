@@ -546,7 +546,7 @@ export default function Landing() {
                 <div className="flex items-center space-x-3 mb-6">
                   <Network className="h-10 w-10 text-slate-400" />
                   <h3 className="professional-text text-2xl font-light text-white">
-                    Technical Infrastructure
+                    <span className="text-gradient-blue">Technical</span> Infrastructure
                   </h3>
                 </div>
                 
