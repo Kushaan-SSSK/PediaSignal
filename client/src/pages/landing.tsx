@@ -191,7 +191,7 @@ export default function Landing() {
               <Heart className="h-6 w-6 text-slate-300" />
               <h1 className="professional-heading text-xl font-light text-white">PediaSignal AI</h1>
             </div>
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center justify-center space-x-10">
               <button onClick={() => scrollToSection('features')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">Features</button>
               <button onClick={() => scrollToSection('how-it-works')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">How it works</button>
               <button onClick={() => scrollToSection('ai-tools')} className="professional-text text-slate-300 hover:text-white font-light transition-colors">AI Tools</button>
@@ -211,37 +211,41 @@ export default function Landing() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-24 pb-16">
+      <section className="min-h-screen flex items-center justify-center">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="flex items-center justify-center space-x-3 mb-8">
-            <Heart className="h-12 w-12 text-slate-300" />
-            <h1 className="professional-heading text-5xl font-light text-white">
-              PediaSignal AI
+          <div className="flex items-center justify-center space-x-4 mb-10">
+            <Heart className="h-16 w-16 icon-rose" />
+            <h1 className="professional-heading text-6xl md:text-8xl font-light">
+              <span className="text-gradient-blue">Pedia</span><span className="text-gradient-purple">Signal</span> AI
             </h1>
           </div>
-          <p className="professional-text text-xl text-slate-300 font-light mb-8 max-w-3xl mx-auto leading-relaxed">
-            Advanced AI platform for pediatric emergency training, abuse detection, 
-            and clinical decision support. Empowering healthcare professionals with 
-            cutting-edge medical intelligence.
+          <p className="professional-text text-xl md:text-2xl text-slate-300 font-light mb-10 max-w-4xl mx-auto leading-relaxed">
+            Advanced AI platform for <span className="keyword-highlight">pediatric emergency training</span>, 
+            <span className="keyword-highlight">abuse detection</span>, and <span className="keyword-highlight">clinical decision support</span>. 
+            Empowering healthcare professionals with cutting-edge medical intelligence.
           </p>
           <div className="flex items-center justify-center space-x-2 mb-12">
-            <Shield className="h-5 w-5 text-slate-400" />
+            <Shield className="h-6 w-6 icon-blue" />
             <span className="professional-text text-slate-400 font-light">
-              HIPAA Compliance In Progress • SOC 2 Type II In Progress • ISO 27001 In Progress
+              <span className="keyword-highlight">HIPAA Compliance</span> In Progress • 
+              <span className="keyword-highlight">SOC 2 Type II</span> In Progress • 
+              <span className="keyword-highlight">ISO 27001</span> In Progress
             </span>
           </div>
           <Button 
             onClick={() => scrollToSection('waitlist-form')}
-            className="professional-text font-light px-8 py-4 text-lg"
+            className="professional-text font-light px-10 py-5 text-xl bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 border-0"
           >
             Request Early Access
-            <ArrowRight className="h-5 w-5 ml-2" />
+            <ArrowRight className="h-6 w-6 ml-2 icon-cyan" />
           </Button>
         </div>
       </section>
 
+      <div className="section-break"></div>
+
       {/* Features Section */}
-      <section id="features" className="py-16 section-animate">
+      <section id="features" className="py-20 section-animate">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 fade-in">
             <h2 className="professional-heading text-3xl font-light text-white mb-4">
@@ -276,9 +280,9 @@ export default function Landing() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-1">
               <CardContent className="p-6">
-                <Brain className="h-12 w-12 text-slate-400 mb-4" />
+                <Brain className="h-14 w-14 icon-blue mb-4" />
                 <h3 className="professional-text text-lg font-light text-white mb-3">
-                  Emergency Simulation
+                  <span className="text-gradient-blue">Emergency</span> Simulation
                 </h3>
                 <p className="professional-text text-slate-300 font-light text-sm mb-4">
                   Interactive pediatric emergency scenarios with AI-driven patient responses, 
@@ -294,9 +298,9 @@ export default function Landing() {
 
             <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-2">
               <CardContent className="p-6">
-                <FileImage className="h-12 w-12 text-slate-400 mb-4" />
+                <FileImage className="h-14 w-14 icon-purple mb-4" />
                 <h3 className="professional-text text-lg font-light text-white mb-3">
-                  X-ray Analysis
+                  <span className="text-gradient-purple">X-ray</span> Analysis
                 </h3>
                 <p className="professional-text text-slate-300 font-light text-sm mb-4">
                   AI-powered detection of suspicious injury patterns using deep learning 
@@ -312,9 +316,9 @@ export default function Landing() {
 
             <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-3">
               <CardContent className="p-6">
-                <Shield className="h-12 w-12 text-slate-400 mb-4" />
+                <Shield className="h-14 w-14 icon-emerald mb-4" />
                 <h3 className="professional-text text-lg font-light text-white mb-3">
-                  Misinformation Monitor
+                  <span className="text-gradient-emerald">Misinformation</span> Monitor
                 </h3>
                 <p className="professional-text text-slate-300 font-light text-sm mb-4">
                   Chrome extension that detects pediatric health misinformation across 
@@ -330,9 +334,9 @@ export default function Landing() {
 
             <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-1">
               <CardContent className="p-6">
-                <MessageCircle className="h-12 w-12 text-slate-400 mb-4" />
+                <MessageCircle className="h-14 w-14 icon-cyan mb-4" />
                 <h3 className="professional-text text-lg font-light text-white mb-3">
-                  Triage Chatbot
+                  <span className="keyword-highlight">Triage</span> Chatbot
                 </h3>
                 <p className="professional-text text-slate-300 font-light text-sm mb-4">
                   Parent-facing AI assistant achieving 41% reduction in unnecessary 
@@ -349,8 +353,10 @@ export default function Landing() {
         </div>
       </section>
 
+      <div className="section-break"></div>
+
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-16 section-animate">
+      <section id="how-it-works" className="py-20 section-animate">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 fade-in">
             <h2 className="professional-heading text-3xl font-light text-white mb-4">
@@ -386,10 +392,10 @@ export default function Landing() {
           <div className="grid md:grid-cols-3 gap-8">
             <div className="text-center fade-in-delay-1">
               <div className="bg-slate-800/30 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-6 feature-card">
-                <Database className="h-10 w-10 text-slate-400" />
+                <Database className="h-12 w-12 icon-blue" />
               </div>
               <h3 className="professional-text text-xl font-light text-white mb-4">
-                Secure Data Processing
+                <span className="text-gradient-blue">Secure Data</span> Processing
               </h3>
               <p className="professional-text text-slate-300 font-light mb-4">
                 All medical data flows through our HIPAA-compliant infrastructure featuring 
@@ -447,8 +453,10 @@ export default function Landing() {
         </div>
       </section>
 
+      <div className="section-break"></div>
+
       {/* AI Tools Section */}
-      <section id="ai-tools" className="py-16 section-animate">
+      <section id="ai-tools" className="py-20 section-animate">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 fade-in">
             <h2 className="professional-heading text-3xl font-light text-white mb-4">
@@ -484,7 +492,7 @@ export default function Landing() {
           <div className="grid md:grid-cols-2 gap-12">
             <div className="space-y-8 fade-in-delay-1">
               <div className="flex items-start space-x-4">
-                <Target className="h-8 w-8 text-slate-400 mt-1 flex-shrink-0" />
+                <Target className="h-10 w-10 icon-orange mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="professional-text text-xl font-light text-white mb-3">
                     Predictive Clinical Outcomes
@@ -504,7 +512,7 @@ export default function Landing() {
               </div>
 
               <div className="flex items-start space-x-4">
-                <ShieldX className="h-8 w-8 text-slate-400 mt-1 flex-shrink-0" />
+                <ShieldX className="h-10 w-10 icon-rose mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="professional-text text-xl font-light text-white mb-3">
                     Abuse Pattern Recognition
@@ -524,7 +532,7 @@ export default function Landing() {
               </div>
 
               <div className="flex items-start space-x-4">
-                <AlertTriangle className="h-8 w-8 text-slate-400 mt-1 flex-shrink-0" />
+                <AlertTriangle className="h-10 w-10 icon-cyan mt-1 flex-shrink-0" />
                 <div>
                   <h3 className="professional-text text-xl font-light text-white mb-3">
                     Advanced Risk Stratification
@@ -632,8 +640,10 @@ export default function Landing() {
         </div>
       </section>
 
+      <div className="section-break"></div>
+
       {/* Why Section */}
-      <section id="why" className="py-16 section-animate">
+      <section id="why" className="py-20 section-animate">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 fade-in">
             <h2 className="professional-heading text-3xl font-light text-white mb-4">
@@ -670,7 +680,7 @@ export default function Landing() {
           <div className="grid md:grid-cols-3 gap-8">
             <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-1">
               <CardContent className="p-8">
-                <Users className="h-14 w-14 text-slate-400 mb-6" />
+                <Users className="h-16 w-16 icon-blue mb-6" />
                 <h3 className="professional-text text-xl font-light text-white mb-4">
                   Critical Expertise Gap
                 </h3>
@@ -689,7 +699,7 @@ export default function Landing() {
 
             <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-2">
               <CardContent className="p-8">
-                <Clock className="h-14 w-14 text-slate-400 mb-6" />
+                <Clock className="h-16 w-16 icon-rose mb-6" />
                 <h3 className="professional-text text-xl font-light text-white mb-4">
                   Hidden Abuse Crisis
                 </h3>
@@ -708,7 +718,7 @@ export default function Landing() {
 
             <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-3">
               <CardContent className="p-8">
-                <Globe className="h-14 w-14 text-slate-400 mb-6" />
+                <Globe className="h-16 w-16 icon-emerald mb-6" />
                 <h3 className="professional-text text-xl font-light text-white mb-4">
                   Misinformation Epidemic
                 </h3>
@@ -728,8 +738,10 @@ export default function Landing() {
         </div>
       </section>
 
+      <div className="section-break"></div>
+
       {/* FAQ Section */}
-      <section id="faq" className="py-16 section-animate">
+      <section id="faq" className="py-20 section-animate">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 fade-in">
             <h2 className="professional-heading text-3xl font-light text-white mb-4">
@@ -757,8 +769,10 @@ export default function Landing() {
         </div>
       </section>
 
-      {/* Waitlist Form Section */}
-      <section id="waitlist-form" className="py-16 section-animate">
+      <div className="section-break"></div>
+
+      {/* Contact & Waitlist Form Section */}
+      <section id="contact" className="py-20 section-animate">
         <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
           <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in">
             <CardContent className="p-10">

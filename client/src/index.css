@@ -223,6 +223,51 @@
   @keyframes statAppear {
     to { opacity: 1; transform: scale(1); }
   }
+
+  /* Section breaks */
+  .section-break {
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #3b82f6, #8b5cf6, #06b6d4, transparent);
+    margin: 4rem 0;
+    opacity: 0.3;
+  }
+
+  /* Colored icons and text */
+  .icon-blue { color: #3b82f6 !important; }
+  .icon-purple { color: #8b5cf6 !important; }
+  .icon-cyan { color: #06b6d4 !important; }
+  .icon-emerald { color: #10b981 !important; }
+  .icon-orange { color: #f59e0b !important; }
+  .icon-rose { color: #f43f5e !important; }
+
+  .text-gradient-blue {
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-purple {
+    background: linear-gradient(135deg, #8b5cf6, #ec4899);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .text-gradient-emerald {
+    background: linear-gradient(135deg, #10b981, #059669);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .keyword-highlight {
+    background: linear-gradient(135deg, #3b82f6, #06b6d4);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 500;
+  }
 }
 
 @layer utilities {
