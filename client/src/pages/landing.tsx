@@ -211,7 +211,7 @@ export default function Landing() {
         </div>
       </nav>
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center">
+      <section className="min-h-screen flex items-center justify-center hero-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex items-center justify-center space-x-4 mb-10">
             <Heart className="h-16 w-16 icon-rose" />
