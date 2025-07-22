@@ -802,9 +802,7 @@ export default function Landing() {
                   to access PediaSignal AI when we launch. Priority given to institutions 
                   serving high-risk pediatric populations.
                 </p>
-                <div className="text-slate-400 font-light text-sm">
-                  Current waitlist: 847 professionals from 28 states
-                </div>
+                
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-6">
