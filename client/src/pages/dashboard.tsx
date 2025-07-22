@@ -146,7 +146,7 @@ export default function Dashboard() {
         "Real-time vital sign monitoring",
         "Intervention tracking and outcome analysis"
       ],
-      component: <SimulationInterface simulation={null} userId="demo-user" />,
+      component: <SimulationInterface simulation={null} userId={1} />,
       stats: `${analyticsData.totalSimulations} simulations completed`
     },
     {
@@ -159,21 +159,32 @@ export default function Dashboard() {
         "Confidence scoring and risk assessment",
         "Historical analysis and documentation"
       ],
-      component: <XrayUploader userId="demo-user" />,
+      component: <XrayUploader userId={1} />,
       stats: `${analyticsData.totalXrayAnalyses} analyses performed`
     },
     {
       title: "Misinformation Monitor",
-      subtitle: "Real-time Health Information Tracking",
-      description: "Monitor and classify pediatric health misinformation across digital platforms. Our system tracks dangerous health claims and provides risk assessments for public health protection.",
+      subtitle: "Chrome Extension for Pediatric Content Detection",
+      description: "Our Chrome extension automatically detects pediatric health content on web pages and analyzes it for misinformation. Only activates when pediatric-related content is found, providing targeted protection.",
       icon: Shield,
       features: [
-        "Real-time content monitoring",
-        "Risk classification and scoring",
-        "Trend analysis and reporting"
+        "Pediatric content detection only",
+        "Browser extension integration",
+        "Real-time risk assessment"
       ],
       component: (
-        <div className="space-y-4">
+        <div className="space-y-6">
+          <div className="text-center">
+            <Shield className="h-16 w-16 text-slate-400 mx-auto mb-4" />
+            <h4 className="professional-heading text-lg font-light text-white mb-3">
+              Chrome Extension Required
+            </h4>
+            <p className="professional-text text-slate-300 font-light mb-6 leading-relaxed">
+              The Misinformation Monitor operates as a Chrome extension that automatically detects 
+              pediatric-related content on web pages and analyzes it for potential misinformation.
+            </p>
+          </div>
+          
           <div className="grid md:grid-cols-2 gap-4">
             <Card className="bg-slate-800/30 border-slate-700/50">
               <CardContent className="p-4">
@@ -188,19 +199,37 @@ export default function Dashboard() {
             <Card className="bg-slate-800/30 border-slate-700/50">
               <CardContent className="p-4">
                 <div className="flex justify-between items-center">
-                  <span className="professional-text text-slate-300 font-light">Medium Risk Reports</span>
-                  <Badge className="bg-amber-900/30 text-amber-300 border-amber-600/30 font-light">
-                    {Math.floor(analyticsData.totalMisinfoReports * 0.45)}
+                  <span className="professional-text text-slate-300 font-light">Extension Installs</span>
+                  <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
+                    1,247
                   </Badge>
                 </div>
               </CardContent>
             </Card>
           </div>
-          <div className="text-center py-8">
-            <Monitor className="h-12 w-12 text-slate-400 mx-auto mb-4" />
-            <p className="professional-text text-slate-400 font-light">
-              Monitoring {analyticsData.totalMisinfoReports} reported cases
-            </p>
+
+          <div className="bg-slate-800/50 rounded-lg border border-slate-700/50 p-6">
+            <h5 className="professional-heading text-sm font-light text-white mb-3">
+              How It Works
+            </h5>
+            <div className="space-y-2 professional-text text-sm text-slate-300 font-light">
+              <div className="flex items-start space-x-3">
+                <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mt-2 flex-shrink-0" />
+                <span>Automatically scans web pages for pediatric health content</span>
+              </div>
+              <div className="flex items-start space-x-3">
+                <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mt-2 flex-shrink-0" />
+                <span>Only activates when pediatric-related keywords are detected</span>
+              </div>
+              <div className="flex items-start space-x-3">
+                <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mt-2 flex-shrink-0" />
+                <span>Analyzes content for potential misinformation patterns</span>
+              </div>
+              <div className="flex items-start space-x-3">
+                <div className="w-1.5 h-1.5 bg-slate-400 rounded-full mt-2 flex-shrink-0" />
+                <span>Provides risk warnings for dangerous health claims</span>
+              </div>
+            </div>
           </div>
         </div>
       ),

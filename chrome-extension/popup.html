@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PediaSignal AI Monitor</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="popup-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" fill="currentColor"/>
+                </svg>
+                <span>PediaSignal AI</span>
+            </div>
+            <div class="toggle-container">
+                <label class="toggle">
+                    <input type="checkbox" id="monitor-toggle">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Status -->
+        <div class="status" id="status-section">
+            <div class="status-item">
+                <span class="status-label">Status:</span>
+                <span class="status-value" id="status-text">Loading...</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Pages Scanned:</span>
+                <span class="status-value" id="scan-count">0</span>
+            </div>
+            <div class="status-item">
+                <span class="status-label">Risk Alerts:</span>
+                <span class="status-value" id="alert-count">0</span>
+            </div>
+        </div>
+
+        <!-- Current Page Analysis -->
+        <div class="section" id="current-page">
+            <h3>Current Page</h3>
+            <div class="page-info" id="page-info">
+                <div class="page-status" id="page-status">Analyzing...</div>
+                <div class="page-details" id="page-details" style="display: none;">
+                    <div class="risk-level" id="risk-level"></div>
+                    <div class="risk-factors" id="risk-factors"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Alerts -->
+        <div class="section" id="alerts-section" style="display: none;">
+            <h3>Recent Risk Alerts</h3>
+            <div class="alerts-list" id="alerts-list"></div>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions">
+            <button class="btn btn-primary" id="analyze-btn">Analyze Current Page</button>
+            <button class="btn btn-secondary" id="report-btn">Report Issue</button>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-text">
+                Protecting children through AI-powered health information monitoring
+            </div>
+            <div class="footer-links">
+                <a href="#" id="settings-link">Settings</a>
+                <a href="#" id="about-link">About</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>
