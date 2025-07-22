@@ -651,13 +651,13 @@ export default function Landing() {
                   Critical Expertise Gap
                 </h3>
                 <p className="professional-text text-slate-300 font-light leading-relaxed mb-4">
-                  Pediatric healthcare requires specialized knowledge and rapid decision-making. 
-                  Our AI simulation training aims to provide additional support for healthcare professionals 
-                  treating pediatric emergencies, complementing existing medical education and protocols.
+                  Most children are treated at general Emergency Departments rather than specialized pediatric EDs, 
+                  creating a critical knowledge gap for emergency medicine physicians. Abuse is the leading cause 
+                  of trauma-related fatalities in children younger than four years old.
                 </p>
                 <div className="text-sm text-slate-400 font-light">
-                  • Interactive training scenarios<br />
-                  • Evidence-based protocols<br />
+                  • Specialized pediatric knowledge gaps in general EDs<br />
+                  • Leading trauma-related fatality cause under age 4<br />
                   • Continuous learning platform
                 </div>
               </CardContent>
@@ -670,14 +670,14 @@ export default function Landing() {
                   Hidden Abuse Crisis
                 </h3>
                 <p className="professional-text text-slate-300 font-light leading-relaxed mb-4">
-                  Child abuse detection is a critical healthcare challenge requiring specialized training 
-                  and pattern recognition skills. Our X-ray analysis tool is designed to assist healthcare 
-                  professionals in identifying suspicious injury patterns as a supplementary diagnostic aid.
+                  About 17% of skull fractures in children under 2 years are attributed to abuse. Children 
+                  under 3 years with rib fractures and under 18 months with certain fracture patterns require 
+                  routine evaluation for child abuse, including specialty consultation.
                 </p>
                 <div className="text-sm text-slate-400 font-light">
-                  • Pattern recognition assistance<br />
-                  • Clinical decision support<br />
-                  • Educational training component
+                  • 17% of skull fractures in children under 2<br />
+                  • Rib fractures in children under 3 years<br />
+                  • Specialty consultation requirements
                 </div>
               </CardContent>
             </Card>
@@ -689,13 +689,13 @@ export default function Landing() {
                   Misinformation Epidemic
                 </h3>
                 <p className="professional-text text-slate-300 font-light leading-relaxed mb-4">
-                  Parents increasingly turn to online sources for pediatric health information. 
-                  Our misinformation monitoring tool aims to help identify potentially inaccurate medical 
-                  content and provide alerts when reviewing pediatric health information online.
+                  Parents use various social media platforms to find health information for their children, 
+                  with most information created and shared by parents with no medical training. Vaccination 
+                  is the most extensively studied topic involving health-related misinformation.
                 </p>
                 <div className="text-sm text-slate-400 font-light">
-                  • Content analysis tool<br />
-                  • Browser extension format<br />
+                  • Information shared by non-medical parents<br />
+                  • Vaccination most studied misinformation topic<br />
                   • Educational alerts system
                 </div>
               </CardContent>
