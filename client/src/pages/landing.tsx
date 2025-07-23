@@ -716,8 +716,8 @@ export default function Landing() {
               Enterprise-Grade <span className="text-gradient-blue">Protection</span>
             </h2>
             <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto leading-relaxed">
-              Your data protected by the highest international security standards and compliance frameworks, 
-              ensuring complete privacy and data integrity.
+              Your data is safeguarded by leading international security standards and compliance frameworks, 
+              ensuring complete privacy and integrity at every step.
             </p>
           </div>
 
