@@ -716,7 +716,7 @@ export default function Landing() {
               Enterprise-Grade <span className="text-gradient-blue">Protection</span>
             </h2>
             <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto leading-relaxed">
-              Your cognitive data protected by the highest international security standards and compliance frameworks, 
+              Your data protected by the highest international security standards and compliance frameworks, 
               ensuring complete privacy and data integrity.
             </p>
           </div>
@@ -949,7 +949,11 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <div className="flex items-center justify-center space-x-2 mb-6">
-              <Heart className="h-6 w-6 text-slate-400" />
+              <img 
+                src={logoPath} 
+                alt="PediaSignal Logo" 
+                className="h-6 w-6 rounded border border-slate-700"
+              />
               <span className="professional-heading text-lg font-light text-slate-400">
                 PediaSignal
               </span>
