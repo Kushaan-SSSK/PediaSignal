@@ -188,7 +188,7 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <img src={logoPath} alt="PediaSignal Logo" className="h-8 w-8 rounded-full object-cover" />
+              <img src={logoPath} alt="PediaSignal Logo" className="h-10 w-10 rounded-full object-cover border-2 border-slate-700" />
               <h1 className="professional-heading text-xl font-light text-white">PediaSignal</h1>
             </div>
             
@@ -215,7 +215,7 @@ export default function Landing() {
       <section className="min-h-screen flex items-center justify-center hero-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex items-center justify-center space-x-4 mb-10">
-            <img src={logoPath} alt="PediaSignal Logo" className="h-16 w-16 rounded-full object-cover" />
+            <img src={logoPath} alt="PediaSignal Logo" className="h-20 w-20 rounded-full object-cover border-4 border-slate-700" />
             <h1 className="professional-heading text-6xl md:text-8xl font-light">
               <span className="text-gradient-blue">Pedia</span><span className="text-gradient-purple">Signal</span>
             </h1>
