@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import logoPath from "@assets/Untitled design_1753293788779.jpg";
 import { 
   Heart, 
   FileImage, 
@@ -187,7 +188,7 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <Heart className="h-6 w-6 text-slate-300" />
+              <img src={logoPath} alt="PediaSignal Logo" className="h-8 w-8 rounded-full object-cover" />
               <h1 className="professional-heading text-xl font-light text-white">PediaSignal</h1>
             </div>
             
@@ -214,7 +215,7 @@ export default function Landing() {
       <section className="min-h-screen flex items-center justify-center hero-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex items-center justify-center space-x-4 mb-10">
-            <Heart className="h-16 w-16 icon-rose" />
+            <img src={logoPath} alt="PediaSignal Logo" className="h-16 w-16 rounded-full object-cover" />
             <h1 className="professional-heading text-6xl md:text-8xl font-light">
               <span className="text-gradient-blue">Pedia</span><span className="text-gradient-purple">Signal</span>
             </h1>
