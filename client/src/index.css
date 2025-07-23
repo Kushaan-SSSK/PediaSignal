@@ -231,10 +231,11 @@
     position: fixed;
     top: 0;
     left: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #3b82f6, #8b5cf6, #06b6d4);
+    height: 2px;
+    background: linear-gradient(90deg, #475569, #64748b, #94a3b8);
     z-index: 100;
     transition: width 0.3s ease;
+    opacity: 0.7;
   }
 
   /* Section animations */
