@@ -1,8 +1,8 @@
-# PediaSignal AI - Pediatric Emergency Training Platform
+# PediaSignal - Pediatric Emergency Training Platform
 
 ## Overview
 
-PediaSignal AI is a comprehensive full-stack platform focused on solving pediatric emergency and education problems using AI. The system includes medical training simulations, X-ray analysis for abuse detection, misinformation monitoring, and a parent triage chatbot. The platform uses role-based authentication to provide different access levels for medical students, pediatricians, and administrators.
+PediaSignal is a comprehensive full-stack platform focused on solving pediatric emergency and education problems using AI. The system includes medical training simulations, X-ray analysis for abuse detection, misinformation monitoring, and a parent triage chatbot. The platform uses role-based authentication to provide different access levels for medical students, pediatricians, and administrators.
 
 ## User Preferences
 

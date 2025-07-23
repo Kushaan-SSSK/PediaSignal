@@ -188,7 +188,7 @@ export default function Landing() {
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
               <Heart className="h-6 w-6 text-slate-300" />
-              <h1 className="professional-heading text-xl font-light text-white">PediaSignal AI</h1>
+              <h1 className="professional-heading text-xl font-light text-white">PediaSignal</h1>
             </div>
             
             <div className="hidden md:flex items-center space-x-8">
@@ -216,7 +216,7 @@ export default function Landing() {
           <div className="flex items-center justify-center space-x-4 mb-10">
             <Heart className="h-16 w-16 icon-rose" />
             <h1 className="professional-heading text-6xl md:text-8xl font-light">
-              <span className="text-gradient-blue">Pedia</span><span className="text-gradient-purple">Signal</span> AI
+              <span className="text-gradient-blue">Pedia</span><span className="text-gradient-purple">Signal</span>
             </h1>
           </div>
           <p className="professional-text text-xl md:text-2xl text-slate-300 font-light mb-10 max-w-4xl mx-auto leading-relaxed">
@@ -634,7 +634,7 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 fade-in">
             <h2 className="professional-heading text-3xl font-light text-white mt-[35px] mb-[35px]">
-              Why PediaSignal AI
+              Why PediaSignal
             </h2>
             <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto mb-12">
               Pediatric healthcare faces significant challenges. Our validated AI models assist 
@@ -799,7 +799,7 @@ export default function Landing() {
                 </h2>
                 <p className="professional-text text-slate-300 font-light text-lg mb-4">
                   Join our waitlist to be among the first healthcare professionals 
-                  to access PediaSignal AI when we launch. Priority given to institutions 
+                  to access PediaSignal when we launch. Priority given to institutions 
                   serving high-risk pediatric populations.
                 </p>
                 
@@ -865,7 +865,7 @@ export default function Landing() {
 
                 <div className="text-center pt-4">
                   <p className="professional-text text-xs text-slate-400 font-light">
-                    By submitting this form, you agree to receive updates about PediaSignal AI. 
+                    By submitting this form, you agree to receive updates about PediaSignal. 
                     We respect your privacy and will never share your information.
                   </p>
                 </div>
@@ -950,7 +950,7 @@ export default function Landing() {
             <div className="flex items-center justify-center space-x-2 mb-6">
               <Heart className="h-6 w-6 text-slate-400" />
               <span className="professional-heading text-lg font-light text-slate-400">
-                PediaSignal AI
+                PediaSignal
               </span>
             </div>
             <p className="professional-text text-slate-400 font-light mb-6">
