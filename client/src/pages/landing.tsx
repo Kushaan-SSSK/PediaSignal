@@ -887,7 +887,7 @@ export default function Landing() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <Card className="bg-slate-800/30 border-slate-700/50">
               <CardContent className="p-8 text-center">
                 <Mail className="h-12 w-12 text-slate-400 mx-auto mb-6" />
@@ -898,10 +898,10 @@ export default function Landing() {
                   For questions about the platform or partnership opportunities
                 </p>
                 <a 
-                  href="mailto:info@pediasignal.ai" 
+                  href="mailto:Kushaan.s2007@gmail.com" 
                   className="professional-text text-slate-400 hover:text-slate-300 font-light transition-colors"
                 >
-                  info@pediasignal.ai
+                  Kushaan.s2007@gmail.com
                 </a>
               </CardContent>
             </Card>
@@ -916,28 +916,10 @@ export default function Landing() {
                   For technical questions and implementation assistance
                 </p>
                 <a 
-                  href="mailto:support@pediasignal.ai" 
+                  href="mailto:Advaithnair145@gmail.com" 
                   className="professional-text text-slate-400 hover:text-slate-300 font-light transition-colors"
                 >
-                  support@pediasignal.ai
-                </a>
-              </CardContent>
-            </Card>
-
-            <Card className="bg-slate-800/30 border-slate-700/50">
-              <CardContent className="p-8 text-center">
-                <MapIcon className="h-12 w-12 text-slate-400 mx-auto mb-6" />
-                <h3 className="professional-text text-lg font-light text-white mb-3">
-                  Enterprise Sales
-                </h3>
-                <p className="professional-text text-slate-300 font-light mb-4">
-                  For hospital systems and large-scale implementations
-                </p>
-                <a 
-                  href="mailto:enterprise@pediasignal.ai" 
-                  className="professional-text text-slate-400 hover:text-slate-300 font-light transition-colors"
-                >
-                  enterprise@pediasignal.ai
+                  Advaithnair145@gmail.com
                 </a>
               </CardContent>
             </Card>
