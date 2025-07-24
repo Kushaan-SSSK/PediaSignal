@@ -916,10 +916,10 @@ export default function Landing() {
                   For technical questions and implementation assistance
                 </p>
                 <a 
-                  href="mailto:Advaithnair145@gmail.com" 
+                  href="mailto:advaithvnair145@gmail.com" 
                   className="professional-text text-slate-400 hover:text-slate-300 font-light transition-colors"
                 >
-                  Advaithnair145@gmail.com
+                  advaithvnair145@gmail.com
                 </a>
               </CardContent>
             </Card>
