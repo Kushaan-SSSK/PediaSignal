@@ -1,0 +1,102 @@
+Skip to contentpedia-signal1-5142 – Deployment Overview
+Kushaan Sharma's projects
+Kushaan Sharma's projects
+
+Hobby
+
+pedia-signal1-5142
+
+9gnKcotAH
+
+
+Find…
+F
+
+Deployment Details
+Build Failed
+Command "npm run build" exited with 1
+
+Created
+github/Kushaan-SSSK
+Kushaan-SSSK
+59s ago
+Status
+Error
+Latest
+Time to Ready
+15s
+Just now
+Environment
+Production
+Domains
+pedia-signal1-5142-git-main-kushaan-sharmas-projects.vercel.app
+pedia-signal1-5142-jjej75e7i-kushaan-sharmas-projects.vercel.app
+Source
+main
+7d1dcb6
+Add files via upload
+
+Deployment Configuration
+Fluid Compute
+Deployment Protection
+Skew Protection
+Build Logs
+Exiting build container
+18s
+Find in logs
+CtrlF
+Installing dependencies...
+npm warn deprecated @esbuild-kit/esm-loader@2.6.5: Merged into tsx: https://tsx.is
+npm warn deprecated @esbuild-kit/core-utils@3.3.2: Merged into tsx: https://tsx.is
+added 515 packages in 10s
+69 packages are looking for funding
+  run `npm fund` for details
+Running "npm run build"
+> rest-express@1.0.0 build
+> vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist
+vite v5.4.19 building for production...
+✓ 0 modules transformed.
+x Build failed in 11ms
+error during build:
+Could not resolve entry module "client/index.html".
+    at getRollupError (file:///vercel/path0/node_modules/rollup/dist/es/shared/parseAst.js:396:41)
+    at error (file:///vercel/path0/node_modules/rollup/dist/es/shared/parseAst.js:392:42)
+    at ModuleLoader.loadEntryModule (file:///vercel/path0/node_modules/rollup/dist/es/shared/node-entry.js:20086:20)
+    at async Promise.all (index 0)
+Error: Command "npm run build" exited with 1
+Exiting build container
+Deployment Summary
+Assigning Custom Domains
+Runtime Logs
+
+View and debug runtime logs & errors
+
+Observability
+
+Monitor app health & performance
+
+Web Analytics
+
+Not Enabled
+Analyze visitors & traffic in real-time
+
+Speed Insights
+
+Not Enabled
+Performance metrics from real users
+
+Home
+Docs
+Guides
+Help
+Contact
+All systems normal
+
+Select a display theme:
+
+system
+
+light
+
+dark
+© 2025, Vercel Inc.
