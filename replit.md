@@ -102,21 +102,23 @@ The system uses a PostgreSQL database with the following key tables:
 
 ## Deployment Strategy
 
-### Frontend Deployment
-- **Platform**: Vercel (configured in vite.config.ts)
+### Production Deployment (Vercel)
+- **Platform**: Vercel serverless functions
 - **Build Process**: Vite production build with optimized bundles
 - **Static Assets**: Served from dist/public directory
+- **Backend**: Node.js serverless functions with 30s timeout
+- **Configuration**: vercel.json with API routing and build settings
 
-### Backend Deployment
-- **Platform**: Railway or Render with GPU support for AI models
-- **Environment**: Node.js with ES modules
-- **Database**: Neon serverless PostgreSQL
-- **Environment Variables**: OpenAI API keys, database URLs, Clerk authentication
+### Database
+- **Production**: Neon serverless PostgreSQL (recommended)
+- **Connection**: Environment variable DATABASE_URL
+- **Migration**: Drizzle Kit push command for schema updates
 
 ### Environment Configuration
-- **.env.local**: Local development variables
-- **Production**: Clerk authentication, OpenAI API, Supabase/Neon database
-- **Security**: API key management and role-based access enforcement
+- **Development**: .env.local with development variables
+- **Production**: Vercel environment variables dashboard
+- **Required Variables**: DATABASE_URL, OPENAI_API_KEY, SESSION_SECRET
+- **Optional**: REPL_ID, ISSUER_URL, REPLIT_DOMAINS for authentication
 
 ### Database Migrations
 - **Drizzle Kit**: Schema migrations in ./migrations directory
