@@ -883,7 +883,7 @@ export default function Landing() {
               Contact Us
             </h2>
             <p className="professional-text text-slate-300 font-light max-w-2xl mx-auto">
-              Get in touch with our team for partnerships, technical support, or enterprise inquiries
+              Get in touch with our team for general inquiries or technical support
             </p>
           </div>
 
