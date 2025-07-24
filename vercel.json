@@ -5,7 +5,8 @@
       "src": "server/index.ts",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["server/**", "shared/**", "attached_assets/**"]
+        "includeFiles": ["server/**", "shared/**", "attached_assets/**"],
+        "maxLambdaSize": "50mb"
       }
     },
     {
@@ -28,10 +29,5 @@
   ],
   "env": {
     "NODE_ENV": "production"
-  },
-  "functions": {
-    "server/index.ts": {
-      "maxDuration": 30
-    }
   }
 }
