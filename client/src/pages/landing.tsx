@@ -171,15 +171,15 @@ export default function Landing() {
   const faqData = [
     {
       question: "How does the AI medical simulation work?",
-      answer: "Our AI generates realistic pediatric emergency scenarios using advanced machine learning models trained on over 250,000 clinical cases. The system creates dynamic patient responses with 97.3% clinical accuracy, incorporating real-time vital signs, laboratory values, and medication effects. Each simulation includes over 50 decision points that affect case progression, with immediate feedback powered by GPT-4 and validated by board-certified pediatric emergency physicians. Studies show 89% improvement in diagnostic accuracy after using our simulation training for just 20 hours."
+      answer: "Our AI simulation tool uses OpenAI's GPT-4o model to generate realistic pediatric emergency scenarios for educational and training purposes. The system creates dynamic patient responses incorporating vital signs, symptoms, and treatment effects based on established medical protocols. Each simulation includes multiple decision points that affect case progression, with immediate educational feedback powered by GPT-4o's medical knowledge base. The tool is designed to assist healthcare professionals with case-based learning and should always be used alongside clinical training programs and established medical education protocols."
     },
     {
       question: "What makes the X-ray abuse detection unique?",
-      answer: "Our proprietary deep learning architecture combines convolutional neural networks with transformer models, trained on a dataset of 180,000 pediatric X-rays from 15 major children's hospitals. The system achieves 94.7% sensitivity and 91.2% specificity in detecting suspicious fracture patterns, outperforming traditional radiologist screening by 23%. Our models can identify 47 different abuse-related injury patterns, including metaphyseal corner fractures, spiral fractures in non-ambulatory children, and rib fractures in infants. The system provides detailed forensic documentation meeting legal standards in 12 states."
+      answer: "Our AI-powered tool uses OpenAI's GPT-4o vision model to assist healthcare professionals in identifying patterns in pediatric X-ray images that may be associated with non-accidental trauma. The system is designed as an educational and training tool to help medical professionals recognize suspicious fracture patterns including metaphyseal corner fractures, spiral fractures in non-ambulatory children, and rib fractures in infants. This tool provides educational support and pattern recognition training but should always be used in conjunction with clinical judgment and established medical protocols."
     },
     {
       question: "Is the misinformation monitor always active?",
-      answer: "Our Chrome extension operates on a selective activation model, only engaging when detecting pediatric health keywords across 127 medical terms. It analyzes content using natural language processing trained on 2.3 million medical articles and social media posts. The system identifies 15 categories of dangerous misinformation with 92.1% accuracy, including vaccine hesitancy, home remedies for serious conditions, and medication dosing errors. When activated, it processes content locally for privacy, with risk assessments completed in under 200 milliseconds."
+      answer: "Our Chrome extension operates on a selective activation model, only engaging when detecting pediatric health keywords. It uses OpenAI's GPT-4o to analyze content and identify potentially inaccurate information related to pediatric health. The system provides educational alerts about content that may contain misinformation, including vaccine hesitancy claims, dangerous home remedies for serious conditions, and medication dosing errors. When activated, it analyzes content through our API and provides risk assessments and educational resources to help users make informed decisions."
     },
     {
       question: "How secure is our platform?",
@@ -187,11 +187,11 @@ export default function Landing() {
     },
     {
       question: "What clinical outcomes have been achieved?",
-      answer: "In pilot studies with 1,247 medical professionals across 23 institutions, our platform demonstrated significant improvements: 34% reduction in diagnostic errors, 28% faster emergency response times, and 67% increase in child abuse detection rates. Medical students using our simulation training scored 19% higher on pediatric emergency medicine board exams. Emergency departments implementing our triage chatbot reported 41% reduction in unnecessary visits and 52% improvement in parent satisfaction scores. These results are based on 18-month longitudinal studies published in peer-reviewed medical journals."
+      answer: "PediaSignal is currently in development and beta testing phase. The platform provides educational and training tools powered by OpenAI's GPT-4o model to assist healthcare professionals with pediatric medical scenarios. While the tools are designed to support clinical training and decision-making, we are still conducting studies to validate their effectiveness in real-world healthcare settings. The platform serves as an educational resource and should always be used in conjunction with established medical protocols and professional clinical judgment."
     },
     {
       question: "When will the platform be available?",
-      answer: "We're conducting controlled rollout with select healthcare institutions. Phase 1 (current): 50 beta sites across academic medical centers. Phase 2 (Q2 2025): Expansion to 200 community hospitals and pediatric practices. Phase 3 (Q4 2025): General availability to all qualified healthcare providers. Priority access is given to institutions serving high-risk pediatric populations and those with existing abuse detection protocols. Current waitlist includes over 3,400 healthcare professionals from 47 states and 12 countries."
+      answer: "PediaSignal is currently in development and testing phase. We are building and refining our AI-powered educational tools before making them available to healthcare professionals. The platform will initially be available through a waitlist system to ensure quality and gather feedback from early users. Priority access will be given to healthcare professionals and institutions working with pediatric populations. Interested users can join our waitlist to be notified when the platform becomes available for testing and eventual launch."
     }
   ];
 
@@ -268,16 +268,16 @@ export default function Landing() {
             {/* Platform Statistics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">4</div>
-                <div className="professional-text text-slate-400 font-light text-sm">AI Models Trained</div>
+                <div className="professional-heading text-2xl font-light text-white">AI-Powered</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Medical Tools</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">89.2%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Diagnostic Accuracy</div>
+                <div className="professional-heading text-2xl font-light text-white">OpenAI</div>
+                <div className="professional-text text-slate-400 font-light text-sm">GPT-4o Integration</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">12,847</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Cases Analyzed</div>
+                <div className="professional-heading text-2xl font-light text-white">Beta</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Testing Phase</div>
               </div>
               <div className="stat-item text-center">
                 <div className="professional-heading text-2xl font-light text-white">Waitlist</div>
@@ -370,24 +370,23 @@ export default function Landing() {
               How It Works
             </h2>
             <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto mb-8">
-              Enterprise-grade AI infrastructure processing over 2.5 million data points daily across 
-              three geographic regions. Our distributed architecture maintains 99.99% uptime with 
-              sub-200ms response times for critical clinical decisions.
+              Modern AI infrastructure powered by OpenAI's GPT-4o model, designed for pediatric medical applications. 
+              Our platform integrates advanced natural language processing with clinical decision support tools.
             </p>
 
             {/* Process Statistics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">99.99%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">System Uptime</div>
+                <div className="professional-heading text-2xl font-light text-white">OpenAI</div>
+                <div className="professional-text text-slate-400 font-light text-sm">GPT-4o Engine</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">{"< 200ms"}</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Response Time</div>
+                <div className="professional-heading text-2xl font-light text-white">Real-time</div>
+                <div className="professional-text text-slate-400 font-light text-sm">AI Processing</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">2.5M+</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Daily Data Points</div>
+                <div className="professional-heading text-2xl font-light text-white">Cloud</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Infrastructure</div>
               </div>
               <div className="stat-item text-center">
                 <div className="professional-heading text-2xl font-light text-white">AES-256</div>
@@ -425,15 +424,15 @@ export default function Landing() {
                 <span className="text-gradient-blue">AI Model</span> Integration
               </h3>
               <p className="professional-text text-slate-300 font-light mb-4">
-                Our proprietary neural networks combine transformer architectures with 
-                convolutional layers, trained on 18 months of data from 15 leading pediatric 
-                institutions representing 2.8 million patient encounters.
+                Our platform leverages OpenAI's GPT-4o model through specialized prompts designed 
+                for pediatric medical applications, providing intelligent analysis and clinical 
+                decision support without requiring custom training data.
               </p>
               <div className="text-sm text-slate-400 font-light space-y-1">
-                <div>• GPT-4 clinical reasoning engine</div>
-                <div>• Custom CNN for image analysis</div>
-                <div>• Real-time model updates</div>
-                <div>• Continuous learning pipeline</div>
+                <div>• OpenAI GPT-4o integration</div>
+                <div>• Vision model for image analysis</div>
+                <div>• Specialized medical prompts</div>
+                <div>• Real-time API processing</div>
               </div>
             </div>
 
@@ -445,9 +444,9 @@ export default function Landing() {
                 <span className="text-gradient-blue">Real-time</span> Clinical Support
               </h3>
               <p className="professional-text text-slate-300 font-light mb-4">
-                Instant processing capabilities deliver clinical decision support within 
-                150 milliseconds, integrating with existing EMR systems and providing 
-                seamless workflow integration for busy healthcare teams.
+                API-based processing delivers clinical decision support through OpenAI's 
+                infrastructure, designed to provide educational and training support for 
+                healthcare professionals in pediatric medicine.
               </p>
               <div className="text-sm text-slate-400 font-light space-y-1">
                 <div>• EMR system integration</div>
@@ -468,32 +467,32 @@ export default function Landing() {
               AI Tools
             </h2>
             <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto mb-8">
-              Specialized artificial intelligence powered by the most comprehensive pediatric 
-              healthcare dataset ever assembled. Our models process over 15 million medical 
-              data points monthly, supporting clinical decisions across 47 states and 12 countries.
+              AI-powered tools utilizing OpenAI's GPT-4o model for pediatric medical applications. 
+              Our platform provides educational and training support through specialized prompts 
+              designed for healthcare professionals working with pediatric patients.
             </p>
 
-            {/* Individual AI Model Accuracy Rates */}
+            {/* Individual AI Model Features */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               <div className="stat-item text-center">
-                <div className="professional-heading text-3xl font-light text-gradient-blue">94.3%</div>
-                <div className="professional-text text-slate-300 font-light text-sm">Emergency Simulation</div>
-                <div className="professional-text text-slate-500 font-light text-xs mt-1">Training Module Accuracy</div>
+                <div className="professional-heading text-2xl font-light text-gradient-blue">Emergency</div>
+                <div className="professional-text text-slate-300 font-light text-sm">Simulation</div>
+                <div className="professional-text text-slate-500 font-light text-xs mt-1">Training Module</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-3xl font-light text-gradient-purple">91.7%</div>
-                <div className="professional-text text-slate-300 font-light text-sm">X-ray Analysis</div>
-                <div className="professional-text text-slate-500 font-light text-xs mt-1">Abuse Pattern Detection</div>
+                <div className="professional-heading text-2xl font-light text-gradient-purple">X-ray</div>
+                <div className="professional-text text-slate-300 font-light text-sm">Analysis</div>
+                <div className="professional-text text-slate-500 font-light text-xs mt-1">Pattern Recognition</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-3xl font-light text-gradient-emerald">87.9%</div>
-                <div className="professional-text text-slate-300 font-light text-sm">Content Analysis</div>
-                <div className="professional-text text-slate-500 font-light text-xs mt-1">Misinformation Detection</div>
+                <div className="professional-heading text-2xl font-light text-gradient-emerald">Content</div>
+                <div className="professional-text text-slate-300 font-light text-sm">Analysis</div>
+                <div className="professional-text text-slate-500 font-light text-xs mt-1">Information Assessment</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-3xl font-light text-gradient-cyan">92.4%</div>
-                <div className="professional-text text-slate-300 font-light text-sm">Triage Chatbot</div>
-                <div className="professional-text text-slate-500 font-light text-xs mt-1">Symptom Assessment</div>
+                <div className="professional-heading text-2xl font-light text-gradient-cyan">Triage</div>
+                <div className="professional-text text-slate-300 font-light text-sm">Chatbot</div>
+                <div className="professional-text text-slate-500 font-light text-xs mt-1">Symptom Guidance</div>
               </div>
             </div>
           </div>
@@ -507,15 +506,15 @@ export default function Landing() {
                     Predictive Clinical Outcomes
                   </h3>
                   <p className="professional-text text-slate-300 font-light mb-3">
-                    Our neural networks analyze 347 clinical variables simultaneously, 
-                    predicting patient outcomes with 97.8% accuracy across 89 pediatric 
-                    emergency conditions. Models trained on 1.2 million case histories 
-                    from top-tier children's hospitals enable precision medicine at scale.
+                    Our platform uses OpenAI's GPT-4o to analyze clinical scenarios and provide 
+                    educational support for emergency medicine training. The system assists 
+                    healthcare professionals with case-based learning and clinical decision 
+                    support for pediatric emergency conditions.
                   </p>
                   <div className="text-sm text-slate-400 font-light">
-                    • 89 pediatric conditions supported<br />
-                    • 347 clinical variables analyzed<br />
-                    • 28% faster diagnosis time
+                    • Pediatric emergency scenarios<br />
+                    • Educational case studies<br />
+                    • Clinical training support
                   </div>
                 </div>
               </div>
@@ -527,15 +526,15 @@ export default function Landing() {
                     Abuse Pattern Recognition
                   </h3>
                   <p className="professional-text text-slate-300 font-light mb-3">
-                    Multi-modal deep learning combining radiological imaging, clinical 
-                    presentation, and historical patterns identifies non-accidental trauma 
-                    with 94.7% sensitivity. Trained on anonymized data from 180,000 cases 
-                    across 15 major pediatric trauma centers.
+                    AI-powered image analysis using OpenAI's vision model to assist healthcare 
+                    professionals in identifying patterns in pediatric X-ray images. This 
+                    educational tool is designed to support clinical training and pattern 
+                    recognition skills for suspicious injury patterns.
                   </p>
                   <div className="text-sm text-slate-400 font-light">
-                    • 67% increase in detection rates<br />
-                    • Legal-grade documentation<br />
-                    • 12-state court approval
+                    • Educational pattern recognition<br />
+                    • Clinical training support<br />
+                    • Professional development tool
                   </div>
                 </div>
               </div>
@@ -547,15 +546,15 @@ export default function Landing() {
                     Advanced Risk Stratification
                   </h3>
                   <p className="professional-text text-slate-300 font-light mb-3">
-                    Real-time risk scoring integrates presenting symptoms, vital signs, 
-                    laboratory values, and social determinants of health. Provides 
-                    evidence-based triage recommendations validated across 2.3 million 
-                    pediatric emergency encounters.
+                    AI-powered symptom assessment tool designed to provide educational guidance 
+                    to parents about pediatric health concerns. The system uses OpenAI's 
+                    technology to analyze symptoms and provide general guidance based on 
+                    established medical protocols.
                   </p>
                   <div className="text-sm text-slate-400 font-light">
-                    • 41% reduction in unnecessary visits<br />
-                    • 52% improved parent satisfaction<br />
-                    • ESI-compliant triage protocols
+                    • Symptom guidance tool<br />
+                    • Educational support<br />
+                    • Emergency escalation protocols
                   </div>
                 </div>
               </div>
@@ -577,19 +576,19 @@ export default function Landing() {
                       <div className="flex items-center justify-between">
                         <span className="professional-text text-slate-300 font-light">Primary Engine</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          GPT-4 Turbo + Custom Transformers
+                          OpenAI GPT-4o
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="professional-text text-slate-300 font-light">Computer Vision</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          ResNet-152 + Vision Transformer
+                          GPT-4o Vision Model
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="professional-text text-slate-300 font-light">Training Dataset</span>
+                        <span className="professional-text text-slate-300 font-light">Implementation</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          12,847 Cases Analyzed
+                          API-Based Integration
                         </Badge>
                       </div>
                     </div>
@@ -599,21 +598,21 @@ export default function Landing() {
                     <h4 className="professional-text text-lg font-light text-white mb-3">Performance Metrics</h4>
                     <div className="space-y-3">
                       <div className="flex items-center justify-between">
-                        <span className="professional-text text-slate-300 font-light">Response Time</span>
+                        <span className="professional-text text-slate-300 font-light">Processing</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          {"< 150ms"}
+                          Real-time API
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="professional-text text-slate-300 font-light">Clinical Accuracy</span>
+                        <span className="professional-text text-slate-300 font-light">Purpose</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          91.6% Average
+                          Educational Support
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="professional-text text-slate-300 font-light">System Uptime</span>
+                        <span className="professional-text text-slate-300 font-light">Infrastructure</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          99.99% Operational
+                          Cloud-based
                         </Badge>
                       </div>
                     </div>
@@ -629,13 +628,13 @@ export default function Landing() {
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="professional-text text-slate-300 font-light">Compliance Status</span>
+                        <span className="professional-text text-slate-300 font-light">Compliance</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          HIPAA/SOC2/ISO In Progress
+                          HIPAA Planning Phase
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
-                        <span className="professional-text text-slate-300 font-light">Data Centers</span>
+                        <span className="professional-text text-slate-300 font-light">Hosting</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
                           Cloud Infrastructure
                         </Badge>
@@ -657,9 +656,9 @@ export default function Landing() {
               Why PediaSignal
             </h2>
             <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto mb-12">
-              Pediatric healthcare faces significant challenges. Our validated AI models assist 
-              healthcare professionals in emergency training, pattern recognition, and clinical decision support 
-              for pediatric cases. Proven performance metrics demonstrate improved diagnostic accuracy and training outcomes.
+              Pediatric healthcare faces significant challenges. Our AI-powered platform provides 
+              educational tools and training support for healthcare professionals working with pediatric cases. 
+              These tools are designed to assist with learning and clinical decision support.
             </p>
           </div>
 
