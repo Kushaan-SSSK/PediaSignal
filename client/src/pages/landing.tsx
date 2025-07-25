@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
-import logoPath from "@assets/Untitled design_1753293788779.jpg";
+import logoPath from "@assets/image_1753464426780.png";
 import { 
   Heart, 
   FileImage, 
@@ -207,7 +207,7 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-2">
-              <img src={logoPath} alt="PediaSignal Logo" className="h-10 w-10 rounded-full object-cover border-2 border-slate-700" />
+              <img src={logoPath} alt="PediaSignal Logo" className="h-10 w-auto object-contain bg-white rounded px-2 py-1" />
               <h1 className="professional-heading text-xl font-light text-white">PediaSignal</h1>
             </div>
             
@@ -234,7 +234,7 @@ export default function Landing() {
       <section className="min-h-screen flex items-center justify-center hero-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="flex items-center justify-center space-x-4 mb-10">
-            <img src={logoPath} alt="PediaSignal Logo" className="h-20 w-20 rounded-full object-cover border-4 border-slate-700" />
+            <img src={logoPath} alt="PediaSignal Logo" className="h-20 w-auto object-contain bg-white rounded-lg px-4 py-2" />
             <h1 className="professional-heading text-6xl md:text-8xl font-light">
               <span className="text-gradient-blue">Pedia</span><span className="text-gradient-purple">Signal</span>
             </h1>
@@ -890,7 +890,7 @@ export default function Landing() {
               <img 
                 src={logoPath} 
                 alt="PediaSignal Logo" 
-                className="h-6 w-6 rounded border border-slate-700"
+                className="h-6 w-auto object-contain bg-white rounded px-1 py-0.5"
               />
               <span className="professional-heading text-lg font-light text-slate-400">
                 PediaSignal
