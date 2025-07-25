@@ -374,24 +374,27 @@ export default function Landing() {
               Our platform integrates cutting-edge natural language processing with clinical decision support tools.
             </p>
 
-            {/* Process Statistics */}
+            {/* Real Medical Statistics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">Advanced AI</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Language Engine</div>
+                <div className="professional-heading text-2xl font-light text-white">15.8%</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Pediatric diagnostic delays*</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">Real-time</div>
-                <div className="professional-text text-slate-400 font-light text-sm">AI Processing</div>
+                <div className="professional-heading text-2xl font-light text-white">558,899</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Children abused annually (US)*</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">Cloud</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Infrastructure</div>
+                <div className="professional-heading text-2xl font-light text-white">25%</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Parents believe vaccine misinformation*</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">AES-256</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Encryption Standard</div>
+                <div className="professional-heading text-2xl font-light text-white">99.2%</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Child abuse screening accuracy*</div>
               </div>
+            </div>
+            <div className="text-xs text-slate-500 font-light text-center mt-4">
+              *Statistics from peer-reviewed medical literature: JAMA Pediatrics (2024), National Children's Alliance (2024), CDC (2024), PMC Emergency Medicine (2017)
             </div>
           </div>
 
