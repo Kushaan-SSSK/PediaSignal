@@ -381,8 +381,8 @@ export default function Landing() {
                 <div className="professional-text text-slate-400 font-light text-sm">Pediatric diagnostic delays</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-3xl font-light text-white">36%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Pediatric EHR errors cause harm</div>
+                <div className="professional-heading text-3xl font-light text-white">50%</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Parents encounter vaccine misinformation</div>
               </div>
             </div>
           </div>
@@ -890,7 +890,7 @@ export default function Landing() {
               Advanced AI for pediatric healthcare professionals
             </p>
             <div className="text-xs text-slate-500 font-light mb-6">
-              Medical statistics from peer-reviewed literature: JAMA Pediatrics (2024), Health Affairs Journal (2018)
+              Medical statistics from peer-reviewed literature: JAMA Pediatrics (2024), KFF Health Monitor (2024)
             </div>
             <div className="flex items-center justify-center space-x-8">
               <div className="flex items-center space-x-2">
