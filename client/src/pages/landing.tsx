@@ -196,7 +196,7 @@ export default function Landing() {
   ];
 
   return (
-    <div className="min-h-screen medical-gradient">
+    <div className="min-h-screen">
       {/* Progress Bar */}
       <div 
         className="progress-bar" 
