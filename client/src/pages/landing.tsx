@@ -34,7 +34,7 @@ import {
   Minus,
   Lock,
   ShieldCheck,
-  Certificate,
+  Award,
   FileCheck
 } from "lucide-react";
 
@@ -947,30 +947,34 @@ export default function Landing() {
             <p className="professional-text text-slate-400 font-light mb-6">
               Advanced AI for pediatric healthcare professionals
             </p>
-            <div className="flex items-center justify-center space-x-8">
-              <div className="flex items-center space-x-2">
-                <ShieldCheck className="h-4 w-4 text-emerald-400" />
-                <span className="professional-text text-xs text-slate-500 font-light">
-                  HIPAA Compliance In Progress
-                </span>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
+              <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50 text-center">
+                <div className="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <ShieldCheck className="h-4 w-4 text-emerald-400" />
+                </div>
+                <div className="professional-text text-xs text-slate-300 font-light">HIPAA</div>
+                <div className="professional-text text-xs text-slate-500 font-light">Compliance</div>
               </div>
-              <div className="flex items-center space-x-2">
-                <Lock className="h-4 w-4 text-blue-400" />
-                <span className="professional-text text-xs text-slate-500 font-light">
-                  SOC 2 Type II In Progress
-                </span>
+              <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50 text-center">
+                <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <Lock className="h-4 w-4 text-blue-400" />
+                </div>
+                <div className="professional-text text-xs text-slate-300 font-light">SOC 2</div>
+                <div className="professional-text text-xs text-slate-500 font-light">Type II</div>
               </div>
-              <div className="flex items-center space-x-2">
-                <Certificate className="h-4 w-4 text-purple-400" />
-                <span className="professional-text text-xs text-slate-500 font-light">
-                  ISO 27001 In Progress
-                </span>
+              <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50 text-center">
+                <div className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <Award className="h-4 w-4 text-purple-400" />
+                </div>
+                <div className="professional-text text-xs text-slate-300 font-light">ISO</div>
+                <div className="professional-text text-xs text-slate-500 font-light">27001</div>
               </div>
-              <div className="flex items-center space-x-2">
-                <FileCheck className="h-4 w-4 text-cyan-400" />
-                <span className="professional-text text-xs text-slate-500 font-light">
-                  End-to-End Encryption
-                </span>
+              <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50 text-center">
+                <div className="w-8 h-8 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
+                  <FileCheck className="h-4 w-4 text-cyan-400" />
+                </div>
+                <div className="professional-text text-xs text-slate-300 font-light">End-to-End</div>
+                <div className="professional-text text-xs text-slate-500 font-light">Encryption</div>
               </div>
             </div>
           </div>
