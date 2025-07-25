@@ -1,6 +1,8 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import path from "path";
+import fs from "fs";
 import { setupSecurityMiddleware, auditLog } from "./security";
 import { z } from "zod";
 import { 
@@ -37,6 +39,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Setup security middleware for HIPAA/SOC 2 compliance
   setupSecurityMiddleware(app);
+  
+  // Favicon route
+  app.get('/favicon.jpg', (req, res) => {
+    const faviconPath = path.join(process.cwd(), 'client', 'public', 'favicon.jpg');
+    if (fs.existsSync(faviconPath)) {
+      res.sendFile(faviconPath);
+    } else {
+      res.status(404).send('Favicon not found');
+    }
+  });
   
   // Simulation endpoints
   app.post('/api/simulate-case', async (req, res) => {
