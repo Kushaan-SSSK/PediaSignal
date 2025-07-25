@@ -370,15 +370,15 @@ export default function Landing() {
               How It Works
             </h2>
             <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto mb-8">
-              Modern AI infrastructure powered by OpenAI's GPT-4o model, designed for pediatric medical applications. 
-              Our platform integrates advanced natural language processing with clinical decision support tools.
+              Modern AI infrastructure powered by advanced language models, designed for pediatric medical applications. 
+              Our platform integrates cutting-edge natural language processing with clinical decision support tools.
             </p>
 
             {/* Process Statistics */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">OpenAI</div>
-                <div className="professional-text text-slate-400 font-light text-sm">GPT-4o Engine</div>
+                <div className="professional-heading text-2xl font-light text-white">Advanced AI</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Language Engine</div>
               </div>
               <div className="stat-item text-center">
                 <div className="professional-heading text-2xl font-light text-white">Real-time</div>
@@ -424,14 +424,14 @@ export default function Landing() {
                 <span className="text-gradient-blue">AI Model</span> Integration
               </h3>
               <p className="professional-text text-slate-300 font-light mb-4">
-                Our platform leverages OpenAI's GPT-4o model through specialized prompts designed 
+                Our platform leverages advanced AI models through specialized algorithms designed 
                 for pediatric medical applications, providing intelligent analysis and clinical 
-                decision support without requiring custom training data.
+                decision support with state-of-the-art natural language processing capabilities.
               </p>
               <div className="text-sm text-slate-400 font-light space-y-1">
-                <div>• OpenAI GPT-4o integration</div>
-                <div>• Vision model for image analysis</div>
-                <div>• Specialized medical prompts</div>
+                <div>• Advanced language model integration</div>
+                <div>• Multimodal AI for image analysis</div>
+                <div>• Specialized medical algorithms</div>
                 <div>• Real-time API processing</div>
               </div>
             </div>
@@ -444,7 +444,7 @@ export default function Landing() {
                 <span className="text-gradient-blue">Real-time</span> Clinical Support
               </h3>
               <p className="professional-text text-slate-300 font-light mb-4">
-                API-based processing delivers clinical decision support through OpenAI's 
+                API-based processing delivers clinical decision support through advanced AI 
                 infrastructure, designed to provide educational and training support for 
                 healthcare professionals in pediatric medicine.
               </p>
