@@ -710,10 +710,10 @@ export default function Landing() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <p className="professional-text text-slate-400 font-light text-sm tracking-widest mb-4">
-              ENTERPRISE SECURITY STANDARDS
+              SECURITY BUILT FOR ENTERPRISES
             </p>
             <h2 className="professional-heading text-3xl md:text-4xl font-light text-white mb-6">
-              Enterprise-Grade <span className="text-gradient-blue">Protection</span>
+              Advanced Safeguards <span className="text-gradient-blue">Ensuring Complete Protection</span>
             </h2>
             <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto leading-relaxed">
               Your data is safeguarded by leading international security standards and compliance frameworks, 
