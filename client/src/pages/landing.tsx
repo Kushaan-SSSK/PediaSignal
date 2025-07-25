@@ -35,7 +35,11 @@ import {
   Lock,
   ShieldCheck,
   Award,
-  FileCheck
+  FileCheck,
+  Zap,
+  Key,
+  Fingerprint,
+  Verified
 } from "lucide-react";
 
 interface FAQItemProps {
@@ -725,50 +729,70 @@ export default function Landing() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
-              <CardContent className="p-8 text-center">
-                <Shield className="h-12 w-12 icon-blue mx-auto mb-6" />
-                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">PLANNED</div>
-                <h3 className="professional-text text-lg font-light text-white mb-4">HIPAA Guidelines</h3>
-                <p className="professional-text text-slate-400 font-light text-sm">
-                  Built following HIPAA guidelines; third-party audit planned
-                </p>
-              </CardContent>
-            </Card>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl blur-xl group-hover:blur-lg transition-all"></div>
+              <Card className="relative bg-slate-900/80 border-slate-700/30 backdrop-blur-sm">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <Fingerprint className="h-8 w-8 text-white" />
+                  </div>
+                  <div className="text-xs text-blue-400 font-light tracking-wide mb-2 uppercase">Planned</div>
+                  <h3 className="professional-text text-lg font-light text-white mb-4">HIPAA Guidelines</h3>
+                  <p className="professional-text text-slate-400 font-light text-sm">
+                    Built following HIPAA guidelines; third-party audit planned
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
 
-            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
-              <CardContent className="p-8 text-center">
-                <ShieldX className="h-12 w-12 icon-blue mx-auto mb-6" />
-                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">AES-256</div>
-                <h3 className="professional-text text-lg font-light text-white mb-4">End-to-End Encryption</h3>
-                <p className="professional-text text-slate-400 font-light text-sm">
-                  AES-256 encryption for all data transmission and storage
-                </p>
-              </CardContent>
-            </Card>
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-xl blur-xl group-hover:blur-lg transition-all"></div>
+              <Card className="relative bg-slate-900/80 border-slate-700/30 backdrop-blur-sm">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <Key className="h-8 w-8 text-white" />
+                  </div>
+                  <div className="text-xs text-emerald-400 font-light tracking-wide mb-2 uppercase">AES-256</div>
+                  <h3 className="professional-text text-lg font-light text-white mb-4">End-to-End Encryption</h3>
+                  <p className="professional-text text-slate-400 font-light text-sm">
+                    AES-256 encryption for all data transmission and storage
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
 
-            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
-              <CardContent className="p-8 text-center">
-                <Target className="h-12 w-12 icon-blue mx-auto mb-6" />
-                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">PLANNED</div>
-                <h3 className="professional-text text-lg font-light text-white mb-4">ISO 27001</h3>
-                <p className="professional-text text-slate-400 font-light text-sm">
-                  Working toward ISO 27001 certification
-                </p>
-              </CardContent>
-            </Card>
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl blur-xl group-hover:blur-lg transition-all"></div>
+              <Card className="relative bg-slate-900/80 border-slate-700/30 backdrop-blur-sm">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <Verified className="h-8 w-8 text-white" />
+                  </div>
+                  <div className="text-xs text-purple-400 font-light tracking-wide mb-2 uppercase">Planned</div>
+                  <h3 className="professional-text text-lg font-light text-white mb-4">ISO 27001</h3>
+                  <p className="professional-text text-slate-400 font-light text-sm">
+                    Working toward ISO 27001 certification
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
 
-            <Card className="bg-slate-800/50 border-slate-700/50 feature-card">
-              <CardContent className="p-8 text-center">
-                <CheckCircle className="h-12 w-12 icon-blue mx-auto mb-6" />
-                <div className="text-xs text-slate-400 font-light tracking-wide mb-2">PLANNED</div>
-                <h3 className="professional-text text-lg font-light text-white mb-4">SOC 2 Type II</h3>
-                <p className="professional-text text-slate-400 font-light text-sm">
-                  SOC 2 audit planned. Annual security audits planned starting 2026
-                </p>
-              </CardContent>
-            </Card>
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-xl blur-xl group-hover:blur-lg transition-all"></div>
+              <Card className="relative bg-slate-900/80 border-slate-700/30 backdrop-blur-sm">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
+                    <Zap className="h-8 w-8 text-white" />
+                  </div>
+                  <div className="text-xs text-orange-400 font-light tracking-wide mb-2 uppercase">Planned</div>
+                  <h3 className="professional-text text-lg font-light text-white mb-4">SOC 2 Type II</h3>
+                  <p className="professional-text text-slate-400 font-light text-sm">
+                    SOC 2 audit planned. Annual security audits planned starting 2026
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </div>
       </section>
@@ -947,35 +971,16 @@ export default function Landing() {
             <p className="professional-text text-slate-400 font-light mb-6">
               Advanced AI for pediatric healthcare professionals
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-              <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50 text-center">
-                <div className="w-8 h-8 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <ShieldCheck className="h-4 w-4 text-emerald-400" />
-                </div>
-                <div className="professional-text text-xs text-slate-300 font-light">HIPAA</div>
-                <div className="professional-text text-xs text-slate-500 font-light">Compliance</div>
-              </div>
-              <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50 text-center">
-                <div className="w-8 h-8 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <Lock className="h-4 w-4 text-blue-400" />
-                </div>
-                <div className="professional-text text-xs text-slate-300 font-light">SOC 2</div>
-                <div className="professional-text text-xs text-slate-500 font-light">Type II</div>
-              </div>
-              <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50 text-center">
-                <div className="w-8 h-8 bg-purple-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <Award className="h-4 w-4 text-purple-400" />
-                </div>
-                <div className="professional-text text-xs text-slate-300 font-light">ISO</div>
-                <div className="professional-text text-xs text-slate-500 font-light">27001</div>
-              </div>
-              <div className="bg-slate-800/30 rounded-lg p-4 border border-slate-700/50 text-center">
-                <div className="w-8 h-8 bg-cyan-500/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                  <FileCheck className="h-4 w-4 text-cyan-400" />
-                </div>
-                <div className="professional-text text-xs text-slate-300 font-light">End-to-End</div>
-                <div className="professional-text text-xs text-slate-500 font-light">Encryption</div>
-              </div>
+            <div className="flex items-center justify-center space-x-6">
+              <span className="professional-text text-xs text-slate-500 font-light">
+                HIPAA Compliance In Progress
+              </span>
+              <span className="professional-text text-xs text-slate-500 font-light">
+                SOC 2 Type II In Progress
+              </span>
+              <span className="professional-text text-xs text-slate-500 font-light">
+                ISO 27001 In Progress
+              </span>
             </div>
           </div>
         </div>
