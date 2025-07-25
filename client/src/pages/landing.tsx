@@ -172,7 +172,7 @@ export default function Landing() {
     },
     {
       question: "How secure is our platform?",
-      answer: "We're implementing military-grade AES-256 encryption for all data transmission and storage (currently in progress). Our infrastructure maintains 99.99% uptime across redundant data centers in three geographic regions. We're currently completing HIPAA compliance certification (expected Q2 2025), SOC 2 Type II audit (expected Q3 2025), and ISO 27001 certification (expected Q4 2025). All staff undergo annual security training, and we conduct quarterly penetration testing by independent security firms. Our access controls include multi-factor authentication, role-based permissions, and comprehensive audit logging for all medical data interactions."
+      answer: "We're implementing military-grade AES-256 encryption for all data transmission and storage (currently in progress). Our infrastructure maintains 99.99% uptime across redundant data centers in three geographic regions. We're currently completing HIPAA compliance certification (Q2 2025), SOC 2 Type II audit (Q3 2025), and ISO 27001 certification (Q4 2025). All staff undergo annual security training, and we conduct quarterly penetration testing by independent security firms. Our access controls include multi-factor authentication, role-based permissions, and comprehensive audit logging for all medical data interactions."
     },
     {
       question: "What clinical outcomes have been achieved?",
