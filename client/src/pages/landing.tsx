@@ -377,11 +377,11 @@ export default function Landing() {
             {/* Real Medical Statistics */}
             <div className="flex justify-center gap-16 mb-12">
               <div className="stat-item text-center">
-                <div className="professional-heading text-3xl font-light text-blue-400">15.8%</div>
+                <div className="professional-heading text-3xl font-light text-gradient-blue">15.8%</div>
                 <div className="professional-text text-slate-400 font-light text-sm">Pediatric diagnostic delays</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-3xl font-light text-blue-400">50%</div>
+                <div className="professional-heading text-3xl font-light text-gradient-blue">50%</div>
                 <div className="professional-text text-slate-400 font-light text-sm">Parents encounter vaccine misinformation</div>
               </div>
             </div>
