@@ -375,26 +375,15 @@ export default function Landing() {
             </p>
 
             {/* Real Medical Statistics */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+            <div className="flex justify-center gap-16 mb-12">
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">15.8%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Pediatric diagnostic delays*</div>
+                <div className="professional-heading text-3xl font-light text-white">15.8%</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Pediatric diagnostic delays</div>
               </div>
               <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">558,899</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Children abused annually (US)*</div>
+                <div className="professional-heading text-3xl font-light text-white">558,899</div>
+                <div className="professional-text text-slate-400 font-light text-sm">Children abused annually (US)</div>
               </div>
-              <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">25%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Parents believe vaccine misinformation*</div>
-              </div>
-              <div className="stat-item text-center">
-                <div className="professional-heading text-2xl font-light text-white">99.2%</div>
-                <div className="professional-text text-slate-400 font-light text-sm">Child abuse screening accuracy*</div>
-              </div>
-            </div>
-            <div className="text-xs text-slate-500 font-light text-center mt-4">
-              *Statistics from peer-reviewed medical literature: JAMA Pediatrics (2024), National Children's Alliance (2024), CDC (2024), PMC Emergency Medicine (2017)
             </div>
           </div>
 
@@ -897,9 +886,12 @@ export default function Landing() {
                 PediaSignal
               </span>
             </div>
-            <p className="professional-text text-slate-400 font-light mb-6">
+            <p className="professional-text text-slate-400 font-light mb-4">
               Advanced AI for pediatric healthcare professionals
             </p>
+            <div className="text-xs text-slate-500 font-light mb-6">
+              Medical statistics from peer-reviewed literature: JAMA Pediatrics (2024), National Children's Alliance (2024)
+            </div>
             <div className="flex items-center justify-center space-x-8">
               <div className="flex items-center space-x-2">
                 <Fingerprint className="h-4 w-4 text-slate-500" />
