@@ -31,7 +31,11 @@ import {
   MapIcon,
   ChevronDown,
   Plus,
-  Minus
+  Minus,
+  Lock,
+  ShieldCheck,
+  Certificate,
+  FileCheck
 } from "lucide-react";
 
 interface FAQItemProps {
@@ -943,16 +947,31 @@ export default function Landing() {
             <p className="professional-text text-slate-400 font-light mb-6">
               Advanced AI for pediatric healthcare professionals
             </p>
-            <div className="flex items-center justify-center space-x-6">
-              <span className="professional-text text-xs text-slate-500 font-light">
-                HIPAA Compliance In Progress
-              </span>
-              <span className="professional-text text-xs text-slate-500 font-light">
-                SOC 2 Type II In Progress
-              </span>
-              <span className="professional-text text-xs text-slate-500 font-light">
-                ISO 27001 In Progress
-              </span>
+            <div className="flex items-center justify-center space-x-8">
+              <div className="flex items-center space-x-2">
+                <ShieldCheck className="h-4 w-4 text-emerald-400" />
+                <span className="professional-text text-xs text-slate-500 font-light">
+                  HIPAA Compliance In Progress
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Lock className="h-4 w-4 text-blue-400" />
+                <span className="professional-text text-xs text-slate-500 font-light">
+                  SOC 2 Type II In Progress
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Certificate className="h-4 w-4 text-purple-400" />
+                <span className="professional-text text-xs text-slate-500 font-light">
+                  ISO 27001 In Progress
+                </span>
+              </div>
+              <div className="flex items-center space-x-2">
+                <FileCheck className="h-4 w-4 text-cyan-400" />
+                <span className="professional-text text-xs text-slate-500 font-light">
+                  End-to-End Encryption
+                </span>
+              </div>
             </div>
           </div>
         </div>
