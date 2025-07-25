@@ -117,9 +117,19 @@ export default function Landing() {
 
   const waitlistMutation = useMutation({
     mutationFn: async (data: { name: string; email: string; role: string }) => {
-      return apiRequest("/api/waitlist", "POST", data);
+      console.log("Submitting waitlist data:", data);
+      try {
+        const result = await apiRequest("/api/waitlist", "POST", data);
+        const jsonData = await result.json();
+        console.log("Waitlist submission result:", jsonData);
+        return jsonData;
+      } catch (error) {
+        console.error("Waitlist submission error:", error);
+        throw error;
+      }
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
+      console.log("Waitlist success:", data);
       toast({
         title: "Application submitted",
         description: "You've been added to our waitlist. We'll contact you when access is available."
@@ -129,6 +139,7 @@ export default function Landing() {
       setRole("");
     },
     onError: (error: any) => {
+      console.error("Waitlist mutation error:", error);
       toast({
         title: "Application failed",
         description: error.message || "Please try again later",
