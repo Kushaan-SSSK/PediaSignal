@@ -730,64 +730,64 @@ export default function Landing() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="relative group">
+            <div className="relative group h-80">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 rounded-xl blur-xl group-hover:blur-lg transition-all"></div>
-              <Card className="relative bg-slate-900/80 border-slate-700/30 backdrop-blur-sm">
-                <CardContent className="p-8 text-center">
+              <Card className="relative bg-slate-900/80 border-slate-700/30 backdrop-blur-sm h-full">
+                <CardContent className="p-8 text-center h-full flex flex-col">
                   <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-cyan-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                     <Fingerprint className="h-8 w-8 text-white" />
                   </div>
                   <div className="text-xs text-blue-400 font-light tracking-wide mb-2 uppercase">Planned</div>
                   <h3 className="professional-text text-lg font-light text-white mb-4">HIPAA Guidelines</h3>
-                  <p className="professional-text text-slate-400 font-light text-sm">
+                  <p className="professional-text text-slate-400 font-light text-sm flex-grow">
                     Built following HIPAA guidelines; third-party audit planned
                   </p>
                 </CardContent>
               </Card>
             </div>
 
-            <div className="relative group">
+            <div className="relative group h-80">
               <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 rounded-xl blur-xl group-hover:blur-lg transition-all"></div>
-              <Card className="relative bg-slate-900/80 border-slate-700/30 backdrop-blur-sm">
-                <CardContent className="p-8 text-center">
+              <Card className="relative bg-slate-900/80 border-slate-700/30 backdrop-blur-sm h-full">
+                <CardContent className="p-8 text-center h-full flex flex-col">
                   <div className="w-16 h-16 bg-gradient-to-br from-emerald-500 to-teal-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                     <Key className="h-8 w-8 text-white" />
                   </div>
                   <div className="text-xs text-emerald-400 font-light tracking-wide mb-2 uppercase">AES-256</div>
                   <h3 className="professional-text text-lg font-light text-white mb-4">End-to-End Encryption</h3>
-                  <p className="professional-text text-slate-400 font-light text-sm">
+                  <p className="professional-text text-slate-400 font-light text-sm flex-grow">
                     AES-256 encryption for all data transmission and storage
                   </p>
                 </CardContent>
               </Card>
             </div>
 
-            <div className="relative group">
+            <div className="relative group h-80">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-500/20 to-pink-500/20 rounded-xl blur-xl group-hover:blur-lg transition-all"></div>
-              <Card className="relative bg-slate-900/80 border-slate-700/30 backdrop-blur-sm">
-                <CardContent className="p-8 text-center">
+              <Card className="relative bg-slate-900/80 border-slate-700/30 backdrop-blur-sm h-full">
+                <CardContent className="p-8 text-center h-full flex flex-col">
                   <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                     <Verified className="h-8 w-8 text-white" />
                   </div>
                   <div className="text-xs text-purple-400 font-light tracking-wide mb-2 uppercase">Planned</div>
                   <h3 className="professional-text text-lg font-light text-white mb-4">ISO 27001</h3>
-                  <p className="professional-text text-slate-400 font-light text-sm">
+                  <p className="professional-text text-slate-400 font-light text-sm flex-grow">
                     Working toward ISO 27001 certification
                   </p>
                 </CardContent>
               </Card>
             </div>
 
-            <div className="relative group">
+            <div className="relative group h-80">
               <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-red-500/20 rounded-xl blur-xl group-hover:blur-lg transition-all"></div>
-              <Card className="relative bg-slate-900/80 border-slate-700/30 backdrop-blur-sm">
-                <CardContent className="p-8 text-center">
+              <Card className="relative bg-slate-900/80 border-slate-700/30 backdrop-blur-sm h-full">
+                <CardContent className="p-8 text-center h-full flex flex-col">
                   <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-red-500 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
                     <Zap className="h-8 w-8 text-white" />
                   </div>
                   <div className="text-xs text-orange-400 font-light tracking-wide mb-2 uppercase">Planned</div>
                   <h3 className="professional-text text-lg font-light text-white mb-4">SOC 2 Type II</h3>
-                  <p className="professional-text text-slate-400 font-light text-sm">
+                  <p className="professional-text text-slate-400 font-light text-sm flex-grow">
                     SOC 2 audit planned. Annual security audits planned starting 2026
                   </p>
                 </CardContent>
