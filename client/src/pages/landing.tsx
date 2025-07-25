@@ -467,9 +467,9 @@ export default function Landing() {
               AI Tools
             </h2>
             <p className="professional-text text-slate-300 font-light max-w-3xl mx-auto mb-8">
-              AI-powered tools utilizing OpenAI's GPT-4o model for pediatric medical applications. 
-              Our platform provides educational and training support through specialized prompts 
-              designed for healthcare professionals working with pediatric patients.
+              Advanced AI-powered tools for pediatric medical applications. Our platform provides 
+              educational and training support through specialized algorithms designed for healthcare 
+              professionals working with pediatric patients.
             </p>
 
             {/* Individual AI Model Features */}
@@ -506,10 +506,10 @@ export default function Landing() {
                     Predictive Clinical Outcomes
                   </h3>
                   <p className="professional-text text-slate-300 font-light mb-3">
-                    Our platform uses OpenAI's GPT-4o to analyze clinical scenarios and provide 
-                    educational support for emergency medicine training. The system assists 
-                    healthcare professionals with case-based learning and clinical decision 
-                    support for pediatric emergency conditions.
+                    Advanced AI algorithms analyze clinical scenarios and provide educational 
+                    support for emergency medicine training. The system assists healthcare 
+                    professionals with case-based learning and clinical decision support for 
+                    pediatric emergency conditions.
                   </p>
                   <div className="text-sm text-slate-400 font-light">
                     • Pediatric emergency scenarios<br />
@@ -526,10 +526,10 @@ export default function Landing() {
                     Abuse Pattern Recognition
                   </h3>
                   <p className="professional-text text-slate-300 font-light mb-3">
-                    AI-powered image analysis using OpenAI's vision model to assist healthcare 
-                    professionals in identifying patterns in pediatric X-ray images. This 
-                    educational tool is designed to support clinical training and pattern 
-                    recognition skills for suspicious injury patterns.
+                    AI-powered image analysis to assist healthcare professionals in identifying 
+                    patterns in pediatric X-ray images. This educational tool is designed to 
+                    support clinical training and pattern recognition skills for suspicious 
+                    injury patterns.
                   </p>
                   <div className="text-sm text-slate-400 font-light">
                     • Educational pattern recognition<br />
@@ -547,9 +547,8 @@ export default function Landing() {
                   </h3>
                   <p className="professional-text text-slate-300 font-light mb-3">
                     AI-powered symptom assessment tool designed to provide educational guidance 
-                    to parents about pediatric health concerns. The system uses OpenAI's 
-                    technology to analyze symptoms and provide general guidance based on 
-                    established medical protocols.
+                    to parents about pediatric health concerns. The system analyzes symptoms and 
+                    provides general guidance based on established medical protocols.
                   </p>
                   <div className="text-sm text-slate-400 font-light">
                     • Symptom guidance tool<br />
@@ -576,13 +575,13 @@ export default function Landing() {
                       <div className="flex items-center justify-between">
                         <span className="professional-text text-slate-300 font-light">Primary Engine</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          OpenAI GPT-4o
+                          Advanced Language Model
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="professional-text text-slate-300 font-light">Computer Vision</span>
                         <Badge className="bg-slate-700/50 text-slate-300 border-slate-600/30 font-light">
-                          GPT-4o Vision Model
+                          Multimodal AI Vision
                         </Badge>
                       </div>
                       <div className="flex items-center justify-between">
