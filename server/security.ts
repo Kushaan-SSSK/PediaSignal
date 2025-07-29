@@ -11,6 +11,7 @@ declare global {
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import crypto from "crypto";
+import CryptoJS from "crypto-js";
 
 // HIPAA/SOC 2 Compliance Security Middleware
 export function setupSecurityMiddleware(app: Express) {
@@ -150,25 +151,155 @@ export function setupSecurityMiddleware(app: Express) {
   });
 }
 
+// Generate or retrieve encryption key from environment
+const getEncryptionKey = (): string => {
+  const key = process.env.ENCRYPTION_KEY;
+  if (!key) {
+    // Generate a secure 256-bit key if not provided
+    const generatedKey = crypto.randomBytes(32).toString('hex');
+    console.warn('WARNING: No ENCRYPTION_KEY found in environment. Generated temporary key:', generatedKey.substring(0, 8) + '...');
+    console.warn('For production, set ENCRYPTION_KEY environment variable with a secure 64-character hex string');
+    return generatedKey;
+  }
+  return key;
+};
+
 // Medical data encryption utilities (HIPAA compliance)
 export const encryption = {
-  // Encrypt sensitive medical data before storing
+  // Encrypt sensitive medical data using AES-256-GCM
   encryptPHI: (data: string): string => {
-    // In a real implementation, use AES-256 encryption
-    // This is a placeholder for the encryption logic
-    return Buffer.from(data).toString('base64');
+    try {
+      const key = Buffer.from(getEncryptionKey(), 'hex');
+      
+      // Generate random IV for each encryption
+      const iv = crypto.randomBytes(12); // GCM typically uses 12-byte IV
+      
+      // Create cipher using AES-256-GCM
+      const cipher = crypto.createCipher('aes-256-gcm', key);
+      cipher.setAAD(Buffer.from('PHI_DATA', 'utf8'));
+      
+      // Encrypt the data
+      let encrypted = cipher.update(data, 'utf8', 'hex');
+      encrypted += cipher.final('hex');
+      
+      // Get the authentication tag
+      const authTag = cipher.getAuthTag();
+      
+      // Combine IV + authTag + encrypted data
+      const result = iv.toString('hex') + ':' + authTag.toString('hex') + ':' + encrypted;
+      
+      return result;
+    } catch (error) {
+      console.error('Encryption failed:', error);
+      throw new Error('Failed to encrypt sensitive data');
+    }
   },
   
-  // Decrypt medical data when retrieving
+  // Decrypt medical data using AES-256-GCM
   decryptPHI: (encryptedData: string): string => {
-    // In a real implementation, use AES-256 decryption
-    // This is a placeholder for the decryption logic
-    return Buffer.from(encryptedData, 'base64').toString('utf8');
+    try {
+      const key = Buffer.from(getEncryptionKey(), 'hex');
+      
+      // Split the encrypted data components
+      const parts = encryptedData.split(':');
+      if (parts.length !== 3) {
+        throw new Error('Invalid encrypted data format');
+      }
+      
+      const iv = Buffer.from(parts[0], 'hex');
+      const authTag = Buffer.from(parts[1], 'hex');
+      const encrypted = parts[2];
+      
+      // Create decipher
+      const decipher = crypto.createDecipher('aes-256-gcm', key);
+      decipher.setAuthTag(authTag);
+      decipher.setAAD(Buffer.from('PHI_DATA', 'utf8'));
+      
+      // Decrypt the data
+      let decrypted = decipher.update(encrypted, 'hex', 'utf8');
+      decrypted += decipher.final('utf8');
+      
+      return decrypted;
+    } catch (error) {
+      console.error('Decryption failed:', error);
+      throw new Error('Failed to decrypt sensitive data');
+    }
   },
   
-  // Hash sensitive identifiers (one-way)
+  // Alternative AES-256-CBC implementation using crypto-js for client-side compatibility
+  encryptPHIAlt: (data: string): string => {
+    try {
+      const key = getEncryptionKey();
+      const encrypted = CryptoJS.AES.encrypt(data, key, {
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+      });
+      return encrypted.toString();
+    } catch (error) {
+      console.error('Alternative encryption failed:', error);
+      throw new Error('Failed to encrypt sensitive data');
+    }
+  },
+  
+  // Alternative decrypt using crypto-js
+  decryptPHIAlt: (encryptedData: string): string => {
+    try {
+      const key = getEncryptionKey();
+      const decrypted = CryptoJS.AES.decrypt(encryptedData, key, {
+        mode: CryptoJS.mode.CBC,
+        padding: CryptoJS.pad.Pkcs7
+      });
+      return decrypted.toString(CryptoJS.enc.Utf8);
+    } catch (error) {
+      console.error('Alternative decryption failed:', error);
+      throw new Error('Failed to decrypt sensitive data');
+    }
+  },
+  
+  // Hash sensitive identifiers (one-way) - SHA-256
   hashIdentifier: (identifier: string): string => {
     return crypto.createHash('sha256').update(identifier).digest('hex');
+  },
+  
+  // Generate secure random token for sessions/API keys
+  generateSecureToken: (length: number = 32): string => {
+    return crypto.randomBytes(length).toString('hex');
+  },
+  
+  // Encrypt file data for secure storage
+  encryptFile: (fileBuffer: Buffer): Buffer => {
+    try {
+      const key = getEncryptionKey();
+      const iv = crypto.randomBytes(16);
+      
+      const cipher = crypto.createCipher('aes-256-cbc', Buffer.from(key, 'hex'));
+      
+      let encrypted = Buffer.concat([cipher.update(fileBuffer), cipher.final()]);
+      
+      // Prepend IV to encrypted data
+      return Buffer.concat([iv, encrypted]);
+    } catch (error) {
+      console.error('File encryption failed:', error);
+      throw new Error('Failed to encrypt file');
+    }
+  },
+  
+  // Decrypt file data
+  decryptFile: (encryptedBuffer: Buffer): Buffer => {
+    try {
+      const key = getEncryptionKey();
+      
+      // Extract IV from beginning of buffer
+      const iv = encryptedBuffer.slice(0, 16);
+      const encrypted = encryptedBuffer.slice(16);
+      
+      const decipher = crypto.createDecipher('aes-256-cbc', Buffer.from(key, 'hex'));
+      
+      return Buffer.concat([decipher.update(encrypted), decipher.final()]);
+    } catch (error) {
+      console.error('File decryption failed:', error);
+      throw new Error('Failed to decrypt file');
+    }
   }
 };
 

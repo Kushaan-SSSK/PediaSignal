@@ -20,6 +20,29 @@ import {
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
+import { encryption } from "./security";
+
+// Simple encryption helper using the alt methods (crypto-js based)
+const encryptData = (data: any) => {
+  if (!data) return data;
+  if (typeof data === 'string') {
+    return encryption.encryptPHIAlt(data);
+  }
+  if (typeof data === 'object') {
+    return encryption.encryptPHIAlt(JSON.stringify(data));
+  }
+  return encryption.encryptPHIAlt(String(data));
+};
+
+const decryptData = (encryptedData: any) => {
+  if (!encryptedData) return encryptedData;
+  const decrypted = encryption.decryptPHIAlt(encryptedData);
+  try {
+    return JSON.parse(decrypted);
+  } catch {
+    return decrypted;
+  }
+};
 
 export interface IStorage {
   // User operations
@@ -75,43 +98,113 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createSimulation(simulation: InsertSimulation): Promise<Simulation> {
-    const [newSimulation] = await db.insert(simulations).values(simulation).returning();
-    return newSimulation;
+    // Encrypt sensitive medical simulation data (AES-256 PHI protection)
+    const encryptedSimulation = {
+      ...simulation,
+      vitals: simulation.vitals ? encryptData(simulation.vitals) : simulation.vitals,
+      interventions: simulation.interventions ? encryptData(simulation.interventions) : simulation.interventions,
+      clinicalNotes: simulation.clinicalNotes ? encryptData(simulation.clinicalNotes) : simulation.clinicalNotes
+    };
+    
+    const [newSimulation] = await db.insert(simulations).values(encryptedSimulation).returning();
+    
+    // Decrypt for return value
+    return {
+      ...newSimulation,
+      vitals: newSimulation.vitals ? decryptData(newSimulation.vitals) : newSimulation.vitals,
+      interventions: newSimulation.interventions ? decryptData(newSimulation.interventions) : newSimulation.interventions,
+      clinicalNotes: newSimulation.clinicalNotes ? decryptData(newSimulation.clinicalNotes) : newSimulation.clinicalNotes
+    };
   }
 
   async updateSimulation(id: number, updates: Partial<Simulation>): Promise<Simulation> {
+    // Encrypt sensitive updates
+    const encryptedUpdates = {
+      ...updates,
+      vitals: updates.vitals ? encryptData(updates.vitals) : updates.vitals,
+      interventions: updates.interventions ? encryptData(updates.interventions) : updates.interventions,
+      clinicalNotes: updates.clinicalNotes ? encryptData(updates.clinicalNotes) : updates.clinicalNotes,
+      updatedAt: new Date()
+    };
+    
     const [updatedSimulation] = await db
       .update(simulations)
-      .set({ ...updates, updatedAt: new Date() })
+      .set(encryptedUpdates)
       .where(eq(simulations.id, id))
       .returning();
-    return updatedSimulation;
+    
+    // Decrypt for return value
+    return {
+      ...updatedSimulation,
+      vitals: updatedSimulation.vitals ? decryptData(updatedSimulation.vitals) : updatedSimulation.vitals,
+      interventions: updatedSimulation.interventions ? decryptData(updatedSimulation.interventions) : updatedSimulation.interventions,
+      clinicalNotes: updatedSimulation.clinicalNotes ? decryptData(updatedSimulation.clinicalNotes) : updatedSimulation.clinicalNotes
+    };
   }
 
   async getSimulation(id: number): Promise<Simulation | undefined> {
     const [simulation] = await db.select().from(simulations).where(eq(simulations.id, id));
-    return simulation;
+    if (!simulation) return undefined;
+    
+    // Decrypt sensitive medical data for return
+    return {
+      ...simulation,
+      vitals: simulation.vitals ? decryptData(simulation.vitals) : simulation.vitals,
+      interventions: simulation.interventions ? decryptData(simulation.interventions) : simulation.interventions,
+      clinicalNotes: simulation.clinicalNotes ? decryptData(simulation.clinicalNotes) : simulation.clinicalNotes
+    };
   }
 
   async getUserSimulations(userId: number): Promise<Simulation[]> {
-    return await db
+    const simulations = await db
       .select()
       .from(simulations)
       .where(eq(simulations.userId, userId))
       .orderBy(desc(simulations.createdAt));
+    
+    // Decrypt sensitive medical data for return
+    return simulations.map(simulation => ({
+      ...simulation,
+      vitals: simulation.vitals ? decryptData(simulation.vitals) : simulation.vitals,
+      interventions: simulation.interventions ? decryptData(simulation.interventions) : simulation.interventions,
+      clinicalNotes: simulation.clinicalNotes ? decryptData(simulation.clinicalNotes) : simulation.clinicalNotes
+    }));
   }
 
   async createXrayAnalysis(analysis: InsertXrayAnalysis): Promise<XrayAnalysis> {
-    const [newAnalysis] = await db.insert(xrayAnalyses).values(analysis).returning();
-    return newAnalysis;
+    // Encrypt sensitive medical data before storing (AES-256 PHI protection)
+    const encryptedAnalysis = {
+      ...analysis,
+      imageData: analysis.imageData ? encryptData(analysis.imageData) : analysis.imageData,
+      findings: analysis.findings ? encryptData(analysis.findings) : analysis.findings,
+      recommendations: analysis.recommendations ? encryptData(analysis.recommendations) : analysis.recommendations
+    };
+    
+    const [newAnalysis] = await db.insert(xrayAnalyses).values(encryptedAnalysis).returning();
+    
+    // Decrypt for return value
+    return {
+      ...newAnalysis,
+      imageData: newAnalysis.imageData ? decryptData(newAnalysis.imageData) : newAnalysis.imageData,
+      findings: newAnalysis.findings ? decryptData(newAnalysis.findings) : newAnalysis.findings,
+      recommendations: newAnalysis.recommendations ? decryptData(newAnalysis.recommendations) : newAnalysis.recommendations
+    };
   }
 
   async getXrayAnalyses(userId: number): Promise<XrayAnalysis[]> {
-    return await db
+    const analyses = await db
       .select()
       .from(xrayAnalyses)
       .where(eq(xrayAnalyses.userId, userId))
       .orderBy(desc(xrayAnalyses.createdAt));
+    
+    // Decrypt sensitive medical data for return
+    return analyses.map(analysis => ({
+      ...analysis,
+      imageData: analysis.imageData ? decryptData(analysis.imageData) : analysis.imageData,
+      findings: analysis.findings ? decryptData(analysis.findings) : analysis.findings,
+      recommendations: analysis.recommendations ? decryptData(analysis.recommendations) : analysis.recommendations
+    }));
   }
 
   async createMisinfoLog(log: InsertMisinfoLog): Promise<MisinfoLog> {
@@ -128,16 +221,39 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createChatConversation(conversation: InsertChatConversation): Promise<ChatConversation> {
-    const [newConversation] = await db.insert(chatConversations).values(conversation).returning();
-    return newConversation;
+    // Encrypt sensitive medical conversation data (AES-256 PHI protection)
+    const encryptedConversation = {
+      ...conversation,
+      userMessage: conversation.userMessage ? encryptData(conversation.userMessage) : conversation.userMessage,
+      botResponse: conversation.botResponse ? encryptData(conversation.botResponse) : conversation.botResponse,
+      symptoms: conversation.symptoms ? encryptData(conversation.symptoms) : conversation.symptoms
+    };
+    
+    const [newConversation] = await db.insert(chatConversations).values(encryptedConversation).returning();
+    
+    // Decrypt for return value
+    return {
+      ...newConversation,
+      userMessage: newConversation.userMessage ? decryptData(newConversation.userMessage) : newConversation.userMessage,
+      botResponse: newConversation.botResponse ? decryptData(newConversation.botResponse) : newConversation.botResponse,
+      symptoms: newConversation.symptoms ? decryptData(newConversation.symptoms) : newConversation.symptoms
+    };
   }
 
   async getChatHistory(sessionId: string): Promise<ChatConversation[]> {
-    return await db
+    const conversations = await db
       .select()
       .from(chatConversations)
       .where(eq(chatConversations.sessionId, sessionId))
       .orderBy(chatConversations.createdAt);
+    
+    // Decrypt sensitive medical conversation data for return
+    return conversations.map(conversation => ({
+      ...conversation,
+      userMessage: conversation.userMessage ? decryptData(conversation.userMessage) : conversation.userMessage,
+      botResponse: conversation.botResponse ? decryptData(conversation.botResponse) : conversation.botResponse,
+      symptoms: conversation.symptoms ? decryptData(conversation.symptoms) : conversation.symptoms
+    }));
   }
 
   // Waitlist operations
