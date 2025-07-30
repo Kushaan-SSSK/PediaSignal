@@ -910,6 +910,9 @@ export default function Landing() {
                 <span className="professional-text text-xs text-slate-500 font-light">SOC 2</span>
               </div>
             </div>
+            <div className="mt-3">
+              <span className="professional-text text-xs text-slate-600 font-light">In Progress</span>
+            </div>
           </div>
         </div>
       </footer>
