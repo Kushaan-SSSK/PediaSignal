@@ -911,7 +911,7 @@ export default function Landing() {
               </div>
             </div>
             <div className="mt-3">
-              <span className="professional-text text-xs text-slate-600 font-light">In Progress</span>
+              <span className="professional-text text-sm text-slate-400 font-medium">In Progress</span>
             </div>
           </div>
         </div>
