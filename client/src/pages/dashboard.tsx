@@ -146,7 +146,14 @@ export default function Dashboard() {
         "Real-time vital sign monitoring",
         "Intervention tracking and outcome analysis"
       ],
-      component: <SimulationInterface simulation={null} userId={1} />,
+      component: <SimulationInterface simulation={{
+        caseType: "demo",
+        stage: 1,
+        vitals: { heartRate: 120, temperature: 98.6, respRate: 20 },
+        status: "active",
+        interventions: [],
+        aiExplanations: []
+      }} userId={1} />,
       stats: `${analyticsData.totalSimulations} simulations completed`
     },
     {

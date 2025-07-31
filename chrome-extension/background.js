@@ -1,6 +1,7 @@
 // PediaSignal AI Chrome Extension - Background Service Worker
 
-const PEDIASIGNAL_API = 'https://your-domain.replit.app'; // Replace with actual API endpoint
+const PEDIASIGNAL_API = 'https://pediasignal-ai.kushaan-sharma.repl.co'; // Update with your actual Replit URL
+const PUBMED_API = 'https://eutils.ncbi.nlm.nih.gov/entrez/eutils';
 
 // Pediatric-related keywords for content detection
 const PEDIATRIC_KEYWORDS = [
@@ -58,6 +59,18 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         .then(result => sendResponse({ success: true, data: result }))
         .catch(error => sendResponse({ success: false, error: error.message }));
       return true;
+      
+    case 'sendFeedback':
+      sendUserFeedback(request.data)
+        .then(result => sendResponse({ success: true, data: result }))
+        .catch(error => sendResponse({ success: false, error: error.message }));
+      return true;
+      
+    case 'getScientificReferences':
+      getScientificReferences(request.query)
+        .then(result => sendResponse({ success: true, data: result }))
+        .catch(error => sendResponse({ success: false, error: error.message }));
+      return true;
   }
 });
 
@@ -107,6 +120,7 @@ async function analyzeForMisinformation(pageData) {
   let riskScore = 0;
   let detectedPatterns = [];
   let riskFactors = [];
+  let flaggedClaims = [];
   
   // Check for misinformation patterns
   MISINFORMATION_PATTERNS.forEach(pattern => {
@@ -114,6 +128,18 @@ async function analyzeForMisinformation(pageData) {
       riskScore += 2;
       detectedPatterns.push(pattern);
       riskFactors.push(`Potential misinformation pattern: "${pattern}"`);
+      
+      // Find the actual text in the content
+      const textIndex = text.indexOf(pattern.toLowerCase());
+      const originalText = pageData.text.substring(textIndex, textIndex + pattern.length);
+      
+      flaggedClaims.push({
+        text: originalText,
+        pattern: pattern,
+        explanation: `This statement matches a known misinformation pattern about "${pattern}"`,
+        recommendation: 'Verify this information with reliable medical sources',
+        sources: []
+      });
     }
   });
   
@@ -132,20 +158,50 @@ async function analyzeForMisinformation(pageData) {
     if (text.includes(term)) {
       riskScore += 1;
       riskFactors.push(`Suspicious language: "${term}"`);
+      
+      const textIndex = text.indexOf(term);
+      const originalText = pageData.text.substring(textIndex, textIndex + term.length);
+      
+      flaggedClaims.push({
+        text: originalText,
+        pattern: term,
+        explanation: `This language uses suspicious terms that often indicate misinformation`,
+        recommendation: 'Be cautious of claims using sensationalist language',
+        sources: []
+      });
     }
   });
-  
-  // Determine risk level
-  let riskLevel = 'low';
-  if (riskScore >= 4) riskLevel = 'high';
-  else if (riskScore >= 2) riskLevel = 'medium';
   
   // Try to analyze with PediaSignal AI API (if available)
   let aiAnalysis = null;
   try {
     aiAnalysis = await callPediaSignalAPI(pageData);
+    
+    // Use AI analysis if available
+    if (aiAnalysis && aiAnalysis.riskScore !== undefined) {
+      riskScore = aiAnalysis.riskScore * 10; // Scale to 0-10
+      riskLevel = aiAnalysis.severity || 'low';
+      
+      // Extract flagged claims from AI analysis
+      if (aiAnalysis.explanation) {
+        flaggedClaims.push({
+          text: 'AI-detected concern',
+          pattern: 'AI Analysis',
+          explanation: aiAnalysis.explanation,
+          recommendation: aiAnalysis.recommendedAction || 'Review this information carefully',
+          sources: aiAnalysis.scientificReferences || []
+        });
+      }
+    }
   } catch (error) {
     console.warn('API analysis unavailable:', error.message);
+  }
+  
+  // Determine risk level if not set by AI
+  if (!aiAnalysis) {
+    if (riskScore >= 4) riskLevel = 'high';
+    else if (riskScore >= 2) riskLevel = 'medium';
+    else riskLevel = 'low';
   }
   
   return {
@@ -154,6 +210,7 @@ async function analyzeForMisinformation(pageData) {
     riskScore,
     detectedPatterns,
     riskFactors,
+    flaggedClaims,
     url,
     title,
     timestamp: new Date().toISOString(),
@@ -164,15 +221,16 @@ async function analyzeForMisinformation(pageData) {
 // Call PediaSignal AI API for advanced analysis
 async function callPediaSignalAPI(pageData) {
   try {
-    const response = await fetch(`${PEDIASIGNAL_API}/api/misinfo-analyze`, {
+    const response = await fetch(`${PEDIASIGNAL_API}/api/misinfo-scan`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
         content: pageData.text,
-        url: pageData.url,
-        title: pageData.title
+        source: pageData.url,
+        platform: 'web',
+        userId: 'extension-user'
       })
     });
     
@@ -180,9 +238,92 @@ async function callPediaSignalAPI(pageData) {
       throw new Error(`API error: ${response.status}`);
     }
     
-    return await response.json();
+    const result = await response.json();
+    
+    // Enhance with scientific references if high risk
+    if (result.riskScore > 0.4) {
+      try {
+        const references = await getScientificReferences(pageData.text);
+        result.scientificReferences = references;
+      } catch (error) {
+        console.warn('Failed to get scientific references:', error);
+      }
+    }
+    
+    return result;
   } catch (error) {
     throw new Error(`Failed to analyze with AI: ${error.message}`);
+  }
+}
+
+// Get scientific references from PubMed
+async function getScientificReferences(query) {
+  try {
+    // Search PubMed for relevant articles
+    const searchUrl = `${PUBMED_API}/esearch.fcgi?db=pubmed&term=${encodeURIComponent(query)}&retmode=json&retmax=5&sort=relevance`;
+    
+    const searchResponse = await fetch(searchUrl);
+    if (!searchResponse.ok) {
+      throw new Error('PubMed search failed');
+    }
+    
+    const searchData = await searchResponse.json();
+    const pmids = searchData.esearchresult.idlist;
+    
+    if (!pmids || pmids.length === 0) {
+      return [];
+    }
+    
+    // Get article details
+    const summaryUrl = `${PUBMED_API}/esummary.fcgi?db=pubmed&id=${pmids.join(',')}&retmode=json`;
+    const summaryResponse = await fetch(summaryUrl);
+    
+    if (!summaryResponse.ok) {
+      throw new Error('PubMed summary failed');
+    }
+    
+    const summaryData = await summaryResponse.json();
+    const articles = [];
+    
+    for (const pmid of pmids) {
+      const article = summaryData.result[pmid];
+      if (article) {
+        articles.push({
+          title: article.title || 'No title available',
+          authors: article.authors ? article.authors.map(a => a.name).join(', ') : 'Unknown authors',
+          journal: article.fulljournalname || 'Unknown journal',
+          pubDate: article.pubdate || 'Unknown date',
+          url: `https://pubmed.ncbi.nlm.nih.gov/${pmid}/`,
+          abstract: article.abstract || 'No abstract available'
+        });
+      }
+    }
+    
+    return articles;
+  } catch (error) {
+    console.error('Error fetching scientific references:', error);
+    return [];
+  }
+}
+
+// Send user feedback to API
+async function sendUserFeedback(feedbackData) {
+  try {
+    const response = await fetch(`${PEDIASIGNAL_API}/api/misinfo-feedback`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(feedbackData)
+    });
+    
+    if (!response.ok) {
+      throw new Error(`Feedback API error: ${response.status}`);
+    }
+    
+    return await response.json();
+  } catch (error) {
+    throw new Error(`Failed to send feedback: ${error.message}`);
   }
 }
 

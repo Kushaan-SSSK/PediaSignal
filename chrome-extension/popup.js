@@ -154,6 +154,8 @@ function updatePageAnalysis(analysis) {
   const pageDetails = document.getElementById('page-details');
   const riskLevel = document.getElementById('risk-level');
   const riskFactors = document.getElementById('risk-factors');
+  const flaggedClaims = document.getElementById('flagged-claims');
+  const scientificReferences = document.getElementById('scientific-references');
   
   if (!analysis.isPediatricRelated) {
     pageStatus.textContent = 'No pediatric health content detected';
@@ -164,20 +166,67 @@ function updatePageAnalysis(analysis) {
   pageStatus.textContent = 'Pediatric content detected';
   pageDetails.style.display = 'block';
   
-  // Risk level
-  riskLevel.textContent = `Risk Level: ${analysis.riskLevel.toUpperCase()}`;
+  // Risk level with score
+  const riskColors = {
+    high: '#ef4444',
+    medium: '#f59e0b',
+    low: '#10b981'
+  };
+  
+  riskLevel.innerHTML = `
+    <div class="risk-indicator" style="background: ${riskColors[analysis.riskLevel]}"></div>
+    <span class="risk-text">${analysis.riskLevel.toUpperCase()} RISK</span>
+    <div class="risk-score">Score: ${Math.round(analysis.riskScore * 10) / 10}/10</div>
+  `;
   riskLevel.className = `risk-level ${analysis.riskLevel}`;
   
   // Risk factors
   if (analysis.riskFactors && analysis.riskFactors.length > 0) {
     riskFactors.innerHTML = `
-      <strong>Risk Factors:</strong>
-      <ul>
+      <div class="factors-title">Risk Factors:</div>
+      <ul class="factors-list">
         ${analysis.riskFactors.map(factor => `<li>${factor}</li>`).join('')}
       </ul>
     `;
   } else {
-    riskFactors.textContent = 'No specific risk factors identified';
+    riskFactors.innerHTML = '<div class="no-factors">No specific risk factors detected</div>';
+  }
+  
+  // Flagged claims
+  if (analysis.flaggedClaims && analysis.flaggedClaims.length > 0) {
+    flaggedClaims.innerHTML = `
+      <div class="claims-title">Flagged Claims:</div>
+      <div class="claims-list">
+        ${analysis.flaggedClaims.map(claim => `
+          <div class="claim-item">
+            <div class="claim-text">"${claim.text}"</div>
+            <div class="claim-explanation">${claim.explanation}</div>
+            <div class="claim-recommendation">${claim.recommendation}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  } else {
+    flaggedClaims.innerHTML = '<div class="no-claims">No specific claims flagged</div>';
+  }
+  
+  // Scientific references
+  if (analysis.scientificReferences && analysis.scientificReferences.length > 0) {
+    scientificReferences.innerHTML = `
+      <div class="references-title">Scientific References:</div>
+      <div class="references-list">
+        ${analysis.scientificReferences.map(ref => `
+          <div class="reference-item">
+            <div class="ref-title">${ref.title}</div>
+            <div class="ref-authors">${ref.authors}</div>
+            <div class="ref-journal">${ref.journal} (${ref.pubDate})</div>
+            <a href="${ref.url}" target="_blank" class="ref-link">View on PubMed</a>
+          </div>
+        `).join('')}
+      </div>
+    `;
+  } else {
+    scientificReferences.innerHTML = '<div class="no-references">No scientific references available</div>';
   }
 }
 

@@ -18,6 +18,15 @@ import {
   classifyMisinformation, 
   generateTriageResponse 
 } from "./openai";
+import { 
+  getRandomCase, 
+  getAvailableCategories, 
+  getCasesByCategory,
+  evaluateSimulation,
+  caseBank,
+  type SimulationSession,
+  type CaseDefinition
+} from "./caseBank";
 import multer from "multer";
 
 // Configure multer for image uploads
@@ -50,13 +59,78 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
   
-  // Simulation endpoints
+  // Enhanced Simulation endpoints
+  app.post('/api/start-simulation', async (req, res) => {
+    try {
+      const { category, userId } = req.body;
+      
+      if (!category || !userId) {
+        return res.status(400).json({ message: "Category and userId required" });
+      }
+
+      // Get random case for the category
+      const caseDefinition = getRandomCase(category);
+      
+      // Create simulation session
+      const sessionId = `sim_${Date.now()}_${userId}`;
+      const session: SimulationSession = {
+        id: sessionId,
+        userId,
+        caseId: caseDefinition.id,
+        startTime: new Date(),
+        currentStage: 1,
+        vitals: caseDefinition.initialVitals,
+        appliedInterventions: [],
+        timestamps: [],
+        status: 'active'
+      };
+
+      // Store session (in production, this would go to database)
+      // For now, we'll store in memory or use existing storage
+      const simulationData = {
+        userId,
+        caseType: caseDefinition.id,
+        stage: 1,
+        vitals: caseDefinition.initialVitals,
+        interventions: [],
+        aiExplanations: [],
+        status: 'active' as const
+      };
+
+      const simulation = await storage.createSimulation(simulationData);
+
+      res.json({
+        sessionId,
+        simulationId: simulation.id,
+        caseDefinition,
+        currentStage: 1,
+        vitals: caseDefinition.initialVitals,
+        availableInterventions: caseDefinition.stages[0].availableInterventions,
+        timeLimit: caseDefinition.stages[0].timeLimit,
+        criticalActions: caseDefinition.stages[0].criticalActions
+      });
+
+    } catch (error) {
+      console.error('Start simulation error:', error);
+      res.status(500).json({ 
+        message: "Failed to start simulation", 
+        error: (error as Error).message 
+      });
+    }
+  });
+
   app.post('/api/simulate-case', async (req, res) => {
     try {
-      const { caseType, intervention, userId, vitals, stage } = req.body;
+      const { caseType, intervention, userId, vitals, stage, sessionId } = req.body;
       
       if (!caseType || !intervention || !userId) {
         return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      // Get case definition
+      const caseDefinition = caseBank.find(c => c.id === caseType);
+      if (!caseDefinition) {
+        return res.status(400).json({ message: "Invalid case type" });
       }
 
       // Generate AI clinical explanation
@@ -67,12 +141,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
         intervention
       });
 
+      // Update vitals based on intervention
+      const updatedVitals = { ...aiResult.updatedVitals };
+      
+      // Check for branching conditions
+      const currentStage = caseDefinition.stages.find(s => s.stage === (stage || 1));
+      let nextStage = (stage || 1) + 1;
+      
+      if (currentStage) {
+        for (const condition of currentStage.branchingConditions) {
+          if (intervention.includes(condition.condition) || 
+              condition.condition === 'time_elapsed' ||
+              condition.condition === 'vital_change') {
+            nextStage = condition.nextStage;
+            Object.assign(updatedVitals, condition.vitalsChange);
+            break;
+          }
+        }
+      }
+
       // Create or update simulation record
       const simulationData = {
         userId,
         caseType,
-        stage: (stage || 1) + 1,
-        vitals: aiResult.updatedVitals,
+        stage: nextStage,
+        vitals: updatedVitals,
         interventions: [intervention],
         aiExplanations: [aiResult.explanation],
         status: 'active' as const
@@ -80,12 +173,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const simulation = await storage.createSimulation(simulationData);
 
+      // Get next stage info
+      const nextStageInfo = caseDefinition.stages.find(s => s.stage === nextStage);
+      
       res.json({
         simulationId: simulation.id,
-        updatedVitals: aiResult.updatedVitals,
+        updatedVitals,
         clinicalExplanation: aiResult.explanation,
         nextStageRecommendations: aiResult.nextStageRecommendations,
-        stage: simulation.stage
+        stage: nextStage,
+        availableInterventions: nextStageInfo?.availableInterventions || [],
+        timeLimit: nextStageInfo?.timeLimit,
+        criticalActions: nextStageInfo?.criticalActions || [],
+        isCompleted: nextStage > caseDefinition.stages.length
       });
 
     } catch (error) {
@@ -94,6 +194,76 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: "Failed to process simulation", 
         error: (error as Error).message 
       });
+    }
+  });
+
+  app.post('/api/evaluate-simulation', async (req, res) => {
+    try {
+      const { sessionId, caseId, appliedInterventions, timestamps } = req.body;
+      
+      if (!sessionId || !caseId || !appliedInterventions) {
+        return res.status(400).json({ message: "Missing required fields" });
+      }
+
+      // Get case definition
+      const caseDefinition = caseBank.find(c => c.id === caseId);
+      if (!caseDefinition) {
+        return res.status(400).json({ message: "Invalid case ID" });
+      }
+
+      // Create session object for evaluation
+      const session: SimulationSession = {
+        id: sessionId,
+        userId: 1, // This would come from auth
+        caseId,
+        startTime: new Date(),
+        currentStage: caseDefinition.stages.length,
+        vitals: caseDefinition.initialVitals,
+        appliedInterventions,
+        timestamps: timestamps || [],
+        status: 'completed'
+      };
+
+      // Evaluate simulation
+      const feedback = evaluateSimulation(session, caseDefinition);
+
+      res.json({
+        sessionId,
+        feedback,
+        caseDefinition: {
+          name: caseDefinition.name,
+          learningObjectives: caseDefinition.learningObjectives,
+          references: caseDefinition.references
+        }
+      });
+
+    } catch (error) {
+      console.error('Evaluation error:', error);
+      res.status(500).json({ 
+        message: "Failed to evaluate simulation", 
+        error: (error as Error).message 
+      });
+    }
+  });
+
+  app.get('/api/simulation-categories', async (req, res) => {
+    try {
+      const categories = getAvailableCategories();
+      res.json(categories);
+    } catch (error) {
+      console.error('Get categories error:', error);
+      res.status(500).json({ message: "Failed to fetch categories" });
+    }
+  });
+
+  app.get('/api/simulation-cases/:category', async (req, res) => {
+    try {
+      const { category } = req.params;
+      const cases = getCasesByCategory(category);
+      res.json(cases);
+    } catch (error) {
+      console.error('Get cases error:', error);
+      res.status(500).json({ message: "Failed to fetch cases" });
     }
   });
 
@@ -112,7 +282,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // X-ray analysis endpoint
+  // Enhanced X-ray analysis endpoint
   app.post('/api/analyze-xray', upload.single('xray'), async (req, res) => {
     try {
       if (!req.file) {
@@ -124,11 +294,39 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ message: "User ID required" });
       }
 
-      // Convert image to base64
+      // Validate file type and size
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/dicom'];
+      if (!allowedTypes.includes(req.file.mimetype)) {
+        return res.status(400).json({ 
+          message: "Invalid file type. Only JPEG, PNG, and DICOM files are allowed" 
+        });
+      }
+
+      if (req.file.size > 10 * 1024 * 1024) { // 10MB limit
+        return res.status(400).json({ 
+          message: "File too large. Maximum size is 10MB" 
+        });
+      }
+
+      // Preprocess image (basic validation)
       const base64Image = req.file.buffer.toString('base64');
+      
+      // Check if image is valid base64
+      if (!base64Image || base64Image.length < 1000) {
+        return res.status(400).json({ 
+          message: "Invalid image data" 
+        });
+      }
 
       // Analyze with OpenAI
       const analysis = await analyzeXrayImage(base64Image);
+
+      // Validate analysis results
+      if (analysis.confidenceScore < 0.1) {
+        return res.status(400).json({ 
+          message: "Unable to analyze image. Please ensure it's a clear pediatric X-ray." 
+        });
+      }
 
       // Save analysis to database
       const xrayAnalysis = await storage.createXrayAnalysis({
@@ -141,20 +339,64 @@ export async function registerRoutes(app: Express): Promise<Server> {
         confidenceScore: analysis.confidenceScore
       });
 
+      // Log analysis for audit trail
+      auditLog.logDataAccess(parseInt(userId).toString(), 'xray_analysis', xrayAnalysis.id.toString(), req.ip || 'unknown');
+
       res.json({
         analysisId: xrayAnalysis.id,
         abuseLikelihood: analysis.abuseLikelihood,
         fractureType: analysis.fractureType,
         explanation: analysis.explanation,
-        confidenceScore: analysis.confidenceScore
+        confidenceScore: analysis.confidenceScore,
+        riskLevel: analysis.abuseLikelihood > 0.7 ? 'high' : 
+                   analysis.abuseLikelihood > 0.4 ? 'medium' : 'low',
+        recommendations: analysis.abuseLikelihood > 0.7 ? 
+          'Immediate consultation with child protection team recommended' :
+          analysis.abuseLikelihood > 0.4 ? 
+          'Consider additional imaging and clinical correlation' :
+          'Continue routine clinical assessment'
       });
 
     } catch (error) {
       console.error('X-ray analysis error:', error);
+      
+      // Provide specific error messages
+      let errorMessage = "Failed to analyze X-ray";
+      if (error instanceof Error) {
+        if (error.message.includes('API')) {
+          errorMessage = "AI analysis service temporarily unavailable. Please try again.";
+        } else if (error.message.includes('timeout')) {
+          errorMessage = "Analysis timed out. Please try with a smaller image.";
+        } else {
+          errorMessage = error.message;
+        }
+      }
+      
       res.status(500).json({ 
-        message: "Failed to analyze X-ray", 
+        message: errorMessage,
         error: (error as Error).message 
       });
+    }
+  });
+
+  // Get X-ray analysis by ID
+  app.get('/api/xray-analysis/:id', async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid analysis ID" });
+      }
+
+      const analyses = await storage.getXrayAnalyses(1); // Using userId 1 for now
+      const analysis = analyses.find(a => a.id === id);
+      if (!analysis) {
+        return res.status(404).json({ message: "Analysis not found" });
+      }
+
+      res.json(analysis);
+    } catch (error) {
+      console.error('Get X-ray analysis error:', error);
+      res.status(500).json({ message: "Failed to fetch analysis" });
     }
   });
 
@@ -173,13 +415,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Misinformation monitoring endpoints
+  // Enhanced Misinformation monitoring endpoints
   app.post('/api/misinfo-scan', async (req, res) => {
     try {
-      const { content, source, platform } = req.body;
+      const { content, source, platform, userId } = req.body;
       
       if (!content || !source) {
         return res.status(400).json({ message: "Content and source required" });
+      }
+
+      // Validate content length
+      if (content.length < 10) {
+        return res.status(400).json({ message: "Content too short for analysis" });
+      }
+
+      if (content.length > 10000) {
+        return res.status(400).json({ message: "Content too long. Maximum 10,000 characters." });
       }
 
       // Analyze content for misinformation
@@ -195,12 +446,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
         category: analysis.category
       });
 
+      // Log for audit trail
+      auditLog.logDataAccess(userId || 'anonymous', 'misinfo_scan', misinfoLog.id.toString(), req.ip || 'unknown');
+
       res.json({
         logId: misinfoLog.id,
         riskScore: analysis.riskScore,
         category: analysis.category,
         explanation: analysis.explanation,
-        recommendedAction: analysis.recommendedAction
+        recommendedAction: analysis.recommendedAction,
+        severity: analysis.riskScore > 0.8 ? 'critical' : 
+                  analysis.riskScore > 0.6 ? 'high' : 
+                  analysis.riskScore > 0.4 ? 'medium' : 'low',
+        flaggedForReview: analysis.riskScore > 0.6
       });
 
     } catch (error) {
@@ -209,6 +467,133 @@ export async function registerRoutes(app: Express): Promise<Server> {
         message: "Failed to scan for misinformation", 
         error: (error as Error).message 
       });
+    }
+  });
+
+  // User feedback endpoint for extension
+  app.post('/api/misinfo-feedback', async (req, res) => {
+    try {
+      const { claim, feedback, url, timestamp, userId } = req.body;
+      
+      if (!claim || !feedback || !url) {
+        return res.status(400).json({ message: "Claim, feedback, and URL required" });
+      }
+
+      // Validate feedback type
+      if (!['agree', 'disagree'].includes(feedback)) {
+        return res.status(400).json({ message: "Feedback must be 'agree' or 'disagree'" });
+      }
+
+      // Save feedback to database (you may need to add a feedback table)
+      const feedbackLog = {
+        claim,
+        feedback,
+        url,
+        timestamp: timestamp || new Date().toISOString(),
+        userId: userId || 'extension-user',
+        source: 'chrome-extension'
+      };
+
+      // For now, we'll log it (you can add a proper feedback table later)
+      console.log('User feedback received:', feedbackLog);
+
+      // Log for audit trail
+      auditLog.logDataAccess(userId || 'extension-user', 'misinfo_feedback', 'feedback', req.ip || 'unknown');
+
+      res.json({
+        success: true,
+        message: "Feedback received",
+        feedbackId: Date.now().toString()
+      });
+
+    } catch (error) {
+      console.error('Feedback error:', error);
+      res.status(500).json({ 
+        message: "Failed to process feedback", 
+        error: (error as Error).message 
+      });
+    }
+  });
+
+  // Batch misinformation scanning
+  app.post('/api/misinfo-scan-batch', async (req, res) => {
+    try {
+      const { contents } = req.body;
+      
+      if (!Array.isArray(contents) || contents.length === 0) {
+        return res.status(400).json({ message: "Contents array required" });
+      }
+
+      if (contents.length > 10) {
+        return res.status(400).json({ message: "Maximum 10 items per batch" });
+      }
+
+      const results = [];
+      
+      for (const item of contents) {
+        try {
+          const analysis = await classifyMisinformation(item.content, item.source);
+          
+          const misinfoLog = await storage.createMisinfoLog({
+            title: item.content.substring(0, 100) + (item.content.length > 100 ? '...' : ''),
+            content: item.content,
+            source: item.source,
+            platform: item.platform || 'unknown',
+            riskScore: analysis.riskScore,
+            category: analysis.category
+          });
+
+          results.push({
+            logId: misinfoLog.id,
+            riskScore: analysis.riskScore,
+            category: analysis.category,
+            explanation: analysis.explanation,
+            recommendedAction: analysis.recommendedAction
+          });
+        } catch (error) {
+          results.push({
+            error: "Failed to analyze item",
+            content: item.content.substring(0, 50) + "..."
+          });
+        }
+      }
+
+      res.json({ results });
+
+    } catch (error) {
+      console.error('Batch misinformation scan error:', error);
+      res.status(500).json({ 
+        message: "Failed to process batch scan", 
+        error: (error as Error).message 
+      });
+    }
+  });
+
+  // Get misinformation statistics
+  app.get('/api/misinfo-stats', async (req, res) => {
+    try {
+      const logs = await storage.getRecentMisinfoLogs(1000);
+      
+      const stats = {
+        totalScans: logs.length,
+        highRiskCount: logs.filter(log => log.riskScore > 0.6).length,
+        criticalCount: logs.filter(log => log.riskScore > 0.8).length,
+        categoryBreakdown: logs.reduce((acc, log) => {
+          acc[log.category] = (acc[log.category] || 0) + 1;
+          return acc;
+        }, {} as Record<string, number>),
+        averageRiskScore: logs.length > 0 ? 
+          logs.reduce((sum, log) => sum + log.riskScore, 0) / logs.length : 0,
+        recentTrend: logs.slice(-10).map(log => ({
+          date: log.detectedAt,
+          riskScore: log.riskScore
+        }))
+      };
+
+      res.json(stats);
+    } catch (error) {
+      console.error('Get misinfo stats error:', error);
+      res.status(500).json({ message: "Failed to fetch statistics" });
     }
   });
 

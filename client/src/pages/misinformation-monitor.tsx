@@ -14,6 +14,7 @@ import {
   Clock
 } from "lucide-react";
 import Header from "@/components/Header";
+import MisinformationScanner from "@/components/MisinformationScanner";
 
 // Mock user
 const mockUser = {
@@ -79,6 +80,11 @@ export default function MisinformationMonitor() {
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-white mb-2">Global Misinformation Monitor</h1>
           <p className="text-gray-300">Real-time monitoring of pediatric health misinformation across global platforms</p>
+        </div>
+
+        {/* Content Scanner */}
+        <div className="mb-8">
+          <MisinformationScanner />
         </div>
 
         {/* Control Panel */}

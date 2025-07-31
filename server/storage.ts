@@ -102,8 +102,7 @@ export class DatabaseStorage implements IStorage {
     const encryptedSimulation = {
       ...simulation,
       vitals: simulation.vitals ? encryptData(simulation.vitals) : simulation.vitals,
-      interventions: simulation.interventions ? encryptData(simulation.interventions) : simulation.interventions,
-      clinicalNotes: simulation.clinicalNotes ? encryptData(simulation.clinicalNotes) : simulation.clinicalNotes
+      interventions: simulation.interventions ? encryptData(simulation.interventions) : simulation.interventions
     };
     
     const [newSimulation] = await db.insert(simulations).values(encryptedSimulation).returning();
@@ -112,8 +111,7 @@ export class DatabaseStorage implements IStorage {
     return {
       ...newSimulation,
       vitals: newSimulation.vitals ? decryptData(newSimulation.vitals) : newSimulation.vitals,
-      interventions: newSimulation.interventions ? decryptData(newSimulation.interventions) : newSimulation.interventions,
-      clinicalNotes: newSimulation.clinicalNotes ? decryptData(newSimulation.clinicalNotes) : newSimulation.clinicalNotes
+      interventions: newSimulation.interventions ? decryptData(newSimulation.interventions) : newSimulation.interventions
     };
   }
 
@@ -123,7 +121,6 @@ export class DatabaseStorage implements IStorage {
       ...updates,
       vitals: updates.vitals ? encryptData(updates.vitals) : updates.vitals,
       interventions: updates.interventions ? encryptData(updates.interventions) : updates.interventions,
-      clinicalNotes: updates.clinicalNotes ? encryptData(updates.clinicalNotes) : updates.clinicalNotes,
       updatedAt: new Date()
     };
     
@@ -137,8 +134,7 @@ export class DatabaseStorage implements IStorage {
     return {
       ...updatedSimulation,
       vitals: updatedSimulation.vitals ? decryptData(updatedSimulation.vitals) : updatedSimulation.vitals,
-      interventions: updatedSimulation.interventions ? decryptData(updatedSimulation.interventions) : updatedSimulation.interventions,
-      clinicalNotes: updatedSimulation.clinicalNotes ? decryptData(updatedSimulation.clinicalNotes) : updatedSimulation.clinicalNotes
+      interventions: updatedSimulation.interventions ? decryptData(updatedSimulation.interventions) : updatedSimulation.interventions
     };
   }
 
@@ -150,24 +146,22 @@ export class DatabaseStorage implements IStorage {
     return {
       ...simulation,
       vitals: simulation.vitals ? decryptData(simulation.vitals) : simulation.vitals,
-      interventions: simulation.interventions ? decryptData(simulation.interventions) : simulation.interventions,
-      clinicalNotes: simulation.clinicalNotes ? decryptData(simulation.clinicalNotes) : simulation.clinicalNotes
+      interventions: simulation.interventions ? decryptData(simulation.interventions) : simulation.interventions
     };
   }
 
   async getUserSimulations(userId: number): Promise<Simulation[]> {
-    const simulations = await db
+    const simulationsData = await db
       .select()
       .from(simulations)
       .where(eq(simulations.userId, userId))
       .orderBy(desc(simulations.createdAt));
     
     // Decrypt sensitive medical data for return
-    return simulations.map(simulation => ({
+    return simulationsData.map((simulation: any) => ({
       ...simulation,
       vitals: simulation.vitals ? decryptData(simulation.vitals) : simulation.vitals,
-      interventions: simulation.interventions ? decryptData(simulation.interventions) : simulation.interventions,
-      clinicalNotes: simulation.clinicalNotes ? decryptData(simulation.clinicalNotes) : simulation.clinicalNotes
+      interventions: simulation.interventions ? decryptData(simulation.interventions) : simulation.interventions
     }));
   }
 
@@ -175,9 +169,7 @@ export class DatabaseStorage implements IStorage {
     // Encrypt sensitive medical data before storing (AES-256 PHI protection)
     const encryptedAnalysis = {
       ...analysis,
-      imageData: analysis.imageData ? encryptData(analysis.imageData) : analysis.imageData,
-      findings: analysis.findings ? encryptData(analysis.findings) : analysis.findings,
-      recommendations: analysis.recommendations ? encryptData(analysis.recommendations) : analysis.recommendations
+      imageData: analysis.imageData ? encryptData(analysis.imageData) : analysis.imageData
     };
     
     const [newAnalysis] = await db.insert(xrayAnalyses).values(encryptedAnalysis).returning();
@@ -185,9 +177,7 @@ export class DatabaseStorage implements IStorage {
     // Decrypt for return value
     return {
       ...newAnalysis,
-      imageData: newAnalysis.imageData ? decryptData(newAnalysis.imageData) : newAnalysis.imageData,
-      findings: newAnalysis.findings ? decryptData(newAnalysis.findings) : newAnalysis.findings,
-      recommendations: newAnalysis.recommendations ? decryptData(newAnalysis.recommendations) : newAnalysis.recommendations
+      imageData: newAnalysis.imageData ? decryptData(newAnalysis.imageData) : newAnalysis.imageData
     };
   }
 
@@ -199,11 +189,9 @@ export class DatabaseStorage implements IStorage {
       .orderBy(desc(xrayAnalyses.createdAt));
     
     // Decrypt sensitive medical data for return
-    return analyses.map(analysis => ({
+    return analyses.map((analysis: any) => ({
       ...analysis,
-      imageData: analysis.imageData ? decryptData(analysis.imageData) : analysis.imageData,
-      findings: analysis.findings ? decryptData(analysis.findings) : analysis.findings,
-      recommendations: analysis.recommendations ? decryptData(analysis.recommendations) : analysis.recommendations
+      imageData: analysis.imageData ? decryptData(analysis.imageData) : analysis.imageData
     }));
   }
 
@@ -224,9 +212,8 @@ export class DatabaseStorage implements IStorage {
     // Encrypt sensitive medical conversation data (AES-256 PHI protection)
     const encryptedConversation = {
       ...conversation,
-      userMessage: conversation.userMessage ? encryptData(conversation.userMessage) : conversation.userMessage,
-      botResponse: conversation.botResponse ? encryptData(conversation.botResponse) : conversation.botResponse,
-      symptoms: conversation.symptoms ? encryptData(conversation.symptoms) : conversation.symptoms
+      parentMessage: conversation.parentMessage ? encryptData(conversation.parentMessage) : conversation.parentMessage,
+      aiResponse: conversation.aiResponse ? encryptData(conversation.aiResponse) : conversation.aiResponse
     };
     
     const [newConversation] = await db.insert(chatConversations).values(encryptedConversation).returning();
@@ -234,9 +221,8 @@ export class DatabaseStorage implements IStorage {
     // Decrypt for return value
     return {
       ...newConversation,
-      userMessage: newConversation.userMessage ? decryptData(newConversation.userMessage) : newConversation.userMessage,
-      botResponse: newConversation.botResponse ? decryptData(newConversation.botResponse) : newConversation.botResponse,
-      symptoms: newConversation.symptoms ? decryptData(newConversation.symptoms) : newConversation.symptoms
+      parentMessage: newConversation.parentMessage ? decryptData(newConversation.parentMessage) : newConversation.parentMessage,
+      aiResponse: newConversation.aiResponse ? decryptData(newConversation.aiResponse) : newConversation.aiResponse
     };
   }
 
@@ -248,11 +234,10 @@ export class DatabaseStorage implements IStorage {
       .orderBy(chatConversations.createdAt);
     
     // Decrypt sensitive medical conversation data for return
-    return conversations.map(conversation => ({
+    return conversations.map((conversation: any) => ({
       ...conversation,
-      userMessage: conversation.userMessage ? decryptData(conversation.userMessage) : conversation.userMessage,
-      botResponse: conversation.botResponse ? decryptData(conversation.botResponse) : conversation.botResponse,
-      symptoms: conversation.symptoms ? decryptData(conversation.symptoms) : conversation.symptoms
+      parentMessage: conversation.parentMessage ? decryptData(conversation.parentMessage) : conversation.parentMessage,
+      aiResponse: conversation.aiResponse ? decryptData(conversation.aiResponse) : conversation.aiResponse
     }));
   }
 

@@ -1,18 +1,20 @@
 {
   "manifest_version": 3,
   "name": "PediaSignal AI - Misinformation Monitor",
-  "version": "1.0.0",
-  "description": "Detects and analyzes pediatric health misinformation on web pages",
+  "version": "2.0.0",
+  "description": "Advanced pediatric health misinformation detection with scientific cross-referencing",
   
   "permissions": [
     "activeTab",
     "storage",
-    "scripting"
+    "scripting",
+    "tabs"
   ],
   
   "host_permissions": [
     "https://*/*",
-    "http://*/*"
+    "http://*/*",
+    "https://eutils.ncbi.nlm.nih.gov/*"
   ],
   
   "background": {
@@ -24,7 +26,8 @@
     {
       "matches": ["<all_urls>"],
       "js": ["content.js"],
-      "run_at": "document_end"
+      "run_at": "document_end",
+      "all_frames": false
     }
   ],
   
@@ -48,8 +51,12 @@
   
   "web_accessible_resources": [
     {
-      "resources": ["injected.js"],
+      "resources": ["injected.js", "tooltip.css"],
       "matches": ["<all_urls>"]
     }
-  ]
+  ],
+  
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
 }

@@ -1,20 +1,21 @@
 {
   "version": 2,
   "buildCommand": "npm run build",
-  "outputDirectory": "dist/public",
+  "outputDirectory": "dist",
   "functions": {
-    "server/index.ts": {
-      "runtime": "nodejs20.x"
+    "dist/index.js": {
+      "runtime": "nodejs20.x",
+      "maxDuration": 30
     }
   },
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/server/index.ts"
+      "dest": "/dist/index.js"
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/dist/public/$1"
     }
   ]
 }
