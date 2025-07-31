@@ -28,6 +28,8 @@ import {
   type CaseDefinition
 } from "./caseBank";
 import multer from "multer";
+import axios from 'axios';
+import * as cheerio from 'cheerio';
 
 // Configure multer for image uploads
 const upload = multer({
@@ -466,6 +468,100 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ 
         message: "Failed to scan for misinformation", 
         error: (error as Error).message 
+      });
+    }
+  });
+
+  // Web scraping endpoint
+  app.post('/api/scrape-and-analyze', async (req, res) => {
+    try {
+      const { url, platform } = req.body;
+
+      if (!url) {
+        return res.status(400).json({ error: 'URL is required' });
+      }
+
+      // Validate URL
+      let parsedUrl;
+      try {
+        parsedUrl = new URL(url);
+      } catch {
+        return res.status(400).json({ error: 'Invalid URL format' });
+      }
+
+      // Fetch content from URL
+      const response = await axios.get(url, {
+        timeout: 10000,
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+      });
+
+      const html = response.data;
+      const $ = cheerio.load(html);
+
+      // Extract main content
+      let content = '';
+      
+      // Try to find article content
+      const article = $('article').first();
+      if (article.length > 0) {
+        content = article.text().trim();
+      } else {
+        // Fallback to main content areas
+        const mainContent = $('main, .content, .post-content, .article-content, .entry-content').first();
+        if (mainContent.length > 0) {
+          content = mainContent.text().trim();
+        } else {
+          // Last resort: get body text
+          content = $('body').text().trim();
+        }
+      }
+
+      // Clean up content
+      content = content
+        .replace(/\s+/g, ' ')
+        .replace(/\n+/g, ' ')
+        .trim()
+        .substring(0, 5000); // Limit to 5000 characters
+
+      if (!content) {
+        return res.status(400).json({ error: 'Could not extract content from URL' });
+      }
+
+      // Extract title
+      const title = $('title').first().text().trim() || 
+                   $('h1').first().text().trim() || 
+                   'Untitled';
+
+           // Analyze the scraped content
+     const analysisResult = await classifyMisinformation(content, url);
+
+           // Store the result
+     const logId = await storage.createMisinfoLog({
+       title,
+       content,
+       source: url,
+       platform: platform || 'web',
+       riskScore: analysisResult.riskScore,
+       category: analysisResult.category
+     });
+
+           // Log the data access
+     auditLog.logDataAccess('anonymous', 'misinfo_scan', logId.toString(), req.ip || 'unknown');
+
+      res.json({
+        ...analysisResult,
+        logId,
+        scrapedContent: content.substring(0, 200) + '...',
+        title
+      });
+
+    } catch (error) {
+      console.error('Web scraping error:', error);
+      res.status(500).json({ 
+        error: 'Failed to scrape and analyze content',
+        details: error instanceof Error ? error.message : 'Unknown error'
       });
     }
   });

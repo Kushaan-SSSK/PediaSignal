@@ -1,517 +1,502 @@
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { 
-  Search, 
-  AlertTriangle, 
-  Shield, 
-  Globe, 
-  Clock,
-  TrendingUp,
-  FileText,
-  Upload,
-  Download
-} from "lucide-react";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { apiRequest } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
+import React, { useState } from 'react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Button } from './ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './ui/card';
+import { Badge } from './ui/badge';
+import { Textarea } from './ui/textarea';
+import { Input } from './ui/input';
+import { Label } from './ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Progress } from './ui/progress';
+import { useToast } from '../hooks/use-toast';
 
-interface ScanResult {
-  logId: number;
+interface MisinfoScanResult {
   riskScore: number;
   category: string;
   explanation: string;
-  recommendedAction: string;
   severity: 'low' | 'medium' | 'high' | 'critical';
-  flaggedForReview: boolean;
+  flaggedClaims?: Array<{
+    text: string;
+    explanation: string;
+    recommendation: string;
+  }>;
+  title?: string;
+  scrapedContent?: string;
 }
 
-interface BatchScanItem {
-  content: string;
-  source: string;
-  platform?: string;
+interface MisinfoStats {
+  totalScans: number;
+  highRiskCount: number;
+  averageRiskScore: number;
+  categories: Record<string, number>;
 }
 
 export default function MisinformationScanner() {
-  const [content, setContent] = useState("");
-  const [source, setSource] = useState("");
-  const [platform, setPlatform] = useState("unknown");
+  const [content, setContent] = useState('');
+  const [source, setSource] = useState('');
+  const [platform, setPlatform] = useState('');
   const [batchMode, setBatchMode] = useState(false);
-  const [batchContent, setBatchContent] = useState<BatchScanItem[]>([]);
+  const [batchItems, setBatchItems] = useState<Array<{ content: string; source: string; platform: string }>>([]);
+  const [userFeedback, setUserFeedback] = useState<'agree' | 'disagree' | null>(null);
+  const [scrapeUrl, setScrapeUrl] = useState('');
   const { toast } = useToast();
 
   // Single scan mutation
   const scanMutation = useMutation({
     mutationFn: async (data: { content: string; source: string; platform: string }) => {
-      const response = await apiRequest('POST', '/api/misinfo-scan', data);
-      return response.json();
+      const response = await fetch('/api/misinfo-scan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('Scan failed');
+      return response.json() as Promise<MisinfoScanResult>;
     },
-    onSuccess: (result: ScanResult) => {
+    onSuccess: (data) => {
       toast({
-        title: "Scan Complete",
-        description: `Risk level: ${result.severity.toUpperCase()}`,
-        variant: result.severity === 'critical' || result.severity === 'high' ? 'destructive' : 'default',
+        title: 'Scan Complete',
+        description: `Risk Score: ${(data.riskScore * 100).toFixed(1)}% - ${data.severity.toUpperCase()}`,
       });
     },
-    onError: (error: Error) => {
+    onError: () => {
       toast({
-        title: "Scan Failed",
-        description: error.message,
-        variant: "destructive",
+        title: 'Scan Failed',
+        description: 'Failed to analyze content. Please try again.',
+        variant: 'destructive',
       });
     },
   });
 
   // Batch scan mutation
   const batchScanMutation = useMutation({
-    mutationFn: async (contents: BatchScanItem[]) => {
-      const response = await apiRequest('POST', '/api/misinfo-scan-batch', { contents });
+    mutationFn: async (items: Array<{ content: string; source: string; platform: string }>) => {
+      const response = await fetch('/api/misinfo-scan-batch', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items }),
+      });
+      if (!response.ok) throw new Error('Batch scan failed');
       return response.json();
     },
-    onSuccess: (result: { results: ScanResult[] }) => {
-      const highRiskCount = result.results.filter(r => r.severity === 'high' || r.severity === 'critical').length;
+    onSuccess: (data) => {
       toast({
-        title: "Batch Scan Complete",
-        description: `${highRiskCount} high-risk items detected`,
-        variant: highRiskCount > 0 ? 'destructive' : 'default',
+        title: 'Batch Scan Complete',
+        description: `Processed ${data.length} items successfully`,
       });
     },
-    onError: (error: Error) => {
+    onError: () => {
       toast({
-        title: "Batch Scan Failed",
-        description: error.message,
-        variant: "destructive",
+        title: 'Batch Scan Failed',
+        description: 'Failed to process batch. Please try again.',
+        variant: 'destructive',
       });
     },
   });
 
-  // Get statistics
-  const { data: stats } = useQuery({
-    queryKey: ['/api/misinfo-stats'],
+  // Feedback mutation
+  const feedbackMutation = useMutation({
+    mutationFn: async (data: { 
+      logId: number; 
+      feedback: 'agree' | 'disagree'; 
+      reason?: string 
+    }) => {
+      const response = await fetch('/api/misinfo-feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('Feedback submission failed');
+      return response.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Feedback Submitted',
+        description: 'Thank you for your feedback!',
+      });
+    },
+    onError: () => {
+      toast({
+        title: 'Feedback Failed',
+        description: 'Failed to submit feedback. Please try again.',
+        variant: 'destructive',
+      });
+    },
+  });
+
+  // Web scraping mutation
+  const scrapeMutation = useMutation({
+    mutationFn: async (data: { url: string; platform: string }) => {
+      const response = await fetch('/api/scrape-and-analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!response.ok) throw new Error('Scraping failed');
+      return response.json() as Promise<MisinfoScanResult>;
+    },
+    onSuccess: (data) => {
+      toast({
+        title: 'Web Scraping Complete',
+        description: `Analyzed content from ${data.title || 'webpage'}`,
+      });
+    },
+    onError: () => {
+      toast({
+        title: 'Scraping Failed',
+        description: 'Failed to scrape and analyze the webpage. Please try again.',
+        variant: 'destructive',
+      });
+    },
+  });
+
+  // Fetch statistics
+  const { data: stats = {} as MisinfoStats } = useQuery({
+    queryKey: ['misinfo-stats'],
+    queryFn: async () => {
+      const response = await fetch('/api/misinfo-stats');
+      if (!response.ok) throw new Error('Failed to fetch stats');
+      return response.json() as Promise<MisinfoStats>;
+    },
     refetchInterval: 30000, // Refresh every 30 seconds
   });
 
-  const statsData = stats as any || {};
-
   const handleSingleScan = () => {
-    if (!content.trim() || !source.trim()) {
+    if (!content.trim()) {
       toast({
-        title: "Missing Information",
-        description: "Please provide both content and source",
-        variant: "destructive",
+        title: 'Input Required',
+        description: 'Please enter content to scan.',
+        variant: 'destructive',
       });
       return;
     }
-
     scanMutation.mutate({ content, source, platform });
   };
 
   const handleBatchScan = () => {
-    if (batchContent.length === 0) {
+    if (batchItems.length === 0) {
       toast({
-        title: "No Content",
-        description: "Please add content to scan",
-        variant: "destructive",
+        title: 'No Items',
+        description: 'Please add items to batch scan.',
+        variant: 'destructive',
       });
       return;
     }
-
-    batchScanMutation.mutate(batchContent);
+    batchScanMutation.mutate(batchItems);
   };
 
   const addBatchItem = () => {
-    if (!content.trim() || !source.trim()) {
-      toast({
-        title: "Missing Information",
-        description: "Please provide both content and source",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    setBatchContent([...batchContent, { content, source, platform }]);
-    setContent("");
-    setSource("");
+    if (!content.trim()) return;
+    setBatchItems([...batchItems, { content, source, platform }]);
+    setContent('');
+    setSource('');
+    setPlatform('');
   };
 
   const removeBatchItem = (index: number) => {
-    setBatchContent(batchContent.filter((_, i) => i !== index));
+    setBatchItems(batchItems.filter((_, i) => i !== index));
   };
 
   const getSeverityColor = (severity: string) => {
     switch (severity) {
-      case 'critical':
-        return 'bg-red-600 text-white';
-      case 'high':
-        return 'bg-orange-600 text-white';
-      case 'medium':
-        return 'bg-yellow-600 text-white';
-      case 'low':
-        return 'bg-green-600 text-white';
-      default:
-        return 'bg-gray-600 text-white';
+      case 'low': return 'bg-green-100 text-green-800';
+      case 'medium': return 'bg-yellow-100 text-yellow-800';
+      case 'high': return 'bg-orange-100 text-orange-800';
+      case 'critical': return 'bg-red-100 text-red-800';
+      default: return 'bg-gray-100 text-gray-800';
     }
+  };
+
+  const handleFeedback = (feedback: 'agree' | 'disagree') => {
+    if (!scanMutation.data) return;
+    
+    setUserFeedback(feedback);
+    feedbackMutation.mutate({
+      logId: (scanMutation.data as any).logId || 0,
+      feedback,
+      reason: feedback === 'disagree' ? 'User disagrees with analysis' : 'User agrees with analysis'
+    });
+  };
+
+  const handleWebScrape = () => {
+    if (!scrapeUrl.trim()) {
+      toast({
+        title: 'URL Required',
+        description: 'Please enter a URL to scrape and analyze.',
+        variant: 'destructive',
+      });
+      return;
+    }
+    scrapeMutation.mutate({ url: scrapeUrl, platform: 'web' });
   };
 
   return (
     <div className="space-y-6">
       {/* Statistics Dashboard */}
-      {statsData && (
-        <Card className="medical-card p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Live Monitoring Statistics</h3>
-          <div className="grid md:grid-cols-4 gap-4">
-            <div className="bg-gray-900/50 rounded-lg p-4">
-              <div className="flex items-center justify-between">
-                <Globe className="h-5 w-5 text-blue-400" />
-                <span className="text-2xl font-bold text-blue-400">{statsData.totalScans || 0}</span>
-              </div>
-              <div className="text-sm text-gray-400">Total Scans</div>
+      <Card>
+        <CardHeader>
+          <CardTitle>Misinformation Monitor Dashboard</CardTitle>
+          <CardDescription>Real-time monitoring statistics</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div className="text-center">
+              <div className="text-2xl font-bold text-blue-600">{stats.totalScans || 0}</div>
+              <div className="text-sm text-gray-600">Total Scans</div>
             </div>
-            
-            <div className="bg-gray-900/50 rounded-lg p-4">
-              <div className="flex items-center justify-between">
-                <AlertTriangle className="h-5 w-5 text-red-400" />
-                <span className="text-2xl font-bold text-red-400">{statsData.highRiskCount || 0}</span>
-              </div>
-              <div className="text-sm text-gray-400">High Risk Detected</div>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-red-600">{stats.highRiskCount || 0}</div>
+              <div className="text-sm text-gray-600">High Risk Items</div>
             </div>
-            
-            <div className="bg-gray-900/50 rounded-lg p-4">
-              <div className="flex items-center justify-between">
-                <TrendingUp className="h-5 w-5 text-purple-400" />
-                <span className="text-2xl font-bold text-purple-400">
-                  {((statsData.averageRiskScore || 0) * 100).toFixed(1)}%
-                </span>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-orange-600">
+                {stats.averageRiskScore ? (stats.averageRiskScore * 100).toFixed(1) : '0'}%
               </div>
-              <div className="text-sm text-gray-400">Avg Risk Score</div>
+              <div className="text-sm text-gray-600">Avg Risk Score</div>
             </div>
-            
-            <div className="bg-gray-900/50 rounded-lg p-4">
-              <div className="flex items-center justify-between">
-                <Clock className="h-5 w-5 text-green-400" />
-                <span className="text-2xl font-bold text-green-400">94.2%</span>
+            <div className="text-center">
+              <div className="text-2xl font-bold text-green-600">
+                {Object.keys(stats.categories || {}).length}
               </div>
-              <div className="text-sm text-gray-400">Detection Accuracy</div>
+              <div className="text-sm text-gray-600">Categories</div>
             </div>
           </div>
-        </Card>
-      )}
+        </CardContent>
+      </Card>
 
-      {/* Scan Mode Toggle */}
-      <Card className="medical-card p-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 className="text-lg font-semibold text-white">Content Scanner</h3>
-          <div className="flex space-x-2">
+      {/* Mode Toggle */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Scan Mode</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex space-x-4">
             <Button
-              variant={!batchMode ? "default" : "outline"}
+              variant={!batchMode ? 'default' : 'outline'}
               onClick={() => setBatchMode(false)}
-              className={!batchMode ? "bg-indigo-600" : "border-gray-600 text-gray-300"}
             >
-              <Search className="w-4 h-4 mr-2" />
               Single Scan
             </Button>
             <Button
-              variant={batchMode ? "default" : "outline"}
+              variant={batchMode ? 'default' : 'outline'}
               onClick={() => setBatchMode(true)}
-              className={batchMode ? "bg-indigo-600" : "border-gray-600 text-gray-300"}
             >
-              <FileText className="w-4 h-4 mr-2" />
               Batch Scan
             </Button>
           </div>
-        </div>
+        </CardContent>
+      </Card>
 
-        {!batchMode ? (
-          // Single Scan Mode
-          <div className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">
-                  Content to Analyze
-                </label>
-                <Textarea
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  placeholder="Paste or type the content you want to analyze for pediatric health misinformation..."
-                  className="bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                  rows={6}
-                />
-              </div>
-              
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-300 mb-2 block">
-                    Source URL or Platform
-                  </label>
-                  <Input
-                    value={source}
-                    onChange={(e) => setSource(e.target.value)}
-                    placeholder="e.g., https://example.com or Facebook"
-                    className="bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                  />
-                </div>
-                
-                <div>
-                  <label className="text-sm font-medium text-gray-300 mb-2 block">
-                    Platform
-                  </label>
-                  <Select value={platform} onValueChange={setPlatform}>
-                    <SelectTrigger className="bg-gray-800 border-gray-600 text-white">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="facebook">Facebook</SelectItem>
-                      <SelectItem value="twitter">Twitter</SelectItem>
-                      <SelectItem value="instagram">Instagram</SelectItem>
-                      <SelectItem value="tiktok">TikTok</SelectItem>
-                      <SelectItem value="youtube">YouTube</SelectItem>
-                      <SelectItem value="blog">Blog/Website</SelectItem>
-                      <SelectItem value="unknown">Unknown</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
+      {/* Input Section */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Content Analysis</CardTitle>
+          <CardDescription>
+            {batchMode ? 'Add multiple items for batch processing' : 'Analyze content for misinformation'}
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          {/* Web Scraping Section */}
+          <div className="border-b pb-4">
+            <Label htmlFor="scrape-url">Web Scraping</Label>
+            <div className="flex space-x-2 mt-2">
+              <Input
+                id="scrape-url"
+                placeholder="https://example.com/article"
+                value={scrapeUrl}
+                onChange={(e) => setScrapeUrl(e.target.value)}
+                className="flex-1"
+              />
+              <Button 
+                onClick={handleWebScrape}
+                disabled={scrapeMutation.isPending || !scrapeUrl.trim()}
+              >
+                {scrapeMutation.isPending ? (
+                  <>
+                    <Progress value={33} className="w-4 h-4 mr-2" />
+                    Scraping...
+                  </>
+                ) : (
+                  'Scrape & Analyze'
+                )}
+              </Button>
             </div>
-            
-            <Button
+          </div>
+
+          <div>
+            <Label htmlFor="content">Content to Analyze</Label>
+            <Textarea
+              id="content"
+              placeholder="Paste the content you want to analyze for misinformation..."
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="min-h-[120px]"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="source">Source URL (Optional)</Label>
+              <Input
+                id="source"
+                placeholder="https://example.com/article"
+                value={source}
+                onChange={(e) => setSource(e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="platform">Platform</Label>
+              <Select value={platform} onValueChange={setPlatform}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select platform" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="facebook">Facebook</SelectItem>
+                  <SelectItem value="twitter">Twitter/X</SelectItem>
+                  <SelectItem value="instagram">Instagram</SelectItem>
+                  <SelectItem value="tiktok">TikTok</SelectItem>
+                  <SelectItem value="youtube">YouTube</SelectItem>
+                  <SelectItem value="blog">Blog/Website</SelectItem>
+                  <SelectItem value="news">News Article</SelectItem>
+                  <SelectItem value="other">Other</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          {batchMode ? (
+            <div className="space-y-4">
+              <Button onClick={addBatchItem} disabled={!content.trim()}>
+                Add to Batch
+              </Button>
+              
+              {batchItems.length > 0 && (
+                <div className="space-y-2">
+                  <Label>Batch Items ({batchItems.length})</Label>
+                  <div className="space-y-2 max-h-40 overflow-y-auto">
+                    {batchItems.map((item, index) => (
+                      <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
+                        <div className="flex-1">
+                          <div className="text-sm font-medium truncate">{item.content.substring(0, 50)}...</div>
+                          <div className="text-xs text-gray-500">{item.source || 'No source'} • {item.platform || 'No platform'}</div>
+                        </div>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => removeBatchItem(index)}
+                        >
+                          Remove
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                  <Button 
+                    onClick={handleBatchScan}
+                    disabled={batchScanMutation.isPending}
+                    className="w-full"
+                  >
+                    {batchScanMutation.isPending ? (
+                      <>
+                        <Progress value={33} className="w-4 h-4 mr-2" />
+                        Processing Batch...
+                      </>
+                    ) : (
+                      `Process ${batchItems.length} Items`
+                    )}
+                  </Button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Button 
               onClick={handleSingleScan}
-              disabled={scanMutation.isPending || !content.trim() || !source.trim()}
-              className="bg-indigo-600 hover:bg-indigo-700"
+              disabled={scanMutation.isPending || !content.trim()}
+              className="w-full"
             >
               {scanMutation.isPending ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                  Scanning...
+                  <Progress value={33} className="w-4 h-4 mr-2" />
+                  Analyzing Content...
                 </>
               ) : (
-                <>
-                  <Search className="w-4 h-4 mr-2" />
-                  Scan for Misinformation
-                </>
+                'Analyze Content'
               )}
             </Button>
-          </div>
-        ) : (
-          // Batch Scan Mode
-          <div className="space-y-4">
-            <div className="grid md:grid-cols-2 gap-4">
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Results Section */}
+      {scanMutation.data && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Analysis Results</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
               <div>
-                <label className="text-sm font-medium text-gray-300 mb-2 block">
-                  Content to Analyze
-                </label>
-                <Textarea
-                  value={content}
-                  onChange={(e) => setContent(e.target.value)}
-                  placeholder="Paste content for batch analysis..."
-                  className="bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                  rows={4}
-                />
-              </div>
-              
-              <div className="space-y-4">
-                <div>
-                  <label className="text-sm font-medium text-gray-300 mb-2 block">
-                    Source URL or Platform
-                  </label>
-                  <Input
-                    value={source}
-                    onChange={(e) => setSource(e.target.value)}
-                    placeholder="e.g., https://example.com"
-                    className="bg-gray-800 border-gray-600 text-white placeholder-gray-400"
-                  />
+                <div className="text-2xl font-bold">
+                  {(scanMutation.data.riskScore * 100).toFixed(1)}%
                 </div>
-                
-                <div>
-                  <label className="text-sm font-medium text-gray-300 mb-2 block">
-                    Platform
-                  </label>
-                  <Select value={platform} onValueChange={setPlatform}>
-                    <SelectTrigger className="bg-gray-800 border-gray-600 text-white">
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="facebook">Facebook</SelectItem>
-                      <SelectItem value="twitter">Twitter</SelectItem>
-                      <SelectItem value="instagram">Instagram</SelectItem>
-                      <SelectItem value="tiktok">TikTok</SelectItem>
-                      <SelectItem value="youtube">YouTube</SelectItem>
-                      <SelectItem value="blog">Blog/Website</SelectItem>
-                      <SelectItem value="unknown">Unknown</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <Button
-                  onClick={addBatchItem}
-                  disabled={!content.trim() || !source.trim()}
-                  variant="outline"
-                  className="border-gray-600 text-gray-300 hover:bg-gray-700"
-                >
-                  <Upload className="w-4 h-4 mr-2" />
-                  Add to Batch
-                </Button>
+                <div className="text-sm text-gray-600">Risk Score</div>
               </div>
+              <Badge className={getSeverityColor(scanMutation.data.severity)}>
+                {scanMutation.data.severity.toUpperCase()}
+              </Badge>
             </div>
-            
-            {/* Batch Items */}
-            {batchContent.length > 0 && (
-              <div className="space-y-2">
-                <h4 className="text-sm font-medium text-gray-300">
-                  Batch Items ({batchContent.length})
-                </h4>
-                <div className="space-y-2 max-h-40 overflow-y-auto">
-                  {batchContent.map((item, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center justify-between p-3 bg-gray-800/50 rounded-lg"
-                    >
-                      <div className="flex-1 min-w-0">
-                        <p className="text-sm text-white truncate">
-                          {item.content.substring(0, 100)}...
-                        </p>
-                        <p className="text-xs text-gray-400">{item.source}</p>
-                      </div>
-                      <Button
-                        onClick={() => removeBatchItem(index)}
-                        variant="ghost"
-                        size="sm"
-                        className="text-red-400 hover:text-red-300"
-                      >
-                        Remove
-                      </Button>
+
+            <div>
+              <Label>Category</Label>
+              <div className="text-sm font-medium capitalize">{scanMutation.data.category.replace('_', ' ')}</div>
+            </div>
+
+            <div>
+              <Label>Analysis</Label>
+              <div className="text-sm text-gray-700 mt-1">{scanMutation.data.explanation}</div>
+            </div>
+
+            {scanMutation.data.flaggedClaims && scanMutation.data.flaggedClaims.length > 0 && (
+              <div>
+                <Label>Flagged Claims</Label>
+                <div className="space-y-2 mt-2">
+                  {scanMutation.data.flaggedClaims.map((claim, index) => (
+                    <div key={index} className="p-3 bg-yellow-50 border border-yellow-200 rounded">
+                      <div className="font-medium text-sm">{claim.text}</div>
+                      <div className="text-xs text-gray-600 mt-1">{claim.explanation}</div>
+                      <div className="text-xs text-blue-600 mt-1">{claim.recommendation}</div>
                     </div>
                   ))}
                 </div>
-                
-                <Button
-                  onClick={handleBatchScan}
-                  disabled={batchScanMutation.isPending || batchContent.length === 0}
-                  className="bg-indigo-600 hover:bg-indigo-700"
-                >
-                  {batchScanMutation.isPending ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
-                      Scanning Batch...
-                    </>
-                  ) : (
-                    <>
-                      <Search className="w-4 h-4 mr-2" />
-                      Scan {batchContent.length} Items
-                    </>
-                  )}
-                </Button>
               </div>
             )}
-          </div>
-        )}
-      </Card>
 
-      {/* Scan Results */}
-      {(scanMutation.data || batchScanMutation.data) && (
-        <Card className="medical-card p-6">
-          <h3 className="text-lg font-semibold text-white mb-4">Scan Results</h3>
-          
-          {scanMutation.data && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h4 className="font-medium text-white">Single Scan Result</h4>
-                <Badge className={getSeverityColor(scanMutation.data.severity)}>
-                  {scanMutation.data.severity.toUpperCase()}
-                </Badge>
+            {/* Feedback Section */}
+            <div className="border-t pt-4">
+              <Label>Was this analysis helpful?</Label>
+              <div className="flex space-x-2 mt-2">
+                <Button
+                  variant={userFeedback === 'agree' ? 'default' : 'outline'}
+                  size="sm"
+                  onClick={() => handleFeedback('agree')}
+                  disabled={feedbackMutation.isPending}
+                >
+                  👍 Agree
+                </Button>
+                <Button
+                  variant={userFeedback === 'disagree' ? 'destructive' : 'outline'}
+                  size="sm"
+                  onClick={() => handleFeedback('disagree')}
+                  disabled={feedbackMutation.isPending}
+                >
+                  👎 Disagree
+                </Button>
               </div>
-              
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Risk Score:</span>
-                    <span className="font-medium text-white">
-                      {(scanMutation.data.riskScore * 100).toFixed(1)}%
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Category:</span>
-                    <span className="font-medium text-white">
-                      {scanMutation.data.category.replace('_', ' ')}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Flagged for Review:</span>
-                    <span className={`font-medium ${scanMutation.data.flaggedForReview ? 'text-red-400' : 'text-green-400'}`}>
-                      {scanMutation.data.flaggedForReview ? 'Yes' : 'No'}
-                    </span>
-                  </div>
-                </div>
-                
-                <div className="bg-gray-900/50 rounded-lg p-3">
-                  <h6 className="text-sm font-medium text-gray-300 mb-2">AI Analysis</h6>
-                  <p className="text-sm text-gray-400">
-                    {scanMutation.data.explanation}
-                  </p>
-                </div>
-              </div>
-              
-              <div className="bg-gray-900/50 rounded-lg p-3">
-                <h6 className="text-sm font-medium text-gray-300 mb-2">Recommended Action</h6>
-                <p className="text-sm text-gray-400">
-                  {scanMutation.data.recommendedAction}
-                </p>
-              </div>
+              {feedbackMutation.isPending && (
+                <div className="text-xs text-gray-500 mt-1">Submitting feedback...</div>
+              )}
             </div>
-          )}
-          
-          {batchScanMutation.data && (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h4 className="font-medium text-white">Batch Scan Results</h4>
-                <Badge className="bg-blue-600 text-white">
-                  {batchScanMutation.data.results.length} Items
-                </Badge>
-              </div>
-              
-              <div className="space-y-2 max-h-60 overflow-y-auto">
-                {batchScanMutation.data.results.map((result: ScanResult, index: number) => (
-                  <div
-                    key={index}
-                    className="p-3 bg-gray-800/50 rounded-lg border border-gray-700"
-                  >
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm text-gray-400">Item {index + 1}</span>
-                      <Badge className={getSeverityColor(result.severity)}>
-                        {result.severity.toUpperCase()}
-                      </Badge>
-                    </div>
-                    <p className="text-sm text-gray-300 mb-2">
-                      {(result as any).content?.substring(0, 100)}...
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      Risk: {(result.riskScore * 100).toFixed(1)}% | 
-                      Category: {result.category.replace('_', ' ')}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+          </CardContent>
         </Card>
       )}
-
-      {/* Compliance Notice */}
-      <Card className="bg-blue-900/20 border border-blue-600/30 p-4">
-        <div className="flex items-start space-x-3">
-          <Shield className="h-5 w-5 text-blue-400 mt-0.5" />
-          <div className="text-sm">
-            <h6 className="font-medium text-blue-400 mb-1">Content Analysis Notice</h6>
-            <p className="text-blue-300">
-              This tool analyzes content for pediatric health misinformation. All analysis is performed 
-              in compliance with privacy regulations and is used solely for educational and monitoring purposes.
-            </p>
-          </div>
-        </div>
-      </Card>
     </div>
   );
 } 
