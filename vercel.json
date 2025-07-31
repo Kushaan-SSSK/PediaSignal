@@ -7,6 +7,14 @@
       "dest": "/dist/index.js"
     },
     {
+      "src": "/assets/(.*)",
+      "dest": "/dist/public/assets/$1"
+    },
+    {
+      "src": "/favicon.jpg",
+      "dest": "/dist/public/favicon.jpg"
+    },
+    {
       "src": "/(.*)",
       "dest": "/dist/public/index.html"
     }
