@@ -8,10 +8,6 @@ import NotFound from "@/pages/not-found";
 import Landing from "@/pages/landing";
 import AdminLogin from "@/pages/admin-login";
 import AdminDashboard from "@/pages/admin-dashboard";
-import DemoSimulation from "@/pages/demo-simulation";
-import DemoXray from "@/pages/demo-xray";
-import DemoMisinformation from "@/pages/demo-misinformation";
-import DemoTriage from "@/pages/demo-triage";
 
 function Router() {
   const [location] = useLocation();
@@ -36,10 +32,6 @@ function Router() {
       <Route path="/" component={Landing} />
       <Route path="/admin/login" component={AdminLogin} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
-      <Route path="/demo/simulation" component={DemoSimulation} />
-      <Route path="/demo/xray" component={DemoXray} />
-      <Route path="/demo/misinformation" component={DemoMisinformation} />
-      <Route path="/demo/triage" component={DemoTriage} />
       <Route component={NotFound} />
     </Switch>
   );
