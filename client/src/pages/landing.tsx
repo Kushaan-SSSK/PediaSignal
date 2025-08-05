@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
+import { Link } from "wouter";
 import logoPath from "@assets/Untitled design_1753293788779.jpg";
 import { 
   Heart, 
@@ -287,77 +288,97 @@ export default function Landing() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-1">
-              <CardContent className="p-6">
-                <Brain className="h-14 w-14 icon-blue mb-4" />
-                <h3 className="professional-text text-lg font-light text-white mb-3">
-                  <span className="text-gradient-blue">Emergency</span> Simulation
-                </h3>
-                <p className="professional-text text-slate-300 font-light text-sm mb-4">
-                  Interactive pediatric emergency scenarios designed to provide training 
-                  and educational support for healthcare professionals.
-                </p>
-                <div className="text-xs text-slate-400 font-light">
-                  • Multiple decision points per case<br />
-                  • Real-time vital monitoring<br />
-                  • Evidence-based scenarios
-                </div>
-              </CardContent>
-            </Card>
+            <Link href="/demo/simulation">
+              <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-1 cursor-pointer hover:bg-slate-800/50 transition-colors">
+                <CardContent className="p-6">
+                  <Brain className="h-14 w-14 icon-blue mb-4" />
+                  <h3 className="professional-text text-lg font-light text-white mb-3">
+                    <span className="text-gradient-blue">Emergency</span> Simulation
+                  </h3>
+                  <p className="professional-text text-slate-300 font-light text-sm mb-4">
+                    Interactive pediatric emergency scenarios designed to provide training 
+                    and educational support for healthcare professionals.
+                  </p>
+                  <div className="text-xs text-slate-400 font-light mb-4">
+                    • Multiple decision points per case<br />
+                    • Real-time vital monitoring<br />
+                    • Evidence-based scenarios
+                  </div>
+                  <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700">
+                    Try Demo →
+                  </Button>
+                </CardContent>
+              </Card>
+            </Link>
 
-            <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-2">
-              <CardContent className="p-6">
-                <FileImage className="h-14 w-14 icon-purple mb-4" />
-                <h3 className="professional-text text-lg font-light text-white mb-3">
-                  <span className="text-gradient-purple">X-ray</span> Analysis
-                </h3>
-                <p className="professional-text text-slate-300 font-light text-sm mb-4">
-                  AI-powered tool designed to assist healthcare professionals in identifying 
-                  suspicious injury patterns in pediatric X-ray images.
-                </p>
-                <div className="text-xs text-slate-400 font-light">
-                  • Pattern recognition support<br />
-                  • Multiple injury categories<br />
-                  • Educational training aid
-                </div>
-              </CardContent>
-            </Card>
+            <Link href="/demo/xray">
+              <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-2 cursor-pointer hover:bg-slate-800/50 transition-colors">
+                <CardContent className="p-6">
+                  <FileImage className="h-14 w-14 icon-purple mb-4" />
+                  <h3 className="professional-text text-lg font-light text-white mb-3">
+                    <span className="text-gradient-purple">X-ray</span> Analysis
+                  </h3>
+                  <p className="professional-text text-slate-300 font-light text-sm mb-4">
+                    AI-powered tool designed to assist healthcare professionals in identifying 
+                    suspicious injury patterns in pediatric X-ray images.
+                  </p>
+                  <div className="text-xs text-slate-400 font-light mb-4">
+                    • Pattern recognition support<br />
+                    • Multiple injury categories<br />
+                    • Educational training aid
+                  </div>
+                  <Button size="sm" className="w-full bg-purple-600 hover:bg-purple-700">
+                    Try Demo →
+                  </Button>
+                </CardContent>
+              </Card>
+            </Link>
 
-            <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-3">
-              <CardContent className="p-6">
-                <Shield className="h-14 w-14 icon-emerald mb-4" />
-                <h3 className="professional-text text-lg font-light text-white mb-3">
-                  <span className="text-gradient-emerald">Misinformation</span> Monitor
-                </h3>
-                <p className="professional-text text-slate-300 font-light text-sm mb-4">
-                  Chrome extension designed to identify potentially inaccurate pediatric health 
-                  information and provide educational alerts when browsing medical content.
-                </p>
-                <div className="text-xs text-slate-400 font-light">
-                  • Content analysis tool<br />
-                  • Risk assessment alerts<br />
-                  • Educational resources
-                </div>
-              </CardContent>
-            </Card>
+            <Link href="/demo/misinformation">
+              <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-3 cursor-pointer hover:bg-slate-800/50 transition-colors">
+                <CardContent className="p-6">
+                  <Shield className="h-14 w-14 icon-emerald mb-4" />
+                  <h3 className="professional-text text-lg font-light text-white mb-3">
+                    <span className="text-gradient-emerald">Misinformation</span> Monitor
+                  </h3>
+                  <p className="professional-text text-slate-300 font-light text-sm mb-4">
+                    Chrome extension designed to identify potentially inaccurate pediatric health 
+                    information and provide educational alerts when browsing medical content.
+                  </p>
+                  <div className="text-xs text-slate-400 font-light mb-4">
+                    • Content analysis tool<br />
+                    • Risk assessment alerts<br />
+                    • Educational resources
+                  </div>
+                  <Button size="sm" className="w-full bg-emerald-600 hover:bg-emerald-700">
+                    Try Demo →
+                  </Button>
+                </CardContent>
+              </Card>
+            </Link>
 
-            <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-1">
-              <CardContent className="p-6">
-                <MessageCircle className="h-14 w-14 icon-cyan mb-4" />
-                <h3 className="professional-text text-lg font-light text-white mb-3">
-                  <span className="keyword-highlight">Triage</span> Chatbot
-                </h3>
-                <p className="professional-text text-slate-300 font-light text-sm mb-4">
-                  Parent-facing AI assistant providing symptom guidance based on 
-                  pediatric triage protocols and evidence-based medical guidelines.
-                </p>
-                <div className="text-xs text-slate-400 font-light">
-                  • Basic symptom assessment<br />
-                  • Emergency escalation guidance<br />
-                  • English language support
-                </div>
-              </CardContent>
-            </Card>
+            <Link href="/demo/triage">
+              <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-1 cursor-pointer hover:bg-slate-800/50 transition-colors">
+                <CardContent className="p-6">
+                  <MessageCircle className="h-14 w-14 icon-cyan mb-4" />
+                  <h3 className="professional-text text-lg font-light text-white mb-3">
+                    <span className="keyword-highlight">Triage</span> Chatbot
+                  </h3>
+                  <p className="professional-text text-slate-300 font-light text-sm mb-4">
+                    Parent-facing AI assistant providing symptom guidance based on 
+                    pediatric triage protocols and evidence-based medical guidelines.
+                  </p>
+                  <div className="text-xs text-slate-400 font-light mb-4">
+                    • Basic symptom assessment<br />
+                    • Emergency escalation guidance<br />
+                    • English language support
+                  </div>
+                  <Button size="sm" className="w-full bg-cyan-600 hover:bg-cyan-700">
+                    Try Demo →
+                  </Button>
+                </CardContent>
+              </Card>
+            </Link>
           </div>
         </div>
       </section>
