@@ -1,0 +1,20 @@
+# Copy this content to your .env.local file
+
+# Database Configuration
+DATABASE_URL=postgresql://neondb_owner:npg_tLdHkyEV2Io8@ep-summer-snow-aeoat8i0-pooler.c-2.us-east-2.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+
+# PostgreSQL Connection Details
+PGDATABASE=neondb
+PGHOST=ep-summer-snow-aeoat8i0-pooler.c-2.us-east-2.aws.neon.tech
+PGPASSWORD=npg_tLdHkyEV2Io8
+PGPORT=5432
+PGUSER=neondb_owner
+
+# OpenAI API Configuration
+OPENAI_API_KEY=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
+
+# Session Security
+SESSION_SECRET=pediasignal_dev_secret_key_2024
+
+# Environment
+NODE_ENV=development

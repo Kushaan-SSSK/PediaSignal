@@ -288,7 +288,7 @@ export default function Landing() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Link href="/demo/simulation">
+            <Link href="/case-selection">
               <Card className="bg-slate-800/30 border-slate-700/50 feature-card fade-in-delay-1 cursor-pointer hover:bg-slate-800/50 transition-colors">
                 <CardContent className="p-6">
                   <Brain className="h-14 w-14 icon-blue mb-4" />

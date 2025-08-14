@@ -248,6 +248,75 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Get all available cases
+  app.get('/api/cases', async (req, res) => {
+    try {
+      res.json(caseBank);
+    } catch (error) {
+      console.error('Get all cases error:', error);
+      res.status(500).json({ message: "Failed to fetch cases" });
+    }
+  });
+
+  // Get a specific case by ID
+  app.get('/api/cases/:caseId', async (req, res) => {
+    try {
+      const { caseId } = req.params;
+      const foundCase = caseBank.find(c => c.id === caseId);
+      
+      if (!foundCase) {
+        return res.status(404).json({ message: "Case not found" });
+      }
+      
+      res.json(foundCase);
+    } catch (error) {
+      console.error('Get case error:', error);
+      res.status(500).json({ message: "Failed to fetch case" });
+    }
+  });
+
+  // Get random cases for selection
+  app.get('/api/cases/random/:count', async (req, res) => {
+    try {
+      const count = parseInt(req.params.count) || 3;
+      const cases: CaseDefinition[] = [];
+      const usedCategories = new Set<string>();
+      
+      // Ensure we get different categories for variety
+      while (cases.length < count && usedCategories.size < caseBank.length) {
+        const randomCase = getRandomCase();
+        if (!usedCategories.has(randomCase.category)) {
+          cases.push(randomCase);
+          usedCategories.add(randomCase.category);
+        }
+      }
+      
+      // If we don't have enough different categories, fill with any random cases
+      while (cases.length < count) {
+        const randomCase = getRandomCase();
+        if (!cases.find(c => c.id === randomCase.id)) {
+          cases.push(randomCase);
+        }
+      }
+      
+      res.json(cases);
+    } catch (error) {
+      console.error('Get random cases error:', error);
+      res.status(500).json({ message: "Failed to fetch random cases" });
+    }
+  });
+
+  // Get all available interventions
+  app.get('/api/interventions', async (req, res) => {
+    try {
+      const { interventions } = await import('./caseBank');
+      res.json(interventions);
+    } catch (error) {
+      console.error('Get interventions error:', error);
+      res.status(500).json({ message: "Failed to fetch interventions" });
+    }
+  });
+
   app.get('/api/simulation-categories', async (req, res) => {
     try {
       const categories = getAvailableCategories();
