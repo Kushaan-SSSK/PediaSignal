@@ -1,0 +1,1274 @@
+[
+  {
+    "id": "aliem_case_01_anaphylaxis",
+    "category": "Anaphylaxis",
+    "displayName": "Anaphylaxis - 6-year-old",
+    "name": "Anaphylaxis - 6-year-old",
+    "description": "Severe anaphylactic reaction in a 6-year-old child with comprehensive management through 4 stages",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 1: Anaphylaxis",
+    "difficulty": "Advanced",
+    "estimatedTime": "15-20 minutes",
+    "stages": 4,
+    "presentingSymptoms": [
+      "Facial swelling",
+      "Difficulty breathing",
+      "Wheezing",
+      "Hypotension",
+      "Tachycardia",
+      "Urticaria",
+      "Anxiety",
+      "Nausea"
+    ],
+    "clinicalHistory": "6-year-old male child, weight 25kg, height 120cm, presents to the emergency department via EMS at 14:30 following accidental peanut exposure at school lunch (approximately 13:45). Patient was eating a peanut butter sandwich when he immediately developed facial angioedema, bilateral periorbital swelling, and difficulty breathing. EMS was called at 13:50 and arrived at 13:55. Patient has a documented history of severe peanut allergy diagnosed at age 2, with previous anaphylactic reactions at ages 3 and 4, both requiring IM epinephrine administration. Patient carries an EpiPen Jr (0.15mg) but it was not immediately available at school. Past medical history includes mild asthma (well-controlled with albuterol PRN), no other chronic conditions. Medications: albuterol inhaler PRN, no daily medications. Allergies: peanuts (severe), tree nuts (moderate), shellfish (mild). Family history: mother has seasonal allergies, father has no known allergies. Immunizations are up to date. Social history: lives with both parents, attends first grade, no tobacco exposure, no pets.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "school",
+        "ageYears": 6,
+        "weightKg": 25,
+        "initialVitals": {
+          "heartRate": 130,
+          "respRate": 41,
+          "bloodPressureSys": 85,
+          "bloodPressureDia": 50,
+          "spo2": 93,
+          "temperature": 38.5,
+          "consciousness": "lethargic",
+          "capillaryRefill": 4
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "Recognition & ABCs",
+            "ordered": true,
+            "severity": "severe",
+            "TTIsec": 60,
+            "requiredInterventions": [
+              "IM epinephrine",
+              "IV fluids bolus",
+              "diphenhydramine IV",
+              "H2 blocker IV",
+              "nebulized beta-agonist",
+              "steroids IV",
+              "CBC",
+              "CXR (normal)"
+            ],
+            "helpful": [
+              "IV fluids bolus",
+              "diphenhydramine IV",
+              "H2 blocker IV",
+              "nebulized beta-agonist",
+              "steroids IV",
+              "CBC",
+              "CXR (normal)"
+            ],
+            "harmful": [
+              "delay epinephrine",
+              "epinephrine PO",
+              "unnecessary intubation without indications"
+            ],
+            "neutral": [
+              "CBC",
+              "CXR (normal)"
+            ],
+            "vitalEffects": {
+              "IM epinephrine": {
+                "heartRate": -19,
+                "respRate": -10,
+                "bloodPressureSys": 20,
+                "spo2": 4
+              },
+              "IV fluids bolus": {
+                "bloodPressureSys": 8,
+                "bloodPressureDia": 5
+              },
+              "diphenhydramine IV": {
+                "heartRate": -5,
+                "respRate": -2
+              },
+              "H2 blocker IV": {
+                "heartRate": -3,
+                "respRate": -1
+              },
+              "nebulized beta-agonist": {
+                "respRate": -5,
+                "spo2": 2
+              },
+              "steroids IV": {
+                "heartRate": -2,
+                "respRate": -1
+              }
+            }
+          },
+          {
+            "stage": 2,
+            "name": "Stabilization & Monitoring",
+            "ordered": true,
+            "severity": "moderate",
+            "TTIsec": 300,
+            "requiredInterventions": [
+              "vital signs monitoring",
+              "oxygen therapy maintenance",
+              "IV access assessment",
+              "capillary refill check",
+              "urine output monitoring"
+            ],
+            "helpful": [
+              "H2 blocker IV",
+              "steroids IV",
+              "albuterol nebulizer"
+            ],
+            "harmful": [
+              "discharge without observation",
+              "inadequate monitoring"
+            ],
+            "neutral": [
+              "allergy testing",
+              "discharge planning"
+            ],
+            "vitalEffects": {
+              "continuous monitoring": {},
+              "IV access maintenance": {},
+              "vital reassessment": {}
+            }
+          },
+          {
+            "stage": 3,
+            "name": "Observation & Prevention",
+            "ordered": true,
+            "severity": "moderate",
+            "TTIsec": 600,
+            "requiredInterventions": [
+              "extended observation period",
+              "vital signs reassessment",
+              "allergy action plan creation",
+              "epinephrine auto-injector training",
+              "discharge readiness assessment"
+            ],
+            "helpful": [
+              "oral antihistamines",
+              "epinephrine auto-injector training"
+            ],
+            "harmful": [
+              "premature discharge",
+              "inadequate follow-up planning"
+            ],
+            "neutral": [
+              "allergy referral",
+              "discharge instructions"
+            ],
+            "vitalEffects": {
+              "extended observation": {},
+              "vital reassessment": {},
+              "prevention planning": {}
+            }
+          },
+          {
+            "stage": 4,
+            "name": "Discharge & Follow-up",
+            "ordered": true,
+            "severity": "low",
+            "TTIsec": 900,
+            "requiredInterventions": [
+              "epinephrine auto-injector prescription",
+              "comprehensive discharge instructions",
+              "allergist referral scheduling",
+              "school action plan distribution",
+              "follow-up appointment booking"
+            ],
+            "helpful": [
+              "allergy referral",
+              "patient education"
+            ],
+            "harmful": [
+              "missing epinephrine prescription",
+              "inadequate discharge instructions"
+            ],
+            "neutral": [
+              "allergy testing scheduling",
+              "home monitoring instructions"
+            ],
+            "vitalEffects": {
+              "epinephrine auto-injector prescription": {},
+              "discharge instructions": {},
+              "follow-up planning": {}
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aliem_case_02_cardiac_tamponade",
+    "category": "Cardiac Tamponade",
+    "displayName": "Cardiac Tamponade - 12-year-old",
+    "name": "Cardiac Tamponade - 12-year-old",
+    "description": "Pericardial effusion with cardiac tamponade requiring immediate pericardiocentesis",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 2: Cardiac Tamponade",
+    "difficulty": "Expert",
+    "estimatedTime": "10-15 minutes",
+    "stages": 3,
+    "presentingSymptoms": [
+      "Chest pain",
+      "Dyspnea",
+      "Tachycardia",
+      "Hypotension",
+      "Muffled heart sounds",
+      "Pulsus paradoxus"
+    ],
+    "clinicalHistory": "12-year-old with recent viral illness presenting with chest pain, dyspnea, and signs of cardiac tamponade. Patient has muffled heart sounds and pulsus paradoxus on examination.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "adolescent",
+        "ageYears": 12,
+        "weightKg": 45,
+        "initialVitals": {
+          "heartRate": 140,
+          "respRate": 35,
+          "bloodPressureSys": 75,
+          "bloodPressureDia": 45,
+          "spo2": 88,
+          "temperature": 37.8,
+          "consciousness": "anxious",
+          "capillaryRefill": 3
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "Recognition & Stabilization",
+            "ordered": true,
+            "severity": "critical",
+            "TTIsec": 30,
+            "requiredInterventions": [
+              "immediate pericardiocentesis",
+              "IV access",
+              "continuous monitoring"
+            ],
+            "helpful": [
+              "oxygen therapy",
+              "IV fluids bolus"
+            ],
+            "harmful": [
+              "delay in pericardiocentesis",
+              "inadequate monitoring"
+            ],
+            "neutral": [
+              "CBC",
+              "CXR"
+            ],
+            "vitalEffects": {
+              "immediate pericardiocentesis": {
+                "heartRate": -30,
+                "respRate": -10,
+                "bloodPressureSys": 25,
+                "spo2": 8
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aliem_case_03_cah_adrenal_insufficiency",
+    "category": "CAH/Adrenal Insufficiency",
+    "displayName": "CAH/Adrenal Insufficiency - 8-month-old",
+    "name": "CAH/Adrenal Insufficiency - 8-month-old",
+    "description": "Congenital adrenal hyperplasia with adrenal crisis requiring immediate steroids",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 3: CAH/Adrenal Insufficiency",
+    "difficulty": "Critical",
+    "estimatedTime": "3-5 minutes",
+    "stages": 2,
+    "presentingSymptoms": [
+      "Hypotension",
+      "Hypoglycemia",
+      "Vomiting",
+      "Lethargy"
+    ],
+    "clinicalHistory": "8-month-old infant with known CAH presenting in adrenal crisis, requiring immediate intervention.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "infant",
+        "ageYears": 0.67,
+        "weightKg": 8,
+        "initialVitals": {
+          "heartRate": 160,
+          "respRate": 45,
+          "bloodPressureSys": 60,
+          "bloodPressureDia": 35,
+          "spo2": 95,
+          "temperature": 36,
+          "consciousness": "lethargic",
+          "capillaryRefill": 4
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "Immediate Stabilization",
+            "ordered": true,
+            "severity": "critical",
+            "TTIsec": 30,
+            "requiredInterventions": [
+              "IV hydrocortisone",
+              "IV glucose",
+              "IV fluids bolus"
+            ],
+            "helpful": [
+              "continuous monitoring",
+              "vital reassessment"
+            ],
+            "harmful": [
+              "delay in steroids",
+              "inadequate fluid resuscitation"
+            ],
+            "neutral": [
+              "CBC",
+              "electrolytes"
+            ],
+            "vitalEffects": {
+              "IV hydrocortisone": {
+                "heartRate": -20,
+                "bloodPressureSys": 20,
+                "consciousness": 0
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aliem_case_04_congenital_heart_lesion",
+    "category": "Congenital Heart Lesion",
+    "displayName": "Congenital Heart Lesion - Neonate",
+    "name": "Congenital Heart Lesion - Neonate",
+    "description": "Critical congenital heart disease requiring PGE1 infusion",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 4: Congenital Heart Lesion",
+    "difficulty": "Critical",
+    "estimatedTime": "2-3 minutes",
+    "stages": 1,
+    "presentingSymptoms": [
+      "Cyanosis",
+      "Tachypnea",
+      "Poor feeding",
+      "Lethargy"
+    ],
+    "clinicalHistory": "Newborn with critical congenital heart disease requiring immediate prostaglandin therapy.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "neonatal",
+        "ageYears": 0.01,
+        "weightKg": 3.2,
+        "initialVitals": {
+          "heartRate": 180,
+          "respRate": 60,
+          "bloodPressureSys": 55,
+          "bloodPressureDia": 30,
+          "spo2": 75,
+          "temperature": 36.8,
+          "consciousness": "lethargic",
+          "capillaryRefill": 4
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "Immediate Intervention",
+            "ordered": true,
+            "severity": "critical",
+            "TTIsec": 30,
+            "requiredInterventions": [
+              "PGE1 infusion",
+              "cardiology consultation",
+              "continuous monitoring"
+            ],
+            "helpful": [
+              "oxygen therapy",
+              "IV access"
+            ],
+            "harmful": [
+              "delay in PGE1",
+              "inadequate monitoring"
+            ],
+            "neutral": [
+              "CXR",
+              "echocardiogram"
+            ],
+            "vitalEffects": {
+              "PGE1 infusion": {
+                "spo2": 15,
+                "heartRate": -20,
+                "respRate": -10
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aliem_case_05_dka",
+    "category": "DKA",
+    "displayName": "Diabetic Ketoacidosis - 14-year-old",
+    "name": "Diabetic Ketoacidosis - 14-year-old",
+    "description": "Severe DKA requiring fluid resuscitation and insulin therapy",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 5: DKA",
+    "difficulty": "Severe",
+    "estimatedTime": "10-15 minutes",
+    "stages": 1,
+    "presentingSymptoms": [
+      "Polyuria",
+      "Polydipsia",
+      "Kussmaul breathing",
+      "Altered mental status"
+    ],
+    "clinicalHistory": "14-year-old with new-onset diabetes presenting in severe DKA requiring immediate intervention.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "adolescent",
+        "ageYears": 14,
+        "weightKg": 55,
+        "initialVitals": {
+          "heartRate": 150,
+          "respRate": 40,
+          "bloodPressureSys": 80,
+          "bloodPressureDia": 50,
+          "spo2": 92,
+          "temperature": 37.2,
+          "consciousness": "lethargic",
+          "capillaryRefill": 3
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "DKA Management",
+            "ordered": true,
+            "severity": "severe",
+            "TTIsec": 300,
+            "requiredInterventions": [
+              "IV fluids bolus",
+              "insulin infusion",
+              "electrolyte monitoring"
+            ],
+            "helpful": [
+              "continuous monitoring",
+              "vital reassessment"
+            ],
+            "harmful": [
+              "delay in insulin",
+              "inadequate fluid resuscitation"
+            ],
+            "neutral": [
+              "CBC",
+              "basic metabolic panel"
+            ],
+            "vitalEffects": {
+              "IV fluids bolus": {
+                "bloodPressureSys": 15,
+                "heartRate": -10
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aliem_case_06_foreign_body_aspiration",
+    "category": "Foreign Body Aspiration",
+    "displayName": "Foreign Body Aspiration - 2-year-old",
+    "name": "Foreign Body Aspiration - 2-year-old",
+    "description": "Foreign body aspiration requiring immediate intervention",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 6: Foreign Body Aspiration",
+    "difficulty": "Severe",
+    "estimatedTime": "2-5 minutes",
+    "stages": 1,
+    "presentingSymptoms": [
+      "Sudden onset cough",
+      "Respiratory distress",
+      "Cyanosis",
+      "Stridor"
+    ],
+    "clinicalHistory": "2-year-old toddler with sudden onset respiratory distress after playing with small toys.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "toddler",
+        "ageYears": 2,
+        "weightKg": 12,
+        "initialVitals": {
+          "heartRate": 160,
+          "respRate": 50,
+          "bloodPressureSys": 90,
+          "bloodPressureDia": 60,
+          "spo2": 85,
+          "temperature": 37,
+          "consciousness": "anxious",
+          "capillaryRefill": 3
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "Airway Management",
+            "ordered": true,
+            "severity": "critical",
+            "TTIsec": 60,
+            "requiredInterventions": [
+              "back blows",
+              "chest thrusts",
+              "Heimlich maneuver"
+            ],
+            "helpful": [
+              "oxygen therapy",
+              "continuous monitoring"
+            ],
+            "harmful": [
+              "delay in intervention",
+              "inadequate airway management"
+            ],
+            "neutral": [
+              "CXR",
+              "vital monitoring"
+            ],
+            "vitalEffects": {
+              "back blows": {},
+              "chest thrusts": {},
+              "Heimlich maneuver": {}
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aliem_case_07_multisystem_trauma",
+    "category": "Multisystem Trauma",
+    "displayName": "Multisystem Trauma - 8-year-old",
+    "name": "Multisystem Trauma - 8-year-old",
+    "description": "Severe multisystem trauma requiring immediate resuscitation",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 7: Multisystem Trauma",
+    "difficulty": "Critical",
+    "estimatedTime": "5-10 minutes",
+    "stages": 2,
+    "presentingSymptoms": [
+      "Multiple injuries",
+      "Hypotension",
+      "Altered mental status",
+      "Respiratory distress"
+    ],
+    "clinicalHistory": "8-year-old involved in motor vehicle accident with multiple injuries requiring immediate resuscitation.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "school",
+        "ageYears": 8,
+        "weightKg": 28,
+        "initialVitals": {
+          "heartRate": 170,
+          "respRate": 45,
+          "bloodPressureSys": 70,
+          "bloodPressureDia": 40,
+          "spo2": 88,
+          "temperature": 36.5,
+          "consciousness": "unresponsive",
+          "capillaryRefill": 4
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "Primary Survey",
+            "ordered": true,
+            "severity": "critical",
+            "TTIsec": 60,
+            "requiredInterventions": [
+              "airway management",
+              "breathing assessment",
+              "circulation support"
+            ],
+            "helpful": [
+              "IV access",
+              "continuous monitoring"
+            ],
+            "harmful": [
+              "delay in intervention",
+              "inadequate assessment"
+            ],
+            "neutral": [
+              "CXR",
+              "trauma series"
+            ],
+            "vitalEffects": {
+              "airway management": {
+                "spo2": 10,
+                "consciousness": 0
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aliem_case_08_myocarditis",
+    "category": "Myocarditis",
+    "displayName": "Myocarditis - 16-year-old",
+    "name": "Myocarditis - 16-year-old",
+    "description": "Viral myocarditis with cardiac dysfunction",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 8: Myocarditis",
+    "difficulty": "Advanced",
+    "estimatedTime": "8-12 minutes",
+    "stages": 2,
+    "presentingSymptoms": [
+      "Chest pain",
+      "Fatigue",
+      "Dyspnea",
+      "Palpitations"
+    ],
+    "clinicalHistory": "16-year-old with recent viral illness presenting with chest pain and signs of cardiac dysfunction.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "adolescent",
+        "ageYears": 16,
+        "weightKg": 65,
+        "initialVitals": {
+          "heartRate": 140,
+          "respRate": 35,
+          "bloodPressureSys": 85,
+          "bloodPressureDia": 55,
+          "spo2": 90,
+          "temperature": 37.5,
+          "consciousness": "alert",
+          "capillaryRefill": 3
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "Cardiac Assessment",
+            "ordered": true,
+            "severity": "moderate",
+            "TTIsec": 120,
+            "requiredInterventions": [
+              "ECG",
+              "cardiac monitoring",
+              "cardiology consultation"
+            ],
+            "helpful": [
+              "oxygen therapy",
+              "continuous monitoring"
+            ],
+            "harmful": [
+              "delay in assessment",
+              "inadequate monitoring"
+            ],
+            "neutral": [
+              "CBC",
+              "troponin"
+            ],
+            "vitalEffects": {
+              "ECG": {},
+              "cardiac monitoring": {},
+              "cardiology consultation": {}
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aliem_case_09_neonatal_delivery",
+    "category": "Neonatal Delivery",
+    "displayName": "Neonatal Delivery - Newborn",
+    "name": "Neonatal Delivery - Newborn",
+    "description": "High-risk neonatal delivery requiring immediate resuscitation",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 9: Neonatal Delivery",
+    "difficulty": "Critical",
+    "estimatedTime": "1-3 minutes",
+    "stages": 1,
+    "presentingSymptoms": [
+      "Respiratory distress",
+      "Bradycardia",
+      "Cyanosis",
+      "Poor tone"
+    ],
+    "clinicalHistory": "High-risk delivery with newborn requiring immediate resuscitation.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "neonatal",
+        "ageYears": 0.001,
+        "weightKg": 3,
+        "initialVitals": {
+          "heartRate": 80,
+          "respRate": 20,
+          "bloodPressureSys": 50,
+          "bloodPressureDia": 25,
+          "spo2": 70,
+          "temperature": 36,
+          "consciousness": "unresponsive",
+          "capillaryRefill": 4
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "Neonatal Resuscitation",
+            "ordered": true,
+            "severity": "critical",
+            "TTIsec": 30,
+            "requiredInterventions": [
+              "warm and dry",
+              "stimulation",
+              "positive pressure ventilation"
+            ],
+            "helpful": [
+              "continuous monitoring",
+              "temperature management"
+            ],
+            "harmful": [
+              "delay in intervention",
+              "inadequate ventilation"
+            ],
+            "neutral": [
+              "vital monitoring",
+              "documentation"
+            ],
+            "vitalEffects": {
+              "warm and dry": {
+                "temperature": 1
+              },
+              "positive pressure ventilation": {
+                "heartRate": 20,
+                "spo2": 15
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aliem_case_10_non_accidental_trauma",
+    "category": "Non-Accidental Trauma",
+    "displayName": "Non-Accidental Trauma - 3-year-old",
+    "name": "Non-Accidental Trauma - 3-year-old",
+    "description": "Suspected child abuse requiring immediate intervention and reporting",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 10: Non-Accidental Trauma",
+    "difficulty": "Advanced",
+    "estimatedTime": "10-15 minutes",
+    "stages": 2,
+    "presentingSymptoms": [
+      "Multiple injuries",
+      "Inconsistent history",
+      "Delayed presentation",
+      "Pattern injuries"
+    ],
+    "clinicalHistory": "3-year-old with multiple injuries and inconsistent history, raising concern for non-accidental trauma.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "preschool",
+        "ageYears": 3,
+        "weightKg": 15,
+        "initialVitals": {
+          "heartRate": 140,
+          "respRate": 30,
+          "bloodPressureSys": 85,
+          "bloodPressureDia": 55,
+          "spo2": 95,
+          "temperature": 37,
+          "consciousness": "alert",
+          "capillaryRefill": 3
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "Medical Stabilization",
+            "ordered": true,
+            "severity": "moderate",
+            "TTIsec": 120,
+            "requiredInterventions": [
+              "medical assessment",
+              "injury documentation",
+              "child protective services notification"
+            ],
+            "helpful": [
+              "forensic photography",
+              "detailed documentation"
+            ],
+            "harmful": [
+              "delay in reporting",
+              "inadequate documentation"
+            ],
+            "neutral": [
+              "CBC",
+              "imaging studies"
+            ],
+            "vitalEffects": {
+              "medical assessment": {},
+              "injury documentation": {},
+              "child protective services notification": {}
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aliem_case_11_pea_vf",
+    "category": "PEA/VF",
+    "displayName": "PEA/VF - 7-year-old",
+    "name": "PEA/VF - 7-year-old",
+    "description": "Pulseless electrical activity/ventricular fibrillation requiring immediate ACLS",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 11: PEA/VF",
+    "difficulty": "Critical",
+    "estimatedTime": "2-5 minutes",
+    "stages": 1,
+    "presentingSymptoms": [
+      "Unresponsive",
+      "No pulse",
+      "No breathing",
+      "Cardiac arrest"
+    ],
+    "clinicalHistory": "7-year-old found unresponsive with no pulse, requiring immediate ACLS intervention.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "school",
+        "ageYears": 7,
+        "weightKg": 25,
+        "initialVitals": {
+          "heartRate": 0,
+          "respRate": 0,
+          "bloodPressureSys": 0,
+          "bloodPressureDia": 0,
+          "spo2": 0,
+          "temperature": 36.5,
+          "consciousness": "unresponsive",
+          "capillaryRefill": 0
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "ACLS Protocol",
+            "ordered": true,
+            "severity": "critical",
+            "TTIsec": 30,
+            "requiredInterventions": [
+              "CPR",
+              "defibrillation",
+              "epinephrine"
+            ],
+            "helpful": [
+              "continuous monitoring",
+              "vital reassessment"
+            ],
+            "harmful": [
+              "delay in CPR",
+              "inadequate defibrillation"
+            ],
+            "neutral": [
+              "documentation",
+              "team coordination"
+            ],
+            "vitalEffects": {
+              "CPR": {
+                "heartRate": 40,
+                "spo2": 5
+              },
+              "defibrillation": {
+                "heartRate": 80,
+                "consciousness": 0
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aliem_case_12_penetrating_trauma",
+    "category": "Penetrating Trauma",
+    "displayName": "Penetrating Trauma - 15-year-old",
+    "name": "Penetrating Trauma - 15-year-old",
+    "description": "Gunshot wound requiring immediate intervention",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 12: Penetrating Trauma",
+    "difficulty": "Critical",
+    "estimatedTime": "3-8 minutes",
+    "stages": 2,
+    "presentingSymptoms": [
+      "Gunshot wound",
+      "Hypotension",
+      "Respiratory distress",
+      "Altered mental status"
+    ],
+    "clinicalHistory": "15-year-old with gunshot wound to chest requiring immediate intervention.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "adolescent",
+        "ageYears": 15,
+        "weightKg": 60,
+        "initialVitals": {
+          "heartRate": 160,
+          "respRate": 45,
+          "bloodPressureSys": 70,
+          "bloodPressureDia": 45,
+          "spo2": 85,
+          "temperature": 36.8,
+          "consciousness": "lethargic",
+          "capillaryRefill": 4
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "Immediate Intervention",
+            "ordered": true,
+            "severity": "critical",
+            "TTIsec": 60,
+            "requiredInterventions": [
+              "airway management",
+              "chest tube placement",
+              "IV access"
+            ],
+            "helpful": [
+              "oxygen therapy",
+              "continuous monitoring"
+            ],
+            "harmful": [
+              "delay in intervention",
+              "inadequate assessment"
+            ],
+            "neutral": [
+              "CXR",
+              "trauma series"
+            ],
+            "vitalEffects": {
+              "airway management": {
+                "spo2": 10
+              },
+              "chest tube placement": {
+                "respRate": -5,
+                "spo2": 8
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aliem_case_13_pneumonia_septic_shock",
+    "category": "Pneumonia & Septic Shock",
+    "displayName": "Pneumonia & Septic Shock - 4-year-old",
+    "name": "Pneumonia & Septic Shock - 4-year-old",
+    "description": "Severe pneumonia with septic shock requiring immediate intervention",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 13: Pneumonia & Septic Shock",
+    "difficulty": "Critical",
+    "estimatedTime": "8-12 minutes",
+    "stages": 2,
+    "presentingSymptoms": [
+      "Fever",
+      "Cough",
+      "Respiratory distress",
+      "Hypotension"
+    ],
+    "clinicalHistory": "4-year-old with severe pneumonia presenting in septic shock requiring immediate intervention.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "preschool",
+        "ageYears": 4,
+        "weightKg": 18,
+        "initialVitals": {
+          "heartRate": 170,
+          "respRate": 50,
+          "bloodPressureSys": 65,
+          "bloodPressureDia": 40,
+          "spo2": 82,
+          "temperature": 39.5,
+          "consciousness": "lethargic",
+          "capillaryRefill": 4
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "Septic Shock Management",
+            "ordered": true,
+            "severity": "critical",
+            "TTIsec": 120,
+            "requiredInterventions": [
+              "IV fluids bolus",
+              "antibiotics",
+              "oxygen therapy"
+            ],
+            "helpful": [
+              "continuous monitoring",
+              "vital reassessment"
+            ],
+            "harmful": [
+              "delay in antibiotics",
+              "inadequate fluid resuscitation"
+            ],
+            "neutral": [
+              "CBC",
+              "blood cultures"
+            ],
+            "vitalEffects": {
+              "IV fluids bolus": {
+                "bloodPressureSys": 15,
+                "heartRate": -10
+              },
+              "antibiotics": {
+                "temperature": -1
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aliem_case_14_status_asthmaticus",
+    "category": "Status Asthmaticus",
+    "displayName": "Status Asthmaticus - 10-year-old",
+    "name": "Status Asthmaticus - 10-year-old",
+    "description": "Severe asthma exacerbation requiring immediate intervention",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 14: Status Asthmaticus",
+    "difficulty": "Advanced",
+    "estimatedTime": "8-12 minutes",
+    "stages": 2,
+    "presentingSymptoms": [
+      "Severe wheezing",
+      "Respiratory distress",
+      "Accessory muscle use",
+      "Hypoxemia"
+    ],
+    "clinicalHistory": "10-year-old with severe asthma exacerbation requiring immediate intervention.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "school",
+        "ageYears": 10,
+        "weightKg": 35,
+        "initialVitals": {
+          "heartRate": 150,
+          "respRate": 45,
+          "bloodPressureSys": 90,
+          "bloodPressureDia": 60,
+          "spo2": 85,
+          "temperature": 37.2,
+          "consciousness": "anxious",
+          "capillaryRefill": 3
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "Asthma Management",
+            "ordered": true,
+            "severity": "severe",
+            "TTIsec": 180,
+            "requiredInterventions": [
+              "albuterol nebulizer",
+              "IV steroids",
+              "oxygen therapy"
+            ],
+            "helpful": [
+              "continuous monitoring",
+              "vital reassessment"
+            ],
+            "harmful": [
+              "delay in treatment",
+              "inadequate monitoring"
+            ],
+            "neutral": [
+              "CBC",
+              "CXR"
+            ],
+            "vitalEffects": {
+              "albuterol nebulizer": {
+                "respRate": -8,
+                "spo2": 8
+              },
+              "IV steroids": {
+                "respRate": -3
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aliem_case_15_status_epilepticus",
+    "category": "Status Epilepticus",
+    "displayName": "Status Epilepticus - 5-year-old",
+    "name": "Status Epilepticus - 5-year-old",
+    "description": "Prolonged seizure requiring immediate intervention",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 15: Status Epilepticus",
+    "difficulty": "Critical",
+    "estimatedTime": "3-8 minutes",
+    "stages": 2,
+    "presentingSymptoms": [
+      "Prolonged seizure",
+      "Altered mental status",
+      "Post-ictal state",
+      "Fever"
+    ],
+    "clinicalHistory": "5-year-old with prolonged seizure requiring immediate intervention.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "preschool",
+        "ageYears": 5,
+        "weightKg": 20,
+        "initialVitals": {
+          "heartRate": 160,
+          "respRate": 40,
+          "bloodPressureSys": 95,
+          "bloodPressureDia": 65,
+          "spo2": 88,
+          "temperature": 39,
+          "consciousness": "post-ictal",
+          "capillaryRefill": 3
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "Seizure Management",
+            "ordered": true,
+            "severity": "critical",
+            "TTIsec": 60,
+            "requiredInterventions": [
+              "benzodiazepine administration",
+              "airway management",
+              "continuous monitoring"
+            ],
+            "helpful": [
+              "oxygen therapy",
+              "vital reassessment"
+            ],
+            "harmful": [
+              "delay in medication",
+              "inadequate airway management"
+            ],
+            "neutral": [
+              "CBC",
+              "glucose"
+            ],
+            "vitalEffects": {
+              "benzodiazepine administration": {
+                "consciousness": 0,
+                "respRate": -5
+              }
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "aliem_case_16_svt",
+    "category": "SVT",
+    "displayName": "Supraventricular Tachycardia - 6-month-old",
+    "name": "Supraventricular Tachycardia - 6-month-old",
+    "description": "SVT requiring immediate intervention",
+    "sourceVersion": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "sourceCitation": "ALiEM EM ReSCu Peds – Case 16: SVT",
+    "difficulty": "Advanced",
+    "estimatedTime": "3-5 minutes",
+    "stages": 1,
+    "presentingSymptoms": [
+      "Tachycardia",
+      "Poor feeding",
+      "Irritability",
+      "Respiratory distress"
+    ],
+    "clinicalHistory": "6-month-old with SVT requiring immediate intervention.",
+    "variants": [
+      {
+        "variantId": "A",
+        "ageBand": "infant",
+        "ageYears": 0.5,
+        "weightKg": 7,
+        "initialVitals": {
+          "heartRate": 220,
+          "respRate": 50,
+          "bloodPressureSys": 70,
+          "bloodPressureDia": 45,
+          "spo2": 90,
+          "temperature": 37,
+          "consciousness": "irritable",
+          "capillaryRefill": 3
+        },
+        "stages": [
+          {
+            "stage": 1,
+            "name": "SVT Management",
+            "ordered": true,
+            "severity": "moderate",
+            "TTIsec": 120,
+            "requiredInterventions": [
+              "vagal maneuvers",
+              "adenosine administration",
+              "continuous monitoring"
+            ],
+            "helpful": [
+              "oxygen therapy",
+              "vital reassessment"
+            ],
+            "harmful": [
+              "delay in treatment",
+              "inadequate monitoring"
+            ],
+            "neutral": [
+              "ECG",
+              "CBC"
+            ],
+            "vitalEffects": {
+              "vagal maneuvers": {
+                "heartRate": -50
+              },
+              "adenosine administration": {
+                "heartRate": -100
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

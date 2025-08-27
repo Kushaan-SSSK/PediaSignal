@@ -1,0 +1,95 @@
+{
+  "id": "0002_add_kb_passages",
+  "prevId": "0001_fluffy_jack_flag",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "kb_passages": {
+      "name": "kb_passages",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "case_id": {
+          "name": "case_id",
+          "type": "text",
+          "notNull": true
+        },
+        "stage": {
+          "name": "stage",
+          "type": "integer",
+          "notNull": true
+        },
+        "section": {
+          "name": "section",
+          "type": "text",
+          "notNull": true
+        },
+        "tags": {
+          "name": "tags",
+          "type": "jsonb",
+          "notNull": true,
+          "default": "'[]'::jsonb"
+        },
+        "text": {
+          "name": "text",
+          "type": "text",
+          "notNull": true
+        },
+        "embedding": {
+          "name": "embedding",
+          "type": "jsonb"
+        },
+        "source_citation": {
+          "name": "source_citation",
+          "type": "text",
+          "notNull": true
+        },
+        "license": {
+          "name": "license",
+          "type": "text",
+          "notNull": true,
+          "default": "'CC BY-NC-SA 4.0'"
+        },
+        "document_id": {
+          "name": "document_id",
+          "type": "text",
+          "notNull": true
+        },
+        "passage_hash": {
+          "name": "passage_hash",
+          "type": "text",
+          "notNull": true
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "default": "now()"
+        }
+      },
+      "indexes": {
+        "idx_kb_passages_case_id": {
+          "name": "idx_kb_passages_case_id",
+          "columns": ["case_id"]
+        },
+        "idx_kb_passages_stage": {
+          "name": "idx_kb_passages_stage",
+          "columns": ["stage"]
+        },
+        "idx_kb_passages_section": {
+          "name": "idx_kb_passages_section",
+          "columns": ["section"]
+        },
+        "idx_kb_passages_tags": {
+          "name": "idx_kb_passages_tags",
+          "columns": ["tags"],
+          "using": "gin"
+        }
+      }
+    }
+  }
+}

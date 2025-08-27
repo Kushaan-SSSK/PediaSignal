@@ -27,8 +27,40 @@ export const simulations = pgTable("simulations", {
   interventions: jsonb("interventions").notNull().default([]), // Array of applied interventions
   aiExplanations: jsonb("ai_explanations").notNull().default([]), // GPT-4 generated explanations
   status: text("status").notNull().default("active"), // active, paused, completed
+  // New RAG fields
+  evidenceSources: jsonb("evidence_sources").notNull().default([]), // Array of EvidenceRef
+  objectiveHits: jsonb("objective_hits").notNull().default([]), // Array of objective strings
+  riskFlags: jsonb("risk_flags").notNull().default([]), // Array of risk flag strings
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+// Knowledge Base Passages (RAG text layer)
+export const kbPassages = pgTable("kb_passages", {
+  id: serial("id").primaryKey(),
+  caseId: text("caseId").notNull(), // e.g., "aliem-case-01"
+  stage: integer("stage").notNull(), // Simulation stage
+  section: text("section").notNull(), // objectives | critical_actions | debrief | actor_prompts | pitfalls
+  tags: jsonb("tags").notNull().default([]), // e.g., ["ICS1","red-flag","airway"]
+  text: text("text").notNull(), // Chunked text content
+  embedding: jsonb("embedding"), // Vector embedding (stored as JSON if not using pgvector)
+  sourceCitation: text("sourceCitation").notNull(), // case title, page/section
+  license: text("license").notNull().default("CC BY-NC-SA 4.0"),
+  documentId: text("document_id"), // Reference to uploaded document
+  passageHash: text("passage_hash"), // Hash for deduplication
+  createdAt: timestamp("createdAt").defaultNow(),
+});
+
+// Knowledge Base Rules (deterministic rules layer)
+export const kbRules = pgTable("kb_rules", {
+  id: serial("id").primaryKey(),
+  caseId: text("case_id").notNull(), // e.g., "aliem-case-01"
+  kind: text("kind").notNull(), // 'drug_doses' | 'algo_steps' | 'vital_curves' | 'critical_actions'
+  payload: jsonb("payload").notNull(), // Rule-specific data
+  version: text("version").notNull(), // e.g., "aliem-rescu-peds-2021-03-29"
+  checksum: text("checksum").notNull(), // Integrity of source
+  documentId: text("document_id").notNull(), // Reference to uploaded document
+  createdAt: timestamp("created_at").defaultNow(),
 });
 
 // X-ray analyses
@@ -65,6 +97,43 @@ export const chatConversations = pgTable("chat_conversations", {
   riskLevel: text("risk_level").notNull(), // low, medium, high, emergency
   recommendedAction: text("recommended_action").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Telemetry: RAG query tracking
+export const kbQueries = pgTable("kb_queries", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull().references(() => users.id),
+  sessionId: text("session_id").notNull(),
+  query: text("query").notNull(),
+  caseId: text("case_id"),
+  stage: integer("stage"),
+  section: text("section"),
+  tags: jsonb("tags").notNull().default([]),
+  passageIds: jsonb("passage_ids").notNull().default([]), // Array of retrieved passage IDs
+  topK: integer("top_k").notNull().default(10),
+  responseTime: integer("response_time"), // milliseconds
+  cacheHit: boolean("cache_hit").default(false),
+  evidenceSources: integer("evidence_sources").default(0), // Count of evidence sources returned
+  objectiveHits: integer("objective_hits").default(0), // Count of objective hits
+  riskFlags: integer("risk_flags").default(0), // Count of risk flags
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+// Telemetry: Objective coverage tracking
+export const objectiveCoverage = pgTable("objective_coverage", {
+  id: serial("id").primaryKey(),
+  simulationId: integer("simulation_id").notNull().references(() => simulations.id),
+  objectiveId: text("objective_id").notNull(),
+  objectiveText: text("objective_text").notNull(),
+  status: text("status").notNull().default("not-met"), // not-met, partially, completed
+  score: integer("score").notNull().default(0), // 0-100
+  evidenceSources: jsonb("evidence_sources").notNull().default([]), // Array of EvidenceRef
+  whatWentWell: jsonb("what_went_well").notNull().default([]), // Array of strings
+  improvements: jsonb("improvements").notNull().default([]), // Array of strings
+  timeToComplete: integer("time_to_complete"), // seconds
+  interventionsApplied: jsonb("interventions_applied").notNull().default([]), // Array of intervention IDs
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
 });
 
 // Waitlist for platform access
@@ -137,6 +206,28 @@ export const insertWaitlistSchema = createInsertSchema(waitlist).omit({
 
 export const selectWaitlistSchema = createSelectSchema(waitlist);
 
+// Telemetry schemas
+export const insertKbQuerySchema = createInsertSchema(kbQueries).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertObjectiveCoverageSchema = createInsertSchema(objectiveCoverage).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const selectKbQuerySchema = createSelectSchema(kbQueries);
+export const selectObjectiveCoverageSchema = createSelectSchema(objectiveCoverage);
+
+// Zod schemas for new tables
+export const kbPassageInsertSchema = createInsertSchema(kbPassages);
+export const kbPassageSelectSchema = createSelectSchema(kbPassages);
+
+export const kbRuleInsertSchema = createInsertSchema(kbRules);
+export const kbRuleSelectSchema = createSelectSchema(kbRules);
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -150,3 +241,13 @@ export type ChatConversation = typeof chatConversations.$inferSelect;
 export type InsertChatConversation = z.infer<typeof insertChatConversationSchema>;
 export type Waitlist = typeof waitlist.$inferSelect;
 export type InsertWaitlist = z.infer<typeof insertWaitlistSchema>;
+
+// Type exports
+export type KbPassage = z.infer<typeof kbPassageSelectSchema>;
+export type KbRule = z.infer<typeof kbRuleSelectSchema>;
+
+// Telemetry types
+export type KbQuery = z.infer<typeof selectKbQuerySchema>;
+export type InsertKbQuery = z.infer<typeof insertKbQuerySchema>;
+export type ObjectiveCoverage = z.infer<typeof selectObjectiveCoverageSchema>;
+export type InsertObjectiveCoverage = z.infer<typeof insertObjectiveCoverageSchema>;

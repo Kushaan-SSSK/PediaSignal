@@ -1,0 +1,37 @@
+{
+  "documentId": "pals-guidelines-1755648417199",
+  "filename": "AlgorithmPALS_CA_200707.pdf",
+  "title": "AlgorithmPALS CA 200707",
+  "source": "PALS Guidelines",
+  "version": "2025",
+  "license": "Check source license",
+  "uploadDate": "2025-08-20",
+  "uploadedBy": "kusha",
+  "checksum": "821441bd1d4d502efbc97df19452ab19f6792abac1117b488a19d5016549107a",
+  "fileSize": 134104,
+  "pageCount": null,
+  "language": "en",
+  "topics": [],
+  "tags": [],
+  "caseId": null,
+  "stage": 1,
+  "sections": [
+    "objectives",
+    "critical_actions",
+    "debrief",
+    "actor_prompts",
+    "pitfalls"
+  ],
+  "processingStatus": "pending",
+  "processedDate": null,
+  "chunkCount": null,
+  "embeddingStatus": "pending",
+  "qualityScore": null,
+  "notes": "",
+  "attribution": {
+    "authors": [],
+    "publication": "PALS Guidelines",
+    "year": 2025,
+    "url": ""
+  }
+}

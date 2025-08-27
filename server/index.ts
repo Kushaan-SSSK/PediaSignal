@@ -43,6 +43,15 @@ app.use((req, res, next) => {
 (async () => {
   const server = await registerRoutes(app);
 
+  // Initialize Knowledge Base for RAG system
+  try {
+    const { initializeKnowledgeBase } = await import('./rag/initKnowledgeBase');
+    await initializeKnowledgeBase();
+  } catch (error) {
+    console.error('Failed to initialize Knowledge Base:', error);
+    console.log('RAG system may not function properly');
+  }
+
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;
     const message = err.message || "Internal Server Error";

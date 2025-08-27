@@ -1,0 +1,37 @@
+{
+  "documentId": "aliem-em-rescu-peds-1755648417224",
+  "filename": "ALiEM ReSCu Peds Simulation eBook 03-29-21.pdf",
+  "title": "ALiEM ReSCu Peds Simulation EBook 03 29 21",
+  "source": "ALiEM EM ReSCu Peds",
+  "version": "2025",
+  "license": "CC BY-NC-SA 4.0",
+  "uploadDate": "2025-08-20",
+  "uploadedBy": "kusha",
+  "checksum": "2f72f522c2a57f80ba67fe54931a4feb4d9dd3279473c023c8979d3d7ad1a29b",
+  "fileSize": 24841129,
+  "pageCount": null,
+  "language": "en",
+  "topics": [],
+  "tags": [],
+  "caseId": null,
+  "stage": 1,
+  "sections": [
+    "objectives",
+    "critical_actions",
+    "debrief",
+    "actor_prompts",
+    "pitfalls"
+  ],
+  "processingStatus": "pending",
+  "processedDate": null,
+  "chunkCount": null,
+  "embeddingStatus": "pending",
+  "qualityScore": null,
+  "notes": "",
+  "attribution": {
+    "authors": [],
+    "publication": "ALiEM EM ReSCu Peds",
+    "year": 2025,
+    "url": ""
+  }
+}

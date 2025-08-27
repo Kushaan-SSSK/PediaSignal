@@ -1,0 +1,37 @@
+{
+  "documentId": "pals-guidelines-1755648322707",
+  "filename": "AlgorithmPALS_Tachycardia_200618 (1).pdf",
+  "title": "AlgorithmPALS Tachycardia 200618 (1)",
+  "source": "PALS Guidelines",
+  "version": "2025",
+  "license": "Check source license",
+  "uploadDate": "2025-08-20",
+  "uploadedBy": "kusha",
+  "checksum": "a22de473532670fd8a833ada1b878dfe2a5b3d6e135f6f38fe797a67a09aa018",
+  "fileSize": 112021,
+  "pageCount": null,
+  "language": "en",
+  "topics": [],
+  "tags": [],
+  "caseId": null,
+  "stage": 1,
+  "sections": [
+    "objectives",
+    "critical_actions",
+    "debrief",
+    "actor_prompts",
+    "pitfalls"
+  ],
+  "processingStatus": "pending",
+  "processedDate": null,
+  "chunkCount": null,
+  "embeddingStatus": "pending",
+  "qualityScore": null,
+  "notes": "",
+  "attribution": {
+    "authors": [],
+    "publication": "PALS Guidelines",
+    "year": 2025,
+    "url": ""
+  }
+}

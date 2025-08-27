@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1755649296453,
+      "tag": "0000_nifty_moira_mactaggert",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1755650567357,
+      "tag": "0001_fluffy_jack_flag",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1755757440000,
+      "tag": "0002_add_kb_passages",
+      "breakpoints": true
+    }
+  ]
+}

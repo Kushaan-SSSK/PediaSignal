@@ -1,0 +1,37 @@
+{
+  "documentId": "pals-guidelines-1755648322704",
+  "filename": "AlgorithmPALS_Bradycardia_200707.pdf",
+  "title": "AlgorithmPALS Bradycardia 200707",
+  "source": "PALS Guidelines",
+  "version": "2025",
+  "license": "Check source license",
+  "uploadDate": "2025-08-20",
+  "uploadedBy": "kusha",
+  "checksum": "cecb7bbde22b687cb45d7b2d7eeb264842e8c39d5698360ab5203c71b5da34fa",
+  "fileSize": 64581,
+  "pageCount": null,
+  "language": "en",
+  "topics": [],
+  "tags": [],
+  "caseId": null,
+  "stage": 1,
+  "sections": [
+    "objectives",
+    "critical_actions",
+    "debrief",
+    "actor_prompts",
+    "pitfalls"
+  ],
+  "processingStatus": "pending",
+  "processedDate": null,
+  "chunkCount": null,
+  "embeddingStatus": "pending",
+  "qualityScore": null,
+  "notes": "",
+  "attribution": {
+    "authors": [],
+    "publication": "PALS Guidelines",
+    "year": 2025,
+    "url": ""
+  }
+}

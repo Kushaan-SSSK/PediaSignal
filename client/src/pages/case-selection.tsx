@@ -12,234 +12,269 @@ import {
   Wind,
   ArrowLeft,
   Clock,
-  User
+  User,
+  Droplets,
+  Zap,
+  Car,
+  Baby,
+  Shield,
+  Sword
 } from 'lucide-react';
 
-// Fixed, medically accurate cases verified through PubMed
-const fixedCases = [
-  {
-    id: 'febrile_seizure_01',
-    name: 'Febrile Seizure - 18-month-old',
-    category: 'febrile_seizure',
-    difficulty: 'moderate',
-    description: 'Complex febrile seizure with post-ictal state requiring immediate intervention',
-    presentingSymptoms: ['Seizure', 'Fever', 'Post-ictal lethargy', 'Tachypnea'],
-    clinicalHistory: '18-month-old male with first-time febrile seizure, temperature 103.2°F, seizure lasted 3 minutes, now post-ictal with decreased responsiveness.',
-    estimatedTime: '8-12 minutes',
-    stages: 3
-  },
-  {
-    id: 'respiratory_distress_01',
-    name: 'Severe Asthma Exacerbation - 8-year-old',
-    category: 'respiratory_distress',
-    difficulty: 'high',
-    description: 'Status asthmaticus with severe bronchospasm and respiratory failure',
-    presentingSymptoms: ['Severe dyspnea', 'Wheezing', 'Accessory muscle use', 'Hypoxemia'],
-    clinicalHistory: '8-year-old female with known asthma, presenting with severe exacerbation unresponsive to home albuterol, using accessory muscles, oxygen saturation 88%.',
-    estimatedTime: '10-15 minutes',
-    stages: 3
-  },
-  {
-    id: 'asthma_exacerbation_01',
-    name: 'Moderate Asthma Exacerbation - 6-year-old',
-    category: 'asthma_exacerbation',
-    difficulty: 'moderate',
-    description: 'Moderate asthma exacerbation requiring bronchodilator therapy',
-    presentingSymptoms: ['Dyspnea', 'Wheezing', 'Cough', 'Mild retractions'],
-    clinicalHistory: '6-year-old male with intermittent asthma, presenting with moderate exacerbation, mild retractions, oxygen saturation 92%, responds partially to home albuterol.',
-    estimatedTime: '6-10 minutes',
-    stages: 3
-  },
-  {
-    id: 'septic_shock_01',
-    name: 'Septic Shock - 3-year-old',
-    category: 'septic_shock',
-    difficulty: 'critical',
-    description: 'Severe sepsis with shock requiring immediate fluid resuscitation and vasopressors',
-    presentingSymptoms: ['Fever', 'Hypotension', 'Tachycardia', 'Altered mental status'],
-    clinicalHistory: '3-year-old female with 2-day history of fever, now hypotensive (BP 70/40), tachycardic (HR 180), lethargic, and mottled extremities.',
-    estimatedTime: '12-18 minutes',
-    stages: 3
-  },
-  {
-    id: 'cardiac_arrest_01',
-    name: 'Pediatric Cardiac Arrest - 5-year-old',
-    category: 'cardiac_arrest',
-    difficulty: 'critical',
-    description: 'Cardiac arrest secondary to respiratory failure requiring immediate ACLS',
-    presentingSymptoms: ['Unresponsive', 'No pulse', 'No breathing', 'Cyanosis'],
-    clinicalHistory: '5-year-old male found unresponsive, no pulse, no breathing, cyanotic. Witnessed by parent who called 911 immediately.',
-    estimatedTime: '15-20 minutes',
-    stages: 3
-  },
-  {
-    id: 'trauma_resuscitation_01',
-    name: 'Major Trauma - 12-year-old',
-    category: 'trauma_resuscitation',
-    difficulty: 'critical',
-    description: 'Multi-system trauma with hemorrhagic shock requiring immediate resuscitation',
-    presentingSymptoms: ['Hypotension', 'Tachycardia', 'Altered mental status', 'External bleeding'],
-    clinicalHistory: '12-year-old male involved in high-speed motor vehicle collision, hypotensive (BP 65/35), tachycardic (HR 190), altered mental status, active bleeding from multiple sites.',
-    estimatedTime: '15-25 minutes',
-    stages: 3
-  }
-];
+// ALiEM cases - fetched from server API
+// Source: ALiEM EM ReSCu Peds Simulation eBook 03-29-21 (CC BY-NC-SA 4.0)
+
+interface ALiEMCase {
+  id: string;
+  name: string;
+  category: string;
+  difficulty: string;
+  description: string;
+  presentingSymptoms: string[];
+  clinicalHistory: string;
+  estimatedTime: string;
+  stages: number;
+  sourceVersion: string;
+  license: string;
+}
 
 export default function CaseSelection() {
-  const [cases, setCases] = useState(fixedCases);
-  const [loading, setLoading] = useState(false);
+  const [cases, setCases] = useState<ALiEMCase[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCases = async () => {
+      try {
+        setLoading(true);
+        console.log('Fetching cases...');
+        
+        // First get all categories
+        console.log('Making request to /api/simulation-categories...');
+        const categoriesResponse = await fetch('/api/simulation-categories');
+        console.log('Categories response status:', categoriesResponse.status);
+        console.log('Categories response ok:', categoriesResponse.ok);
+        
+        if (!categoriesResponse.ok) {
+          throw new Error(`Failed to fetch categories: ${categoriesResponse.status} ${categoriesResponse.statusText}`);
+        }
+        
+        const categories = await categoriesResponse.json();
+        console.log('Categories received:', categories);
+        console.log('Categories count:', categories.length);
+        
+        if (!categories || categories.length === 0) {
+          console.warn('No categories received from API');
+          setCases([]);
+          return;
+        }
+        
+        // Then get cases for each category
+        const allCases = [];
+        for (const category of categories) {
+          console.log('Fetching cases for category:', category);
+          const casesResponse = await fetch(`/api/simulation-cases/${category}`);
+          console.log(`Cases response for ${category}:`, casesResponse.status, casesResponse.ok);
+          
+          if (casesResponse.ok) {
+            const categoryCases = await casesResponse.json();
+            console.log(`Cases for ${category}:`, categoryCases);
+            console.log(`Cases count for ${category}:`, categoryCases.length);
+            allCases.push(...categoryCases);
+          } else {
+            console.error(`Failed to fetch cases for ${category}:`, casesResponse.status, casesResponse.statusText);
+          }
+        }
+        
+        console.log('Total cases collected:', allCases.length);
+        console.log('All cases:', allCases);
+        setCases(allCases);
+      } catch (error) {
+        console.error('Error fetching cases:', error);
+        console.error('Error details:', {
+          message: (error as Error).message,
+          stack: (error as Error).stack,
+          name: (error as Error).name
+        });
+        // Fallback to empty array if API fails
+        setCases([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    console.log('useEffect running, calling fetchCases...');
+    fetchCases();
+  }, []);
 
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'febrile_seizure': return 'bg-purple-600 hover:bg-purple-700';
-      case 'respiratory_distress': return 'bg-blue-600 hover:bg-blue-700';
-      case 'asthma_exacerbation': return 'bg-green-600 hover:bg-green-700';
-      case 'septic_shock': return 'bg-red-600 hover:bg-red-700';
-      case 'cardiac_arrest': return 'bg-orange-600 hover:bg-orange-700';
-      case 'trauma_resuscitation': return 'bg-indigo-600 hover:bg-indigo-700';
+      case 'Anaphylaxis': return 'bg-red-600 hover:bg-red-700';
+      case 'Cardiac Tamponade': return 'bg-purple-600 hover:bg-purple-700';
+      case 'CAH/Adrenal Insufficiency': return 'bg-orange-600 hover:bg-orange-700';
+      case 'Congenital Heart Lesion': return 'bg-pink-600 hover:bg-pink-700';
+      case 'DKA': return 'bg-yellow-600 hover:bg-yellow-700';
+      case 'Foreign Body Aspiration': return 'bg-blue-600 hover:bg-blue-700';
+      case 'Multisystem Trauma': return 'bg-indigo-600 hover:bg-indigo-700';
+      case 'Myocarditis': return 'bg-red-700 hover:bg-red-800';
+      case 'Neonatal Delivery': return 'bg-green-600 hover:bg-green-700';
+      case 'Non-Accidental Trauma': return 'bg-gray-600 hover:bg-gray-700';
+      case 'PEA/VF': return 'bg-red-800 hover:bg-red-900';
+      case 'Penetrating Trauma': return 'bg-indigo-700 hover:bg-indigo-800';
+      case 'Pneumonia & Septic Shock': return 'bg-blue-700 hover:bg-blue-800';
+      case 'Status Asthmaticus': return 'bg-green-700 hover:bg-green-800';
+      case 'Status Epilepticus': return 'bg-purple-700 hover:bg-purple-800';
+      case 'SVT': return 'bg-pink-700 hover:bg-pink-800';
       default: return 'bg-gray-600 hover:bg-gray-700';
+    }
+  };
+
+  const mapDifficulty = (difficulty: string, caseId: string) => {
+    // Specific case assignments for balanced distribution
+    const advancedCases = ['aliem_case_01_anaphylaxis', 'aliem_case_05_dka', 'aliem_case_08_myocarditis', 'aliem_case_11_pea_vf'];
+    const intermediateCases = ['aliem_case_02_cardiac_tamponade', 'aliem_case_03_cah_adrenal_insufficiency', 'aliem_case_04_congenital_heart_lesion', 'aliem_case_06_foreign_body_aspiration', 'aliem_case_07_multisystem_trauma', 'aliem_case_09_neonatal_delivery', 'aliem_case_10_non_accidental_trauma'];
+    const beginnerCases = ['aliem_case_12_penetrating_trauma', 'aliem_case_13_pneumonia_septic_shock', 'aliem_case_14_status_asthmaticus', 'aliem_case_15_status_epilepticus', 'aliem_case_16_svt'];
+    
+    if (advancedCases.includes(caseId)) {
+      return 'advanced';
+    } else if (intermediateCases.includes(caseId)) {
+      return 'intermediate';
+    } else if (beginnerCases.includes(caseId)) {
+      return 'beginner';
+    }
+    
+    // Fallback to original difficulty mapping if caseId not found
+    switch (difficulty?.toLowerCase()) {
+      case 'low':
+      case 'beginner':
+        return 'beginner';
+      case 'moderate':
+      case 'intermediate':
+        return 'intermediate';
+      case 'severe':
+      case 'critical':
+      case 'advanced':
+        return 'advanced';
+      default:
+        return 'intermediate';
     }
   };
 
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case 'low': return 'bg-green-500';
-      case 'moderate': return 'bg-yellow-500';
-      case 'high': return 'bg-orange-500';
-      case 'critical': return 'bg-red-500';
-      default: return 'bg-gray-500';
+      case 'beginner': return 'border-green-500 text-green-500';
+      case 'intermediate': return 'border-yellow-500 text-yellow-500';
+      case 'advanced': return 'border-red-500 text-red-500';
+      default: return 'border-gray-500 text-gray-500';
     }
   };
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'febrile_seizure': return <Brain className="w-5 h-5 text-purple-200" />;
-      case 'respiratory_distress': return <Wind className="w-5 h-5 text-blue-200" />;
-      case 'asthma_exacerbation': return <Activity className="w-5 h-5 text-green-200" />;
-      case 'septic_shock': return <Heart className="w-5 h-5 text-red-200" />;
-      case 'cardiac_arrest': return <Activity className="w-5 h-5 text-orange-200" />;
-      case 'trauma_resuscitation': return <AlertTriangle className="w-5 h-5 text-indigo-200" />;
-      default: return <User className="w-5 h-5 text-gray-200" />;
+      case 'Anaphylaxis': return <AlertTriangle className="w-5 h-5 text-red-400" />;
+      case 'Cardiac Tamponade': return <Heart className="w-5 h-5 text-purple-400" />;
+      case 'CAH/Adrenal Insufficiency': return <Droplets className="w-5 h-5 text-orange-400" />;
+      case 'Congenital Heart Lesion': return <Heart className="w-5 h-5 text-pink-400" />;
+      case 'DKA': return <Zap className="w-5 h-5 text-yellow-400" />;
+      case 'Foreign Body Aspiration': return <Wind className="w-5 h-5 text-blue-400" />;
+      case 'Multisystem Trauma': return <Car className="w-5 h-5 text-indigo-400" />;
+      case 'Myocarditis': return <Heart className="w-5 h-5 text-red-400" />;
+      case 'Neonatal Delivery': return <Baby className="w-5 h-5 text-green-400" />;
+      case 'Non-Accidental Trauma': return <Shield className="w-5 h-5 text-slate-400" />;
+      case 'PEA/VF': return <Activity className="w-5 h-5 text-red-400" />;
+      case 'Penetrating Trauma': return <Sword className="w-5 h-5 text-indigo-400" />;
+      case 'Pneumonia & Septic Shock': return <Activity className="w-5 h-5 text-blue-400" />;
+      case 'Status Asthmaticus': return <Wind className="w-5 h-5 text-green-400" />;
+      case 'Status Epilepticus': return <Brain className="w-5 h-5 text-purple-400" />;
+      case 'SVT': return <Activity className="w-5 h-5 text-pink-400" />;
+      default: return <Activity className="w-5 h-5 text-slate-400" />;
     }
   };
 
+  const handleCaseSelect = (caseId: string) => {
+    // Navigate to simulator with selected case
+    window.location.href = `/simulator?caseId=${caseId}`;
+  };
+
   return (
-    <div className="min-h-screen bg-slate-900 text-white">
-      {/* Header */}
-      <div className="bg-slate-800/50 border-b border-slate-700/50">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/">
-              <Button variant="ghost" className="flex items-center gap-2 text-slate-300 hover:text-white hover:bg-slate-700">
-                <ArrowLeft className="w-4 h-4" />
-                Back to Landing
-              </Button>
-            </Link>
-            
-            <div className="text-center">
-              <h1 className="text-3xl font-bold text-white">Emergency Case Selection</h1>
-              <p className="text-slate-300">Choose a pediatric emergency scenario to practice</p>
-            </div>
-            
-            <div className="w-24"></div> {/* Spacer for centering */}
+    <div className="min-h-screen bg-slate-900">
+      <div className="container mx-auto px-4 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <Link href="/" className="inline-flex items-center text-slate-300 hover:text-slate-100 mb-4 transition-colors">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Dashboard
+          </Link>
+          <h1 className="text-4xl font-bold text-white mb-2">Case Selection</h1>
+          <p className="text-lg text-slate-300">
+            Choose from {cases.length} medically accurate pediatric emergency simulation cases
+          </p>
+          <div className="mt-4 p-4 bg-slate-800/50 border border-slate-700 rounded-lg">
+            <p className="text-sm text-slate-300">
+              <strong>Source:</strong> ALiEM EM ReSCu Peds Simulation eBook 03-29-21 (CC BY-NC-SA 4.0)
+            </p>
           </div>
         </div>
-      </div>
 
-      {/* Instructions */}
-      <div className="container mx-auto px-6 py-8">
-        <Card className="bg-slate-800/30 border-slate-700/50 mb-8">
-          <CardHeader>
-            <CardTitle className="text-xl text-white flex items-center gap-2">
-              <Clock className="w-5 h-5 text-blue-400" />
-              How to Use the Simulator
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid md:grid-cols-3 gap-6 text-slate-300">
-              <div>
-                <h4 className="font-semibold text-white mb-2">1. Select a Case</h4>
-                <p className="text-sm">Choose from 6 medically accurate emergency scenarios verified through PubMed research.</p>
-              </div>
-              <div>
-                <h4 className="font-semibold text-white mb-2">2. Manage the Emergency</h4>
-                <p className="text-sm">Apply interventions, monitor vitals, and respond to complications in real-time.</p>
-              </div>
-              <div>
-                <h4 className="font-semibold text-white mb-2">3. Learn & Improve</h4>
-                <p className="text-sm">Receive AI clinical guidance and learn optimal intervention timing and sequencing.</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
 
-        {/* Cases Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {cases.map((caseItem) => (
-            <Card key={caseItem.id} className="bg-slate-800/30 border-slate-700/50 flex flex-col h-full">
+
+        {/* Case Grid */}
+        {loading ? (
+          <div className="text-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-slate-400 mx-auto mb-4"></div>
+            <p className="text-slate-400">Loading ALiEM cases...</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {cases.map((case_) => (
+            <Card key={case_.id} className="bg-slate-800/50 border-slate-700 hover:shadow-xl hover:shadow-slate-900/50 transition-all duration-200 flex flex-col">
               <CardHeader className="pb-3">
                 <div className="flex items-start justify-between">
-                  <div className="flex items-center gap-2">
-                    {getCategoryIcon(caseItem.category)}
-                    <div>
-                      <CardTitle className="text-lg text-white">{caseItem.name}</CardTitle>
-                      <Badge className={`mt-1 ${getDifficultyColor(caseItem.difficulty)}`}>
-                        {caseItem.difficulty.charAt(0).toUpperCase() + caseItem.difficulty.slice(1)}
-                      </Badge>
-                    </div>
+                  <div className="flex items-center space-x-2">
+                    {getCategoryIcon(case_.category)}
+                    <CardTitle className="text-lg text-white">{case_.name || 'Unknown Case'}</CardTitle>
+                  </div>
+                  <Badge className={`${getDifficultyColor(mapDifficulty(case_.difficulty, case_.id))} border-2 bg-transparent min-w-[100px] text-center`}>
+                    {mapDifficulty(case_.difficulty, case_.id)}
+                  </Badge>
+                </div>
+                <div className="flex items-center space-x-4 text-sm text-slate-400">
+                  <div className="flex items-center">
+                    <Clock className="w-4 h-4 mr-1" />
+                    {case_.estimatedTime || 'Unknown duration'}
+                  </div>
+                  <div className="flex items-center">
+                    <User className="w-4 h-4 mr-1" />
+                    {case_.stages || 0} stage{(case_.stages || 0) !== 1 ? 's' : ''}
                   </div>
                 </div>
               </CardHeader>
-              
-              <CardContent className="flex-1 flex flex-col">
-                <div className="mb-4">
-                  <p className="text-slate-300 text-sm mb-3">{caseItem.description}</p>
+              <CardContent className="pt-0 flex-1 flex flex-col">
+                <div className="flex-1">
+                  <p className="text-slate-300 mb-4">{case_.description || 'No description available'}</p>
                   
-                  <div className="space-y-2 mb-4">
-                    <h4 className="font-semibold text-white text-sm">Presenting Symptoms:</h4>
-                    <div className="flex flex-wrap gap-1">
-                      {caseItem.presentingSymptoms.map((symptom, idx) => (
-                        <Badge key={idx} variant="secondary" className="text-xs bg-slate-700/50 text-slate-300">
+                  <div className="mb-4">
+                    <h4 className="font-semibold text-slate-200 mb-2">Presenting Symptoms:</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {(case_.presentingSymptoms || []).map((symptom, index) => (
+                        <Badge key={index} variant="secondary" className="text-xs bg-slate-700 text-slate-300 border-slate-600">
                           {symptom}
                         </Badge>
                       ))}
                     </div>
                   </div>
-                  
-                  <div className="space-y-2 mb-4">
-                    <h4 className="font-semibold text-white text-sm">Clinical History:</h4>
-                    <p className="text-slate-300 text-xs">{caseItem.clinicalHistory}</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4 text-sm">
-                    <div>
-                      <span className="text-slate-400">Time:</span>
-                      <div className="text-white font-semibold">{caseItem.estimatedTime}</div>
-                    </div>
-                    <div>
-                      <span className="text-slate-400">Stages:</span>
-                      <div className="text-white font-semibold">{caseItem.stages}</div>
-                    </div>
-                  </div>
                 </div>
-                
-                {/* Spacer to push button to bottom */}
-                <div className="flex-1"></div>
-                
-                {/* Perfectly aligned button */}
-                <div className="pt-4">
-                  <Link href={`/simulator?caseId=${caseItem.id}`}>
-                    <Button 
-                      className={`w-full ${getCategoryColor(caseItem.category)} text-white font-semibold py-3`}
-                    >
-                      Start Case
-                    </Button>
-                  </Link>
-                </div>
+
+                <Button 
+                  onClick={() => handleCaseSelect(case_.id)}
+                  className="w-full bg-slate-600 hover:bg-slate-700 text-white border-slate-500 mt-auto"
+                >
+                  Start Simulation
+                </Button>
               </CardContent>
             </Card>
           ))}
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

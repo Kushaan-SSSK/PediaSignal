@@ -1,0 +1,107 @@
+{
+  "aliem": {
+    "version": "aliem-rescu-peds-03-29-21",
+    "license": "CC BY-NC-SA 4.0",
+    "source": "ALiEM EM ReSCu Peds Simulation eBook 03-29-21",
+    "citation": "ALiEM EM ReSCu Peds Simulation eBook 03-29-21 (CC BY-NC-SA 4.0)",
+    "cases": [
+      {
+        "id": "aliem_case_01_anaphylaxis",
+        "category": "Anaphylaxis",
+        "name": "Anaphylaxis - 6-year-old",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 1: Anaphylaxis"
+      },
+      {
+        "id": "aliem_case_02_cardiac_tamponade",
+        "category": "Cardiac Tamponade",
+        "name": "Cardiac Tamponade - 12-year-old",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 2: Cardiac Tamponade"
+      },
+      {
+        "id": "aliem_case_03_cah_adrenal_insufficiency",
+        "category": "CAH/Adrenal Insufficiency",
+        "name": "CAH/Adrenal Insufficiency - 8-month-old",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 3: CAH/Adrenal Insufficiency"
+      },
+      {
+        "id": "aliem_case_04_congenital_heart_lesion",
+        "category": "Congenital Heart Lesion",
+        "name": "Congenital Heart Lesion - Neonate",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 4: Congenital Heart Lesion"
+      },
+      {
+        "id": "aliem_case_05_dka",
+        "category": "DKA",
+        "name": "Diabetic Ketoacidosis - 14-year-old",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 5: DKA"
+      },
+      {
+        "id": "aliem_case_06_foreign_body_aspiration",
+        "category": "Foreign Body Aspiration",
+        "name": "Foreign Body Aspiration - 2-year-old",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 6: Foreign Body Aspiration"
+      },
+      {
+        "id": "aliem_case_07_multisystem_trauma",
+        "category": "Multisystem Trauma",
+        "name": "Multisystem Trauma - 8-year-old",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 7: Multisystem Trauma"
+      },
+      {
+        "id": "aliem_case_08_myocarditis",
+        "category": "Myocarditis",
+        "name": "Myocarditis - 16-year-old",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 8: Myocarditis"
+      },
+      {
+        "id": "aliem_case_09_neonatal_delivery",
+        "category": "Neonatal Delivery",
+        "name": "Neonatal Delivery - Newborn",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 9: Neonatal Delivery"
+      },
+      {
+        "id": "aliem_case_10_non_accidental_trauma",
+        "category": "Non-Accidental Trauma",
+        "name": "Non-Accidental Trauma - 3-year-old",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 10: Non-Accidental Trauma"
+      },
+      {
+        "id": "aliem_case_11_pea_vf",
+        "category": "PEA/VF",
+        "name": "PEA/VF - 7-year-old",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 11: PEA/VF"
+      },
+      {
+        "id": "aliem_case_12_penetrating_trauma",
+        "category": "Penetrating Trauma",
+        "name": "Penetrating Trauma - 15-year-old",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 12: Penetrating Trauma"
+      },
+      {
+        "id": "aliem_case_13_pneumonia_septic_shock",
+        "category": "Pneumonia & Septic Shock",
+        "name": "Pneumonia & Septic Shock - 4-year-old",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 13: Pneumonia & Septic Shock"
+      },
+      {
+        "id": "aliem_case_14_status_asthmaticus",
+        "category": "Status Asthmaticus",
+        "name": "Status Asthmaticus - 10-year-old",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 14: Status Asthmaticus"
+      },
+      {
+        "id": "aliem_case_15_status_epilepticus",
+        "category": "Status Epilepticus",
+        "name": "Status Epilepticus - 5-year-old",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 15: Status Epilepticus"
+      },
+      {
+        "id": "aliem_case_16_svt",
+        "category": "SVT",
+        "name": "Supraventricular Tachycardia - 6-month-old",
+        "sourceCitation": "ALiEM EM ReSCu Peds – Case 16: SVT"
+      }
+    ],
+    "caseCount": 16
+  }
+}

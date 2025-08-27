@@ -1,0 +1,45 @@
+{
+  "documentId": "unique-document-identifier",
+  "filename": "original-filename.pdf",
+  "title": "Document Title",
+  "source": "ALiEM EM ReSCu Peds",
+  "version": "2021-03-29",
+  "license": "CC BY-NC-SA 4.0",
+  "uploadDate": "2025-08-19",
+  "uploadedBy": "username",
+  "checksum": "sha256-hash-of-original-file",
+  "fileSize": 1234567,
+  "pageCount": 15,
+  "language": "en",
+  "topics": [
+    "status epilepticus",
+    "pediatric emergency",
+    "benzodiazepines"
+  ],
+  "tags": [
+    "ICS1",
+    "red-flag",
+    "airway"
+  ],
+  "caseId": "aliem-case-01",
+  "stage": 1,
+  "sections": [
+    "objectives",
+    "critical_actions", 
+    "debrief",
+    "actor_prompts",
+    "pitfalls"
+  ],
+  "processingStatus": "pending",
+  "processedDate": null,
+  "chunkCount": null,
+  "embeddingStatus": "pending",
+  "qualityScore": null,
+  "notes": "Additional notes about the document",
+  "attribution": {
+    "authors": ["ALiEM Team"],
+    "publication": "EM ReSCu Peds",
+    "year": 2021,
+    "url": "https://aliem.com/rescu-peds"
+  }
+}

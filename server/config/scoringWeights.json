@@ -1,0 +1,165 @@
+{
+  "configVersion": "1.0.0",
+  "lastUpdated": "2024-08-24",
+  "description": "PediaSignal Emergency Pediatrics Scoring Weights Configuration",
+  
+  "defaultWeights": {
+    "required": 10,
+    "helpful": 4,
+    "neutral": 0,
+    "harmful": -12,
+    "missedRequired": -8,
+    "timeoutPenalty": -5,
+    "orderBonus": 5,
+    "earlyActionBonus": 5,
+    "correct": 8,
+    "partial": 3,
+    "incorrect": -6,
+    "maxHelpfulPerStage": 3
+  },
+  
+  "caseSpecificWeights": {
+    "aliem_case_01_anaphylaxis": {
+      "description": "Anaphylaxis case - emphasizes rapid response and correct sequence",
+      "weights": {
+        "required": 12,
+        "earlyActionBonus": 8,
+        "criticalEarlyWindowSec": 60,
+        "criticalEarlyLabels": ["IM Epinephrine", "IV Fluids Bolus"]
+      }
+    },
+    
+    "aliem_case_05_dka": {
+      "description": "DKA case - emphasizes fluid management and monitoring",
+      "weights": {
+        "required": 10,
+        "helpful": 5,
+        "maxHelpfulPerStage": 4
+      }
+    },
+    
+    "aliem_case_08_myocarditis": {
+      "description": "Myocarditis case - emphasizes cardiac monitoring and supportive care",
+      "weights": {
+        "required": 11,
+        "harmful": -15,
+        "orderBonus": 6
+      }
+    },
+    
+    "aliem_case_11_pea_vf": {
+      "description": "PEA/VF case - emphasizes rapid intervention and team coordination",
+      "weights": {
+        "required": 15,
+        "earlyActionBonus": 10,
+        "criticalEarlyWindowSec": 30,
+        "criticalEarlyLabels": ["CPR", "Defibrillation"]
+      }
+    }
+  },
+  
+  "stageTimeLimits": {
+    "aliem_case_01_anaphylaxis": {
+      "1": 300,
+      "2": 600,
+      "3": 900,
+      "4": 1200
+    },
+    "aliem_case_05_dka": {
+      "1": 600,
+      "2": 900,
+      "3": 1200,
+      "4": 1800
+    },
+    "aliem_case_08_myocarditis": {
+      "1": 900,
+      "2": 1200,
+      "3": 1500,
+      "4": 1800
+    },
+    "aliem_case_11_pea_vf": {
+      "1": 120,
+      "2": 300,
+      "3": 600,
+      "4": 900
+    }
+  },
+  
+  "criticalEarlyWindows": {
+    "aliem_case_01_anaphylaxis": {
+      "1": 60,
+      "2": 120,
+      "3": 180,
+      "4": 240
+    },
+    "aliem_case_05_dka": {
+      "1": 120,
+      "2": 180,
+      "3": 240,
+      "4": 300
+    },
+    "aliem_case_08_myocarditis": {
+      "1": 180,
+      "2": 240,
+      "3": 300,
+      "4": 360
+    },
+    "aliem_case_11_pea_vf": {
+      "1": 30,
+      "2": 60,
+      "3": 120,
+      "4": 180
+    }
+  },
+  
+  "ratingThresholds": {
+    "A (Gold)": 90,
+    "B (Silver)": 80,
+    "C (Bronze)": 70,
+    "Needs Improvement": 0
+  },
+  
+  "bonusConditions": {
+    "orderBonus": {
+      "description": "Bonus for completing all required interventions before any harmful ones",
+      "points": 5,
+      "appliesTo": ["all_cases"]
+    },
+    "earlyActionBonus": {
+      "description": "Bonus for completing critical interventions within early time window",
+      "points": 5,
+      "appliesTo": ["anaphylaxis", "pea_vf", "dka"]
+    },
+    "teamworkBonus": {
+      "description": "Bonus for effective team coordination (future feature)",
+      "points": 3,
+      "appliesTo": ["future_cases"]
+    }
+  },
+  
+  "penaltyConditions": {
+    "timeoutPenalty": {
+      "description": "Penalty for exceeding stage time limits",
+      "points": -5,
+      "appliesTo": ["all_cases"]
+    },
+    "missedRequiredPenalty": {
+      "description": "Penalty for missing required interventions",
+      "points": -8,
+      "appliesTo": ["all_cases"]
+    },
+    "harmfulActionPenalty": {
+      "description": "Penalty for performing harmful interventions",
+      "points": -12,
+      "appliesTo": ["all_cases"]
+    }
+  },
+  
+  "scoringNotes": {
+    "duplicateInterventions": "Only first completion of required interventions counts for points",
+    "helpfulCap": "Helpful interventions are capped per stage to prevent gaming",
+    "timeCalculation": "Time is calculated from stage start to stage end or current time",
+    "bonusApplication": "Bonuses are applied only when all criteria are met",
+    "penaltyApplication": "Penalties are applied immediately when conditions are met"
+  }
+}

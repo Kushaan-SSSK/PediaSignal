@@ -44,10 +44,11 @@ export function setupSecurityMiddleware(app: Express) {
     referrerPolicy: { policy: 'strict-origin-when-cross-origin' }
   }));
 
-  // Rate limiting for API endpoints
+  // Rate limiting for API endpoints - more lenient in development
+  const isDevelopment = process.env.NODE_ENV === 'development';
   const apiLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
+    windowMs: isDevelopment ? 1 * 60 * 1000 : 15 * 60 * 1000, // 1 minute in dev, 15 minutes in prod
+    max: isDevelopment ? 1000 : 100, // 1000 requests per minute in dev, 100 per 15 minutes in prod
     message: {
       error: 'Too many requests from this IP, please try again later.',
       code: 'RATE_LIMIT_EXCEEDED'

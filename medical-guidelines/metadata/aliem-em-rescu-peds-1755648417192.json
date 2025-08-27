@@ -1,0 +1,37 @@
+{
+  "documentId": "aliem-em-rescu-peds-1755648417192",
+  "filename": "AlgorithmBLS_Ped_Single_Rescuer_200624.pdf",
+  "title": "AlgorithmBLS Ped Single Rescuer 200624",
+  "source": "ALiEM EM ReSCu Peds",
+  "version": "2025",
+  "license": "CC BY-NC-SA 4.0",
+  "uploadDate": "2025-08-20",
+  "uploadedBy": "kusha",
+  "checksum": "76227c306c682d9eed17348faa485f16cb374a1674232a4f9d4d953784db5c7d",
+  "fileSize": 120079,
+  "pageCount": null,
+  "language": "en",
+  "topics": [],
+  "tags": [],
+  "caseId": null,
+  "stage": 1,
+  "sections": [
+    "objectives",
+    "critical_actions",
+    "debrief",
+    "actor_prompts",
+    "pitfalls"
+  ],
+  "processingStatus": "pending",
+  "processedDate": null,
+  "chunkCount": null,
+  "embeddingStatus": "pending",
+  "qualityScore": null,
+  "notes": "",
+  "attribution": {
+    "authors": [],
+    "publication": "ALiEM EM ReSCu Peds",
+    "year": 2025,
+    "url": ""
+  }
+}
