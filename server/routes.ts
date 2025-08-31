@@ -87,11 +87,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: 'Failed to check case bank', details: (error as Error).message });
     }
   });
+
+  // Debug endpoint to check ALIEM_CASES directly
+  app.get('/api/debug-aliem', (req, res) => {
+    try {
+      res.json({
+        aliemCasesCount: ALIEM_CASES.length,
+        aliemCaseIds: ALIEM_CASES.map(c => c.id),
+        aliemCategories: ALIEM_CASES.map(c => c.category),
+        firstCase: ALIEM_CASES[0] ? {
+          id: ALIEM_CASES[0].id,
+          category: ALIEM_CASES[0].category,
+          displayName: ALIEM_CASES[0].displayName
+        } : null,
+        message: 'ALIEM_CASES debug info'
+      });
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to check ALIEM_CASES', details: (error as Error).message });
+    }
+  });
   
   // Enhanced Simulation endpoints
   app.post('/api/start-simulation', async (req, res) => {
     try {
       const { category, userId } = req.body;
+      
+      console.log('🔍 Start simulation request:', { category, userId });
+      console.log('🔍 ALIEM_CASES count:', ALIEM_CASES.length);
+      console.log('🔍 ALIEM_CASES categories:', ALIEM_CASES.map(c => c.category));
       
       if (!category || !userId) {
         return res.status(400).json({ message: "Category and userId required" });
@@ -99,6 +122,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Get random ALiEM case for the category
       const aliemCases = ALIEM_CASES.filter(c => c.category === category);
+      console.log('🔍 Filtered cases for category:', category, 'Count:', aliemCases.length);
+      console.log('🔍 Matching cases:', aliemCases.map(c => ({ id: c.id, category: c.category })));
+      
       if (aliemCases.length === 0) {
         return res.status(400).json({ message: "No cases found for category" });
       }
@@ -114,7 +140,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         difficulty: 'intermediate' as const,
         description: `${randomCase.displayName} simulation case from ALiEM EM ReSCu Peds`,
         estimatedTime: randomVariant.stages.reduce((total, stage) => total + stage.TTIsec, 0) / 60, // Convert to minutes
-        clinicalHistory: `Patient presenting with ${randomCase.displayName.toLowerCase()}`,
+        clinicalHistory: randomCase.clinicalHistory || `Patient presenting with ${randomCase.displayName.toLowerCase()}`,
         presentingSymptoms: randomVariant.stages[0]?.requiredInterventions || [],
         learningObjectives: randomVariant.stages.flatMap(stage => stage.requiredInterventions),
         initialVitals: {
@@ -228,14 +254,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         'aliem_case_01_anaphylaxis': {
           1: {
             objectives: [
-              'Recognize signs of anaphylaxis: facial swelling, difficulty breathing, wheezing, hypotension, tachycardia, urticaria, anxiety, nausea',
-              'Understand the urgency of immediate epinephrine administration (delayed administration increases mortality risk)',
-              'Know correct epinephrine dosing: 0.01 mg/kg IM (max 0.3 mg) in anterolateral thigh'
+              'Recognize signs of anaphylaxis: facial swelling, difficulty breathing, wheezing, rash, vomiting',
+              'Understand the urgency of immediate resuscitation area placement and monitoring',
+              'Know correct epinephrine administration: 0.01 mg/kg IM (max 0.3 mg) in anterolateral thigh',
+              'Recognize that IM epinephrine should show improvement in a few minutes but not complete resolution'
             ],
             riskFlags: [
               'Delayed epinephrine administration increases mortality risk',
               'Incorrect dosing can be ineffective or harmful',
-              'Not having epinephrine readily available delays treatment'
+              'Not having epinephrine readily available delays treatment',
+              'Delayed placement in resuscitation area delays critical interventions'
             ]
           }
         },
@@ -402,17 +430,35 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const interventionKnowledge = {
         'aliem_case_01_anaphylaxis': {
           1: {
-            'IM epinephrine': {
-              explanation: 'IM epinephrine 0.01 mg/kg (max 0.3 mg) in anterolateral thigh is the gold standard first-line treatment for anaphylaxis. Administer immediately upon recognition of anaphylaxis symptoms. Delayed administration is associated with increased mortality.',
+            'Placement in resuscitation': {
+              explanation: 'Patient should be quickly moved to a resuscitation area for immediate assessment and treatment. This ensures access to all necessary equipment and medications.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Delayed placement delays critical interventions', 'Inadequate monitoring in non-resuscitation area'],
+              objectiveHits: ['Immediate recognition of anaphylaxis severity', 'Proper patient placement for critical care']
+            },
+            'Exam including airway and lung assessment': {
+              explanation: 'Comprehensive airway and lung assessment to evaluate for stridor, wheezing, and respiratory compromise. Critical for determining severity and need for airway intervention.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Incomplete assessment may miss airway compromise', 'Delayed recognition of respiratory deterioration'],
+              objectiveHits: ['Airway assessment in anaphylaxis', 'Recognition of respiratory compromise']
+            },
+            'Placement on cardiovascular monitoring': {
+              explanation: 'Continuous cardiac monitoring for heart rate, blood pressure, and rhythm. Essential for detecting cardiovascular compromise and response to treatment.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Inadequate monitoring may miss cardiovascular deterioration', 'Delayed recognition of shock'],
+              objectiveHits: ['Cardiovascular monitoring in anaphylaxis', 'Recognition of cardiovascular compromise']
+            },
+            'IM epinephrine given': {
+              explanation: 'IM epinephrine 0.01 mg/kg (max 0.3 mg) in anterolateral thigh is the gold standard first-line treatment for anaphylaxis. Administer immediately upon recognition of anaphylaxis symptoms.',
               evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
               riskFlags: ['Delayed administration increases mortality risk', 'Incorrect dosing can be ineffective or harmful'],
               objectiveHits: ['Immediate recognition and treatment of anaphylaxis', 'Correct epinephrine administration technique']
             },
-            'IV fluids': {
-              explanation: 'Administer 20 mL/kg bolus of 0.9% NS for hypotension. Monitor for signs of fluid overload. Consider second bolus if persistent hypotension after epinephrine.',
+            'Oxygen administration': {
+              explanation: 'Place oxygen on patient by mask or nebulizer to improve oxygenation. Any O2 administration will increase SpO2 to 99-100%.',
               evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
-              riskFlags: ['Over-resuscitation can cause pulmonary edema', 'Inadequate fluids may not restore perfusion'],
-              objectiveHits: ['Fluid resuscitation for hypotension', 'Monitoring for fluid responsiveness']
+              riskFlags: ['Inadequate oxygenation may worsen respiratory compromise', 'Delayed O2 administration'],
+              objectiveHits: ['Oxygen therapy in anaphylaxis', 'Monitoring oxygenation response']
             }
           }
         },
@@ -1366,53 +1412,85 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (stage && caseId) {
         // Return stage-specific interventions for a specific case
         try {
-          const aliEmCasesPath = path.join(process.cwd(), 'server', 'data', 'caseBank.aliem.json');
-          let aliEmCases = [];
+          console.log('🔍 Fetching interventions for caseId:', caseId, 'stage:', stage);
           
-          if (fs.existsSync(aliEmCasesPath)) {
-            const aliEmData = fs.readFileSync(aliEmCasesPath, 'utf8');
-            aliEmCases = JSON.parse(aliEmData);
-          } else {
-            // Try alternative path from import.meta.url
-            try {
-              const currentFileUrl = new URL(import.meta.url);
-              const aliEmCasesPath = path.join(dirname(fileURLToPath(currentFileUrl)), 'data', 'caseBank.aliem.json');
-              if (fs.existsSync(aliEmCasesPath)) {
-                const aliEmData = fs.readFileSync(aliEmCasesPath, 'utf8');
-                aliEmCases = JSON.parse(aliEmData);
-              }
-            } catch (pathError) {
-              console.log('Could not determine alternative path:', (pathError as Error).message);
-            }
-          }
-          
-          // Find the specific case
-          const targetCase = aliEmCases.find((c: any) => 
+          // Use the ALIEM_CASES array that's already loaded
+          const targetCase = ALIEM_CASES.find((c: any) => 
             c.id === caseId || c.id === caseId.replace(/_a$/, '') || c.id === caseId.replace(/_b$/, '')
           );
+          
+          console.log('🔍 Found target case:', targetCase ? targetCase.id : 'NOT FOUND');
           
           if (targetCase && targetCase.variants && targetCase.variants[0]) {
             const stageData = targetCase.variants[0].stages.find((s: any) => s.stage === parseInt(stage as string));
             
+            console.log('🔍 Found stage data:', stageData ? `Stage ${stageData.stage}` : 'NOT FOUND');
+            
             if (stageData) {
-              // Get all intervention IDs for this stage
-              const stageInterventionIds = [
-                ...(stageData.requiredInterventions || []),
-                ...(stageData.helpful || []),
-                ...(stageData.harmful || []),
-                ...(stageData.neutral || [])
-              ];
-              
-              // Get the full intervention definitions
-              const { interventions } = await import('./caseBank');
+              // Create intervention objects directly from the stage data
               const stageInterventions: Record<string, any> = {};
               
-              stageInterventionIds.forEach(id => {
-                if (interventions[id]) {
-                  stageInterventions[id] = interventions[id];
-                }
+              // Add required interventions
+              (stageData.requiredInterventions || []).forEach((intervention: string, index: number) => {
+                stageInterventions[`required_${index}`] = {
+                  id: `required_${index}`,
+                  name: intervention,
+                  description: `Required intervention: ${intervention}`,
+                  category: 'medication',
+                  timeRequired: 30,
+                  successRate: 0.95,
+                  ragSummary: `Critical intervention for Stage ${stage} anaphylaxis management`,
+                  evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+                  vitalEffects: stageData.vitalEffects?.[intervention] || {}
+                };
               });
               
+              // Add helpful interventions
+              (stageData.helpful || []).forEach((intervention: string, index: number) => {
+                stageInterventions[`helpful_${index}`] = {
+                  id: `helpful_${index}`,
+                  name: intervention,
+                  description: `Helpful intervention: ${intervention}`,
+                  category: 'monitoring',
+                  timeRequired: 20,
+                  successRate: 0.90,
+                  ragSummary: `Beneficial intervention for Stage ${stage} anaphylaxis management`,
+                  evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+                  vitalEffects: stageData.vitalEffects?.[intervention] || {}
+                };
+              });
+              
+              // Add harmful interventions
+              (stageData.harmful || []).forEach((intervention: string, index: number) => {
+                stageInterventions[`harmful_${index}`] = {
+                  id: `harmful_${index}`,
+                  name: intervention,
+                  description: `Harmful intervention: ${intervention}`,
+                  category: 'medication',
+                  timeRequired: 15,
+                  successRate: 0.10,
+                  ragSummary: `Avoid this intervention - it can worsen outcomes`,
+                  evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+                  vitalEffects: {}
+                };
+              });
+              
+              // Add neutral interventions
+              (stageData.neutral || []).forEach((intervention: string, index: number) => {
+                stageInterventions[`neutral_${index}`] = {
+                  id: `neutral_${index}`,
+                  name: intervention,
+                  description: `Neutral intervention: ${intervention}`,
+                  category: 'monitoring',
+                  timeRequired: 25,
+                  successRate: 0.95,
+                  ragSummary: `Standard monitoring intervention`,
+                  evidenceSources: ['PALS Guidelines 2020 - General Principles'],
+                  vitalEffects: {}
+                };
+              });
+              
+              console.log('🔍 Returning stage interventions:', Object.keys(stageInterventions));
               return res.json(stageInterventions);
             }
           }

@@ -48,15 +48,12 @@ export function useCaseTick(params: CaseTickParams) {
       userId: string;
       sessionId: string;
     }) => {
-      return apiRequest<CaseTickResponse>('/api/case-tick', {
-        method: 'POST',
-        body: JSON.stringify(tickData),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      return apiRequest('/api/case-tick', 'POST', tickData);
     },
-    onSuccess: (data) => {
+    onSuccess: async (response) => {
+      // Parse the response JSON
+      const data = await response.json() as CaseTickResponse;
+      
       // Update vitals in the simulation state
       params.onVitalsUpdate(data.updatedVitals, data.alerts);
       

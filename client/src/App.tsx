@@ -15,6 +15,8 @@ import DemoTriage from "@/pages/demo-triage";
 import CaseSelection from "@/pages/case-selection";
 import Simulator from "@/pages/simulator";
 import AboutSources from "@/pages/about-sources";
+import ScoreCalculator from "@/pages/score-calculator";
+import CaseCompleted from "@/pages/case-completed";
 
 function Router() {
   const [location] = useLocation();
@@ -41,6 +43,8 @@ function Router() {
       <Route path="/admin/dashboard" component={AdminDashboard} />
       <Route path="/case-selection" component={CaseSelection} />
       <Route path="/simulator" component={Simulator} />
+      <Route path="/case-completed" component={CaseCompleted as any} />
+      <Route path="/score-calculator" component={ScoreCalculator} />
       <Route path="/about/sources" component={AboutSources} />
       <Route path="/demo/simulation" component={DemoSimulation} />
       <Route path="/demo/xray" component={DemoXray} />

@@ -139,10 +139,10 @@ export function integrateScoringWithSimulator() {
   const stageDefinitions: StageDefinition[] = [
     {
       stageNumber: 1,
-      requiredLabels: ["IM Epinephrine", "IV Fluids Bolus", "Diphenhydramine IV"],
+              requiredLabels: ["Placement in resuscitation", "Exam including airway and lung assessment", "Placement on cardiovascular monitoring", "IM epinephrine given"],
       timeLimitSec: 300,
       criticalEarlyWindowSec: 60,
-      criticalEarlyLabels: ["IM Epinephrine"]
+      criticalEarlyLabels: ["IM epinephrine given"]
     },
     {
       stageNumber: 2,
@@ -157,8 +157,10 @@ export function integrateScoringWithSimulator() {
   );
 
   // 2. Record interventions as they happen
-  scoringIntegration.recordIntervention("IM Epinephrine", "required", true);
-  scoringIntegration.recordIntervention("IV Fluids Bolus", "required", true);
+  scoringIntegration.recordIntervention("Placement in resuscitation", "required", true);
+  scoringIntegration.recordIntervention("Exam including airway and lung assessment", "required", true);
+  scoringIntegration.recordIntervention("Placement on cardiovascular monitoring", "required", true);
+  scoringIntegration.recordIntervention("IM epinephrine given", "required", true);
   scoringIntegration.recordIntervention("Oral Epinephrine", "harmful", false);
   
   // 3. Progress to next stage

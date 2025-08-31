@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { 
   Activity, 
@@ -29,6 +29,7 @@ interface Intervention {
   category: 'airway' | 'breathing' | 'circulation' | 'medication' | 'monitoring' | 'procedural';
   priority: 'immediate' | 'high' | 'medium' | 'low';
   description: string;
+  classification: 'required' | 'helpful' | 'harmful' | 'neutral'; // Add classification property
   ragSummary: string; // RAG-powered concise summary
   evidenceSources: Array<{
     caseId: string;
@@ -67,60 +68,58 @@ export function InterventionsPanel({
   className = '',
   onInterventionSelect
 }: InterventionsPanelProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [expandedInterventions, setExpandedInterventions] = useState<Set<string>>(new Set());
   const [interventions, setInterventions] = useState<Intervention[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch real interventions from backend
+  // Fetch case-specific interventions from backend
   useEffect(() => {
     const fetchInterventions = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/interventions');
+        // Fetch case-specific interventions using caseId and stage
+        const response = await fetch(`/api/interventions?caseId=${caseId}&stage=${stage}`);
         if (response.ok) {
           const data = await response.json();
-          // Convert the record to array format
-          const interventionsArray = Object.values(data).map((intervention: any) => ({
-            id: intervention.id,
-            name: intervention.name,
-            category: intervention.category as 'airway' | 'breathing' | 'circulation' | 'medication' | 'monitoring' | 'procedural',
-            priority: (intervention.category === 'monitoring' ? 'high' : 
-                     intervention.category === 'medication' ? 'immediate' : 'medium') as 'immediate' | 'high' | 'medium' | 'low',
-            description: intervention.description,
-            ragSummary: intervention.ragSummary || 'RAG summary not available',
-            evidenceSources: intervention.evidenceSources || [],
-            indications: ['Based on clinical guidelines'],
-            contraindications: intervention.contraindications || [],
-            dosage: intervention.dosage,
-            timeWindow: intervention.timeRequired * 1000, // Convert to milliseconds
-            criticalActions: ['Follow clinical guidelines'],
-            risks: ['Standard procedural risks'],
-            alternatives: ['Alternative approaches available']
-          }));
+          console.log('Fetched case-specific interventions:', data);
+          
+          // Convert the record to array format and extract classification from ID
+          const interventionsArray = Object.values(data).map((intervention: any) => {
+            // Extract classification from intervention ID (e.g., 'required_0' -> 'required')
+            const classification = intervention.id.split('_')[0] as 'required' | 'helpful' | 'harmful' | 'neutral';
+            
+            return {
+              id: intervention.id,
+              name: intervention.name,
+              category: intervention.category as 'airway' | 'breathing' | 'circulation' | 'medication' | 'monitoring' | 'procedural',
+              priority: (intervention.category === 'monitoring' ? 'high' : 
+                       intervention.category === 'medication' ? 'immediate' : 'medium') as 'immediate' | 'high' | 'medium' | 'low',
+              description: intervention.description,
+              classification: classification,
+              ragSummary: intervention.ragSummary || 'RAG summary not available',
+              evidenceSources: intervention.evidenceSources || [],
+              indications: ['Based on clinical guidelines'],
+              contraindications: intervention.contraindications || [],
+              dosage: intervention.dosage,
+              timeWindow: intervention.timeRequired * 1000, // Convert to milliseconds
+              criticalActions: ['Follow clinical guidelines'],
+              risks: ['Standard procedural risks'],
+              alternatives: ['Alternative approaches available']
+            };
+          });
           setInterventions(interventionsArray);
         } else {
-          console.error('Failed to fetch interventions');
+          console.error('Failed to fetch case-specific interventions');
         }
       } catch (error) {
-        console.error('Error fetching interventions:', error);
+        console.error('Error fetching case-specific interventions:', error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchInterventions();
-  }, []);
-
-  const categories = [
-    { id: 'all', label: 'All', icon: Activity },
-    { id: 'airway', label: 'Airway', icon: Brain },
-    { id: 'breathing', label: 'Breathing', icon: Droplets },
-    { id: 'circulation', label: 'Circulation', icon: Heart },
-    { id: 'medication', label: 'Medication', icon: Pill },
-    { id: 'monitoring', label: 'Monitoring', icon: Stethoscope },
-    { id: 'procedural', label: 'Procedural', icon: Syringe }
-  ];
+  }, [caseId, stage]);
 
   const getPriorityColor = (priority: string) => {
     switch (priority) {
@@ -144,9 +143,12 @@ export function InterventionsPanel({
     }
   };
 
-  const filteredInterventions = selectedCategory === 'all' 
-    ? interventions 
-    : interventions.filter(int => int.category === selectedCategory);
+  // Filter to show only required interventions
+  const filteredInterventions = interventions.filter(int => int.classification === 'required');
+  
+  // Debug logging
+  console.log('All interventions:', interventions);
+  console.log('Filtered (required only):', filteredInterventions);
 
   const toggleExpanded = (interventionId: string) => {
     const newExpanded = new Set(expandedInterventions);
@@ -194,7 +196,7 @@ export function InterventionsPanel({
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {interventions.slice(0, 4).map((intervention) => (
+            {filteredInterventions.slice(0, 4).map((intervention) => (
               <div key={intervention.id} className="bg-white/70 dark:bg-white/20 rounded-lg p-4 border-2 border-green-200 dark:border-green-700 shadow-md">
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-3 h-3 rounded-full bg-green-600" />
@@ -224,20 +226,19 @@ export function InterventionsPanel({
           </div>
         </div>
 
-        {/* Category Tabs */}
-        <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
-          <TabsList className="grid w-full grid-cols-7">
-            {categories.map((category) => {
-              const IconComponent = category.icon;
-              return (
-                <TabsTrigger key={category.id} value={category.id} className="flex items-center gap-2">
-                  <IconComponent className="h-4 w-4" />
-                  <span className="hidden sm:inline">{category.label}</span>
-                </TabsTrigger>
-              );
-            })}
-          </TabsList>
-        </Tabs>
+        {/* Required Interventions Header */}
+        <div className="bg-blue-50 dark:bg-blue-950/30 border-2 border-blue-300 dark:border-blue-700 rounded-lg p-4">
+          <div className="flex items-center gap-3">
+            <Target className="h-6 w-6 text-blue-600" />
+            <div>
+              <h3 className="font-bold text-lg text-blue-900 dark:text-blue-100">Required Interventions - Stage {stage}</h3>
+              <p className="text-blue-700 dark:text-blue-300">These interventions must be completed to progress to the next stage</p>
+            </div>
+            <Badge variant="outline" className="ml-auto bg-blue-100 text-blue-800 border-blue-300">
+              {filteredInterventions.length} Required
+            </Badge>
+          </div>
+        </div>
 
         {/* Interventions List */}
         <div className="space-y-3">

@@ -4,13 +4,13 @@
     "category": "Anaphylaxis",
     "displayName": "Anaphylaxis - 6-year-old",
     "name": "Anaphylaxis - 6-year-old",
-    "description": "Severe anaphylactic reaction in a 6-year-old child with comprehensive management through 4 stages",
+    "description": "Severe anaphylactic reaction in a 6-year-old child with comprehensive management through 3 stages",
     "sourceVersion": "aliem-rescu-peds-03-29-21",
     "license": "CC BY-NC-SA 4.0",
     "sourceCitation": "ALiEM EM ReSCu Peds – Case 1: Anaphylaxis",
     "difficulty": "Advanced",
     "estimatedTime": "15-20 minutes",
-    "stages": 4,
+    "stages": 3,
     "presentingSymptoms": [
       "Facial swelling",
       "Difficulty breathing",
@@ -21,7 +21,7 @@
       "Anxiety",
       "Nausea"
     ],
-    "clinicalHistory": "6-year-old male child, weight 25kg, height 120cm, presents to the emergency department via EMS at 14:30 following accidental peanut exposure at school lunch (approximately 13:45). Patient was eating a peanut butter sandwich when he immediately developed facial angioedema, bilateral periorbital swelling, and difficulty breathing. EMS was called at 13:50 and arrived at 13:55. Patient has a documented history of severe peanut allergy diagnosed at age 2, with previous anaphylactic reactions at ages 3 and 4, both requiring IM epinephrine administration. Patient carries an EpiPen Jr (0.15mg) but it was not immediately available at school. Past medical history includes mild asthma (well-controlled with albuterol PRN), no other chronic conditions. Medications: albuterol inhaler PRN, no daily medications. Allergies: peanuts (severe), tree nuts (moderate), shellfish (mild). Family history: mother has seasonal allergies, father has no known allergies. Immunizations are up to date. Social history: lives with both parents, attends first grade, no tobacco exposure, no pets.",
+    "clinicalHistory": "A 6-year-old boy brought in by car with a parent presents with difficulty breathing, vomiting, rash, and facial swelling after eating at a restaurant. He has no previous allergic reactions. The child should be quickly moved to a resuscitation area, placed on a cardiac monitor and given IM epinephrine. If IM epinephrine is administered quickly, he should show some improvement in a few minutes, but not completely resolved. If not promptly administered, he will become hypotensive and lethargic. Ideally, he should receive IV steroids, IV fluids, diphenhydramine, H2 blocker, and nebulizer on arrival. If all medications are administered, he will recover appropriately. If epinephrine is not given early, he will progress to hypotension and shock and need IV epinephrine infusion. There is an optional more difficult pathway for advanced learners where the initial IM epinephrine is not fully effective and the patient worsens, eventually needing multiple medications and an infusion of epinephrine.",
     "variants": [
       {
         "variantId": "A",
@@ -29,14 +29,14 @@
         "ageYears": 6,
         "weightKg": 25,
         "initialVitals": {
-          "heartRate": 130,
-          "respRate": 41,
-          "bloodPressureSys": 85,
-          "bloodPressureDia": 50,
-          "spo2": 93,
-          "temperature": 38.5,
-          "consciousness": "lethargic",
-          "capillaryRefill": 4
+          "heartRate": 110,
+          "respRate": 22,
+          "bloodPressureSys": 90,
+          "bloodPressureDia": 60,
+          "spo2": 96,
+          "temperature": 37.0,
+          "consciousness": "alert",
+          "capillaryRefill": 2
         },
         "stages": [
           {
@@ -46,23 +46,15 @@
             "severity": "severe",
             "TTIsec": 60,
             "requiredInterventions": [
-              "IM epinephrine",
-              "IV fluids bolus",
-              "diphenhydramine IV",
-              "H2 blocker IV",
-              "nebulized beta-agonist",
-              "steroids IV",
-              "CBC",
-              "CXR (normal)"
+              "Placement in resuscitation",
+              "Exam including airway and lung assessment",
+              "Placement on cardiovascular monitoring",
+              "IM epinephrine given"
             ],
             "helpful": [
-              "IV fluids bolus",
-              "diphenhydramine IV",
-              "H2 blocker IV",
-              "nebulized beta-agonist",
-              "steroids IV",
-              "CBC",
-              "CXR (normal)"
+              "Oxygen administration by mask or nebulizer",
+              "IV access establishment",
+              "Continuous vital signs monitoring"
             ],
             "harmful": [
               "delay epinephrine",
@@ -75,30 +67,20 @@
             ],
             "vitalEffects": {
               "IM epinephrine": {
-                "heartRate": -19,
-                "respRate": -10,
-                "bloodPressureSys": 20,
-                "spo2": 4
+                "heartRate": 20,
+                "respRate": -4,
+                "bloodPressureSys": 0,
+                "bloodPressureDia": 0,
+                "spo2": 0,
+                "notes": "Patient's heart rate increases by 20 beats per minute over next 1 minute. Respiratory rate decreases to 18 breaths/minute. Wheezing improves some."
               },
-              "IV fluids bolus": {
-                "bloodPressureSys": 8,
-                "bloodPressureDia": 5
-              },
-              "diphenhydramine IV": {
-                "heartRate": -5,
-                "respRate": -2
-              },
-              "H2 blocker IV": {
-                "heartRate": -3,
-                "respRate": -1
-              },
-              "nebulized beta-agonist": {
-                "respRate": -5,
-                "spo2": 2
-              },
-              "steroids IV": {
-                "heartRate": -2,
-                "respRate": -1
+              "Oxygen administration": {
+                "heartRate": 0,
+                "respRate": 0,
+                "bloodPressureSys": 0,
+                "bloodPressureDia": 0,
+                "spo2": 3,
+                "notes": "Any O2 administration increases SpO2 to 99-100%"
               }
             }
           },
@@ -109,29 +91,76 @@
             "severity": "moderate",
             "TTIsec": 300,
             "requiredInterventions": [
-              "vital signs monitoring",
-              "oxygen therapy maintenance",
-              "IV access assessment",
-              "capillary refill check",
-              "urine output monitoring"
+              "IV fluids",
+              "steroids",
+              "H2 blocker",
+              "diphenhydramine",
+              "nebulized albuterol",
+              "set up difficult airway equipment"
             ],
             "helpful": [
-              "H2 blocker IV",
-              "steroids IV",
-              "albuterol nebulizer"
+              "continuous vital signs monitoring",
+              "oxygen therapy maintenance",
+              "capillary refill check"
             ],
             "harmful": [
               "discharge without observation",
-              "inadequate monitoring"
+              "inadequate monitoring",
+              "delay in medication administration"
             ],
             "neutral": [
               "allergy testing",
               "discharge planning"
             ],
             "vitalEffects": {
-              "continuous monitoring": {},
-              "IV access maintenance": {},
-              "vital reassessment": {}
+              "IV fluids": {
+                "heartRate": -20,
+                "respRate": 0,
+                "bloodPressureSys": 0,
+                "bloodPressureDia": 0,
+                "spo2": 0,
+                "notes": "HR decreases 20"
+              },
+              "steroids": {
+                "heartRate": 0,
+                "respRate": 0,
+                "bloodPressureSys": 0,
+                "bloodPressureDia": 0,
+                "spo2": 0,
+                "notes": "No change"
+              },
+              "H2 blocker": {
+                "heartRate": 0,
+                "respRate": 0,
+                "bloodPressureSys": 0,
+                "bloodPressureDia": 0,
+                "spo2": 0,
+                "notes": "No change"
+              },
+              "diphenhydramine": {
+                "heartRate": 0,
+                "respRate": 0,
+                "bloodPressureSys": 0,
+                "bloodPressureDia": 0,
+                "spo2": 0,
+                "notes": "Rash fades a little, child feels less itchy"
+              },
+              "nebulized albuterol": {
+                "heartRate": 0,
+                "respRate": 0,
+                "bloodPressureSys": 0,
+                "bloodPressureDia": 0,
+                "spo2": 0,
+                "notes": "Wheezing reduced, respiratory distress improves some"
+              },
+              "set up difficult airway equipment": {
+                "heartRate": 0,
+                "respRate": 0,
+                "bloodPressureSys": 0,
+                "bloodPressureDia": 0,
+                "spo2": 0,
+                "notes": "Preparation for potential airway intervention"
+              }
             }
           },
           {
@@ -141,14 +170,13 @@
             "severity": "moderate",
             "TTIsec": 600,
             "requiredInterventions": [
-              "extended observation period",
-              "vital signs reassessment",
-              "allergy action plan creation",
-              "epinephrine auto-injector training",
-              "discharge readiness assessment"
+              "Discussion around need for admission",
+              "Discussion with family about anaphylaxis/allergic reactions",
+              "Outpatient treatment and follow up discussion"
             ],
             "helpful": [
-              "oral antihistamines",
+              "vital signs reassessment",
+              "allergy action plan creation",
               "epinephrine auto-injector training"
             ],
             "harmful": [
@@ -160,40 +188,30 @@
               "discharge instructions"
             ],
             "vitalEffects": {
-              "extended observation": {},
-              "vital reassessment": {},
-              "prevention planning": {}
-            }
-          },
-          {
-            "stage": 4,
-            "name": "Discharge & Follow-up",
-            "ordered": true,
-            "severity": "low",
-            "TTIsec": 900,
-            "requiredInterventions": [
-              "epinephrine auto-injector prescription",
-              "comprehensive discharge instructions",
-              "allergist referral scheduling",
-              "school action plan distribution",
-              "follow-up appointment booking"
-            ],
-            "helpful": [
-              "allergy referral",
-              "patient education"
-            ],
-            "harmful": [
-              "missing epinephrine prescription",
-              "inadequate discharge instructions"
-            ],
-            "neutral": [
-              "allergy testing scheduling",
-              "home monitoring instructions"
-            ],
-            "vitalEffects": {
-              "epinephrine auto-injector prescription": {},
-              "discharge instructions": {},
-              "follow-up planning": {}
+              "Discussion around need for admission": {
+                "heartRate": 0,
+                "respRate": 0,
+                "bloodPressureSys": 0,
+                "bloodPressureDia": 0,
+                "spo2": 0,
+                "notes": "Critical decision point for patient disposition"
+              },
+              "Discussion with family about anaphylaxis/allergic reactions": {
+                "heartRate": 0,
+                "respRate": 0,
+                "bloodPressureSys": 0,
+                "bloodPressureDia": 0,
+                "spo2": 0,
+                "notes": "Essential family education and counseling"
+              },
+              "Outpatient treatment and follow up discussion": {
+                "heartRate": 0,
+                "respRate": 0,
+                "bloodPressureSys": 0,
+                "bloodPressureDia": 0,
+                "spo2": 0,
+                "notes": "Discharge planning and follow-up coordination"
+              }
             }
           }
         ]

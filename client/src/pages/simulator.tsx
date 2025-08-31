@@ -19,30 +19,12 @@ import {
   Target,
   BookOpen
 } from "lucide-react";
-import { Link, useLocation } from "wouter";
+import { Link, useLocation, useRoute } from "wouter";
 import { InterventionsPanel } from "@/components/InterventionsPanel";
 import { EnhancedVitalsMonitor } from "@/components/EnhancedVitalsMonitor";
 import { ComprehensiveSimulationInterface } from "@/components/ComprehensiveSimulationInterface";
 import EnhancedInterventionPopup from '@/components/EnhancedInterventionPopup';
 import CaseCompletionDebrief from '@/components/CaseCompletionDebrief';
-import { SimpleFeedbackModal } from '@/components/SimpleFeedbackModal';
-
-// Import the new scoring system
-import { 
-  ScoringCalculator, 
-  createCaseScoringCalculator,
-  InteractionRecord,
-  StageDefinition,
-  ScoringResult
-} from '@/lib/scoringCalculator';
-
-// Import the simple feedback system
-import { 
-  generateSimpleFeedback,
-  SimpleFeedbackResult,
-  SimpleInteractionRecord,
-  SimpleStageDefinition
-} from '@/lib/simpleFeedback';
 
 // Import the stage progression engine
 import { StageProgressionEngine } from '@/lib/stageProgressionEngine';
@@ -146,18 +128,6 @@ export default function Simulator() {
   // Vitals pause state
   const [isVitalsPaused, setIsVitalsPaused] = useState(false);
 
-  // Simple feedback modal state
-  const [simpleFeedbackModal, setSimpleFeedbackModal] = useState<{
-    isOpen: boolean;
-    feedbackResult: SimpleFeedbackResult | null;
-  }>({
-    isOpen: false,
-    feedbackResult: null
-  });
-
-  // Track simple interactions for feedback
-  const [simpleInteractions, setSimpleInteractions] = useState<SimpleInteractionRecord[]>([]);
-
   // Case completion debrief state
   const [caseCompletionDebrief, setCaseCompletionDebrief] = useState<{
     isOpen: boolean;
@@ -166,7 +136,6 @@ export default function Simulator() {
     feedback: any;
     evidenceSources: any[];
     failureReason?: string;
-    scoringResult?: ScoringResult | null;
   }>({
     isOpen: false,
     caseData: {},
@@ -174,11 +143,6 @@ export default function Simulator() {
     feedback: {},
     evidenceSources: []
   });
-
-  // New scoring system state
-  const [scoringCalculator, setScoringCalculator] = useState<ScoringCalculator | null>(null);
-  const [scoringResult, setScoringResult] = useState<ScoringResult | null>(null);
-  const [stageStartTimes, setStageStartTimes] = useState<Map<number, number>>(new Map());
 
   // Stage progression engine
   const [stageProgressionEngine, setStageProgressionEngine] = useState<StageProgressionEngine | null>(null);
@@ -314,9 +278,6 @@ export default function Simulator() {
           setCurrentCase(simulationData.caseDefinition);
           console.log('Setting vitals from simulation data (1):', simulationData.vitals);
           setVitals(simulationData.vitals);
-          
-          // Initialize scoring system for the case
-          initializeScoringSystem(simulationData.caseDefinition);
           
           // Initialize stage progression engine
           const engine = new StageProgressionEngine(simulationData.caseDefinition, 'child'); // Default age band
@@ -573,9 +534,13 @@ export default function Simulator() {
 
     console.log(`🎉 Initialized ${stageInterventions.length} interventions for stage ${stage.stage}`);
     console.log('🏷️ Intervention IDs:', stageInterventions.map(i => i.id));
-    console.log('📝 Setting available interventions...');
-    setAvailableInterventions(stageInterventions);
-    console.log('✅ Available interventions set!');
+    
+    // Filter to show only required interventions
+    const requiredInterventions = stageInterventions.filter(i => i.classification === 'required');
+    console.log(`📝 Setting available interventions (filtered to ${requiredInterventions.length} required only)...`);
+    console.log('🔍 Required interventions:', requiredInterventions.map(i => ({ id: i.id, name: i.name, classification: i.classification })));
+    setAvailableInterventions(requiredInterventions);
+    console.log('✅ Available interventions set (required only)!');
   };
 
   // Check URL changes and reload if needed - only if the caseId actually changes
@@ -1375,123 +1340,6 @@ export default function Simulator() {
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Initialize scoring system for the current case
-  const initializeScoringSystem = useCallback((caseData: CaseDefinition) => {
-    if (!caseData || !caseData.stages) {
-      console.log('❌ Cannot initialize scoring system - missing case data or stages');
-      return;
-    }
-
-    console.log('🚀 Initializing scoring system for case:', caseData.id);
-    console.log('📋 Case stages:', caseData.stages.length);
-
-    // Create stage definitions for scoring
-    const stageDefinitions: StageDefinition[] = caseData.stages.map((stage: any, index: number) => {
-      const stageDef = {
-        stageNumber: stage.stage || index + 1,
-        requiredLabels: stage.requiredInterventions || [],
-        timeLimitSec: stage.timeLimit,
-        criticalEarlyWindowSec: stage.criticalEarlyWindow,
-        criticalEarlyLabels: stage.criticalEarlyInterventions || []
-      };
-      console.log(`🎯 Stage ${stageDef.stageNumber} definition:`, stageDef);
-      return stageDef;
-    });
-
-    console.log('📊 Stage definitions created:', stageDefinitions);
-
-    // Create scoring calculator
-    const calculator = createCaseScoringCalculator(
-      caseData.id || 'unknown_case',
-      stageDefinitions
-    );
-
-    setScoringCalculator(calculator);
-    
-    // Initialize first stage timing
-    const now = Date.now();
-    setStageStartTimes(new Map([[1, now]]));
-    calculator.setStageTiming(1, now);
-    
-    console.log('✅ Scoring system initialized for case:', caseData.id);
-    console.log('🎯 Scoring calculator created:', !!calculator);
-  }, []);
-
-  // Record intervention for scoring
-  const recordInterventionForScoring = useCallback((
-    interventionName: string,
-    category: 'required' | 'helpful' | 'neutral' | 'harmful',
-    success: boolean = true
-  ) => {
-    if (!scoringCalculator) {
-      console.log(`❌ No scoring calculator available for: ${interventionName}`);
-      return;
-    }
-
-    // Normalize intervention name (remove classification suffixes)
-    const normalizedName = interventionName
-      .replace(/\s*\(Harmful\)\s*$/i, '')
-      .replace(/\s*\(Anaphylaxis\)\s*$/i, '')
-      .replace(/\s*\(Neutral\)\s*$/i, '')
-      .trim();
-
-    // Determine final category
-    const finalCategory = category === 'harmful' ? 'harmful' : 
-                         success ? category : 'harmful';
-
-    const interaction: InteractionRecord = {
-      stageNumber: currentStage,
-      label: normalizedName,
-      category: finalCategory,
-      timestamp: new Date().toISOString()
-    };
-
-    // Also record for simple feedback system
-    const simpleInteraction: SimpleInteractionRecord = {
-      stageNumber: currentStage,
-      label: normalizedName,
-      category: finalCategory,
-      timestamp: new Date().toISOString()
-    };
-
-    setSimpleInteractions(prev => [...prev, simpleInteraction]);
-
-    console.log(`📊 Recording intervention for scoring:`, {
-      originalName: interventionName,
-      normalizedName,
-      category,
-      finalCategory,
-      stageNumber: currentStage,
-      success
-    });
-
-    // Add to scoring calculator
-    const result = scoringCalculator.addInteraction(interaction);
-    setScoringResult(result);
-    
-    console.log(`📊 Scoring: ${normalizedName} (${finalCategory}) - Stage ${currentStage}`);
-    console.log(`🔄 Current Score: ${result.finalScore}/100`);
-    console.log(`📈 Scoring Result:`, result);
-  }, [scoringCalculator, currentStage]);
-
-  // Handle stage progression in scoring system
-  const handleScoringStageProgression = useCallback((newStage: number) => {
-    if (!scoringCalculator) return;
-
-    // End current stage timing
-    const currentStageStartTime = stageStartTimes.get(currentStage);
-    if (currentStageStartTime) {
-      scoringCalculator.setStageTiming(currentStage, currentStageStartTime, Date.now());
-    }
-
-    // Start new stage timing
-    const now = Date.now();
-    setStageStartTimes(prev => new Map(prev).set(newStage, now));
-    scoringCalculator.setStageTiming(newStage, now);
-
-    console.log(`📈 Scoring: Stage ${currentStage} ended, Stage ${newStage} started`);
-  }, [scoringCalculator, currentStage, stageStartTimes]);
-
   const getVitalStatus = (vital: keyof VitalSigns, value: number | string | undefined) => {
     const status = {
       color: 'text-gray-600',
@@ -2277,26 +2125,13 @@ export default function Simulator() {
     setIsRunning(false);
     setCaseComplete(true);
     
-    // Create simple stage definitions from case data
-    const simpleStageDefinitions: SimpleStageDefinition[] = currentCase?.stages?.map((stage: any) => ({
-      stageNumber: stage.stage,
-      requiredLabels: stage.requiredInterventions || [],
-      harmfulLabels: stage.harmfulInterventions || [],
-      neutralLabels: stage.neutralInterventions || []
-    })) || [];
+    // Navigate to case completed page
+    const urlParams = new URLSearchParams(window.location.search);
+    const caseId = urlParams.get('caseId') || 'aliem_case_01_anaphylaxis';
+    const caseName = currentCase?.name || 'Anaphylaxis - 6-year-old';
     
-    // Generate simple feedback
-    const feedbackResult = generateSimpleFeedback(simpleInteractions, simpleStageDefinitions);
-    
-    console.log('🎯 Simple feedback result:', feedbackResult);
-    console.log('🎯 Simple interactions used:', simpleInteractions);
-    console.log('🎯 Stage definitions used:', simpleStageDefinitions);
-    
-    // Show simple feedback modal
-    setSimpleFeedbackModal({
-      isOpen: true,
-      feedbackResult
-    });
+    // Navigate to case completed page
+    window.location.href = `/case-completed?caseId=${encodeURIComponent(caseId)}&caseName=${encodeURIComponent(caseName)}`;
   };
 
   // Calculate performance metrics
@@ -2547,13 +2382,7 @@ export default function Simulator() {
             <Button
               onClick={() => {
                 if (!isRunning) {
-                  // Starting simulation - initialize scoring for stage 1
-                  if (scoringCalculator) {
-                    const now = Date.now();
-                    setStageStartTimes(new Map([[1, now]]));
-                    scoringCalculator.setStageTiming(1, now);
-                    console.log('🎯 Scoring: Stage 1 started at', new Date(now).toISOString());
-                  }
+                  // Starting simulation
                 }
                 setIsRunning(!isRunning);
               }}
@@ -3138,7 +2967,6 @@ export default function Simulator() {
             performance={caseCompletionDebrief.performance}
             feedback={caseCompletionDebrief.feedback}
             evidenceSources={caseCompletionDebrief.evidenceSources}
-            scoringResult={caseCompletionDebrief.scoringResult}
           />
         )}
         

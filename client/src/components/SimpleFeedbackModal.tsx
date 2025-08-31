@@ -1,6 +1,31 @@
 import React from 'react';
 import { X, Trophy, AlertTriangle, CheckCircle, BookOpen, RotateCcw, ArrowLeft } from 'lucide-react';
-import { SimpleFeedbackResult } from '@/lib/simpleFeedback';
+// Removed simpleFeedback import - scoring system removed
+interface SimpleFeedbackResult {
+  finalScorePercent: number;
+  correctCount: number;
+  incorrectCount: number;
+  ignoredCount: number;
+  feedback: {
+    critical_misses: Array<{
+      stageNumber: number;
+      label: string;
+      what_went_wrong: string;
+      why_wrong: string;
+      how_to_improve: string;
+    }>;
+    harmful_actions: Array<{
+      stageNumber: number;
+      label: string;
+      what_went_wrong: string;
+      why_wrong: string;
+      how_to_improve: string;
+    }>;
+    prioritization_tips: string[];
+    positives: string[];
+  };
+  disclaimer: string;
+}
 
 interface SimpleFeedbackModalProps {
   isOpen: boolean;

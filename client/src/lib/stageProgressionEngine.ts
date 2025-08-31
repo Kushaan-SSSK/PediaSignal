@@ -198,6 +198,8 @@ export class StageProgressionEngine {
     // Check for physiologic bounds failure first
     const physiologicFailure = this.checkPhysiologicBounds(vitals, stage);
     if (physiologicFailure) {
+      console.log(`🚨 PHYSIOLOGIC FAILURE DETECTED in processTick: ${physiologicFailure}`);
+      console.log(`Current stage: ${stage.stage}, Vitals:`, vitals);
       return {
         shouldProgress: false,
         deteriorationApplied: false,
@@ -210,7 +212,9 @@ export class StageProgressionEngine {
 
     // Check if stage is already solved (≤10s stabilization override)
     const timeInStage = timeElapsed - this.currentStageState.stageStartAt;
-    const isStabilized = this.checkStabilization(stage, timeInStage);
+    // DISABLED: Early stabilization override - case completion should only happen in Stage 3
+    // const isStabilized = this.checkStabilization(stage, timeInStage);
+    const isStabilized = false; // Always false to prevent early completion
     
     if (isStabilized && !this.currentStageState.isStabilized) {
       this.currentStageState.isStabilized = true;
@@ -301,23 +305,27 @@ export class StageProgressionEngine {
     
     // Record completed intervention if it's required
     if (classification.type === 'required') {
-      if (!this.currentStageState.requiredInterventionsCompleted.includes(interventionId)) {
-        this.currentStageState.requiredInterventionsCompleted.push(interventionId);
-        console.log(`Required intervention ${interventionId} completed for stage ${this.currentStage}`);
+      const interventionName = this.mapInterventionIdToName(interventionId, stage);
+      if (!this.currentStageState.requiredInterventionsCompleted.includes(interventionName)) {
+        this.currentStageState.requiredInterventionsCompleted.push(interventionName);
+        console.log(`Required intervention ${interventionName} completed for stage ${this.currentStage}`);
       }
     }
     
     // Record ordered intervention completion if applicable
     if (stage.ordered && classification.type === 'required') {
-      if (!this.currentStageState.orderedInterventionsCompleted.includes(interventionId)) {
-        this.currentStageState.orderedInterventionsCompleted.push(interventionId);
-        console.log(`Ordered intervention ${interventionId} completed for stage ${this.currentStage}`);
+      const interventionName = this.mapInterventionIdToName(interventionId, stage);
+      if (!this.currentStageState.orderedInterventionsCompleted.includes(interventionName)) {
+        this.currentStageState.orderedInterventionsCompleted.push(interventionName);
+        console.log(`Ordered intervention ${interventionName} completed for stage ${this.currentStage}`);
       }
     }
     
     // Check for physiologic bounds failure after intervention
     const physiologicFailure = this.checkPhysiologicBounds(vitalsUpdated, stage);
     if (physiologicFailure) {
+      console.log(`🚨 PHYSIOLOGIC FAILURE DETECTED in processIntervention: ${physiologicFailure}`);
+      console.log(`Current stage: ${stage.stage}, Vitals after intervention:`, vitalsUpdated);
       return {
         success: false,
         vitalsUpdated: vitalsUpdated,
@@ -344,18 +352,41 @@ export class StageProgressionEngine {
   }
 
   private classifyIntervention(interventionId: string, stage: CaseStage): { type: 'required' | 'helpful' | 'harmful' | 'neutral'; severity: 'low' | 'moderate' | 'severe' } {
-    if (stage.requiredInterventions && stage.requiredInterventions.includes(interventionId)) {
+    // Map intervention ID to actual intervention name
+    const interventionName = this.mapInterventionIdToName(interventionId, stage);
+    
+    if (stage.requiredInterventions && stage.requiredInterventions.includes(interventionName)) {
       return { type: 'required', severity: stage.severity };
-    } else if (stage.helpful && stage.helpful.includes(interventionId)) {
+    } else if (stage.helpful && stage.helpful.includes(interventionName)) {
       return { type: 'helpful', severity: stage.severity };
-    } else if (stage.harmful && stage.harmful.includes(interventionId)) {
+    } else if (stage.harmful && stage.harmful.includes(interventionName)) {
       return { type: 'harmful', severity: stage.severity };
-    } else if (stage.neutral && stage.neutral.includes(interventionId)) {
+    } else if (stage.neutral && stage.neutral.includes(interventionName)) {
       return { type: 'neutral', severity: stage.severity };
     }
     
     // Default to neutral if not classified
     return { type: 'neutral', severity: stage.severity };
+  }
+
+  private mapInterventionIdToName(interventionId: string, stage: CaseStage): string {
+    // Handle the mapping from intervention IDs (like "required_0") to actual intervention names
+    if (interventionId.startsWith('required_')) {
+      const index = parseInt(interventionId.replace('required_', ''));
+      return stage.requiredInterventions?.[index] || interventionId;
+    } else if (interventionId.startsWith('helpful_')) {
+      const index = parseInt(interventionId.replace('helpful_', ''));
+      return stage.helpful?.[index] || interventionId;
+    } else if (interventionId.startsWith('harmful_')) {
+      const index = parseInt(interventionId.replace('harmful_', ''));
+      return stage.harmful?.[index] || interventionId;
+    } else if (interventionId.startsWith('neutral_')) {
+      const index = parseInt(interventionId.replace('neutral_', ''));
+      return stage.neutral?.[index] || interventionId;
+    }
+    
+    // If it doesn't match the pattern, return as-is
+    return interventionId;
   }
 
   private applyInterventionEffects(interventionId: string, vitals: VitalSigns, classification: { type: string; severity: string }): VitalSigns {
@@ -441,51 +472,46 @@ export class StageProgressionEngine {
     const bounds = stage.vitalBounds || AGE_BASED_VITAL_BOUNDS[this.ageBand];
     if (!bounds) return null;
 
-    // Check each vital against bounds
-    if (vitals.heartRate < bounds.heartRate.min || vitals.heartRate > bounds.heartRate.max) {
-      return `Heart rate ${vitals.heartRate} outside normal range (${bounds.heartRate.min}-${bounds.heartRate.max})`;
+    // Make physiologic failure detection extremely lenient - only trigger for truly critical values
+    // This prevents premature case completion during normal simulation progression
+    
+    // Critical heart rate failure (extremely low or extremely high)
+    if (vitals.heartRate < 30 || vitals.heartRate > 200) {
+      console.log(`🚨 CRITICAL: Heart rate ${vitals.heartRate} (critical bounds: 30-200)`);
+      return `Critical heart rate ${vitals.heartRate} (critical: <30 or >200)`;
     }
     
-    if (vitals.respRate < bounds.respRate.min || vitals.respRate > bounds.respRate.max) {
-      return `Respiratory rate ${vitals.respRate} outside normal range (${bounds.respRate.min}-${bounds.respRate.max})`;
+    // Critical respiratory rate failure (extremely low or extremely high)
+    if (vitals.respRate < 5 || vitals.respRate > 50) {
+      console.log(`🚨 CRITICAL: Respiratory rate ${vitals.respRate} (critical bounds: 5-50)`);
+      return `Critical respiratory rate ${vitals.respRate} (critical: <5 or >50)`;
     }
     
-    if (vitals.bloodPressureSys < bounds.bloodPressureSys.min || vitals.bloodPressureSys > bounds.bloodPressureSys.max) {
-      return `Systolic BP ${vitals.bloodPressureSys} outside normal range (${bounds.bloodPressureSys.min}-${bounds.bloodPressureSys.max})`;
+    // Critical blood pressure failure (extremely low)
+    if (vitals.bloodPressureSys < 50) {
+      console.log(`🚨 CRITICAL: Systolic BP ${vitals.bloodPressureSys} (critical min: 50)`);
+      return `Critical systolic BP ${vitals.bloodPressureSys} (critical: <50)`;
     }
     
-    if (vitals.spo2 < bounds.spo2.min) {
-      return `SpO2 ${vitals.spo2} below critical threshold (${bounds.spo2.min})`;
+    // Critical SpO2 failure (extremely low)
+    if (vitals.spo2 < 80) {
+      console.log(`🚨 CRITICAL: SpO2 ${vitals.spo2} (critical min: 80)`);
+      return `Critical SpO2 ${vitals.spo2} (critical: <80)`;
     }
     
-    if (vitals.temperature < bounds.temperature.min || vitals.temperature > bounds.temperature.max) {
-      return `Temperature ${vitals.temperature} outside normal range (${bounds.temperature.min}-${bounds.temperature.max})`;
+    // Critical temperature failure (extremely low or extremely high) - use Fahrenheit bounds
+    // Normal body temperature is 97-99°F, critical would be <90°F or >110°F
+    if (vitals.temperature < 90 || vitals.temperature > 110) {
+      console.log(`🚨 CRITICAL: Temperature ${vitals.temperature}°F (critical bounds: 90-110°F)`);
+      return `Critical temperature ${vitals.temperature}°F (critical: <90°F or >110°F)`;
     }
 
     return null;
   }
 
   private checkStabilization(stage: CaseStage, timeInStage: number): boolean {
-    // Early stabilization override: if all required interventions completed within 10s
-    if (timeInStage <= 10) {
-      // Check if requiredInterventions exists and has items
-      if (!stage.requiredInterventions || stage.requiredInterventions.length === 0) {
-        return false; // No required interventions to check
-      }
-      
-      const allRequiredCompleted = stage.requiredInterventions.every(req => 
-        this.currentStageState.requiredInterventionsCompleted.includes(req)
-      );
-      
-      if (allRequiredCompleted) {
-        // Check ordered requirement if applicable
-        if (stage.ordered) {
-          return this.checkOrderedCompletion(stage);
-        }
-        return true;
-      }
-    }
-    
+    // DISABLED: Early stabilization logic to prevent premature case completion
+    // Case completion should ONLY happen when all Stage 3 required interventions are applied
     return false;
   }
 
