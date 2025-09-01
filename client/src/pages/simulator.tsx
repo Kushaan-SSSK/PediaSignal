@@ -25,6 +25,10 @@ import { EnhancedVitalsMonitor } from "@/components/EnhancedVitalsMonitor";
 import { ComprehensiveSimulationInterface } from "@/components/ComprehensiveSimulationInterface";
 import EnhancedInterventionPopup from '@/components/EnhancedInterventionPopup';
 import CaseCompletionDebrief from '@/components/CaseCompletionDebrief';
+import { SimpleFeedbackModal } from '@/components/SimpleFeedbackModal';
+
+// Import the new completion logic
+import { getStage3RequiredInterventions, checkStage3Completion, emitCompletionEvent } from '@/lib/completionLogic';
 
 // Import the stage progression engine
 import { StageProgressionEngine } from '@/lib/stageProgressionEngine';
@@ -128,6 +132,18 @@ export default function Simulator() {
   // Vitals pause state
   const [isVitalsPaused, setIsVitalsPaused] = useState(false);
 
+  // Simple feedback modal state
+  const [simpleFeedbackModal, setSimpleFeedbackModal] = useState<{
+    isOpen: boolean;
+    // Removed feedbackResult - scoring system removed
+  }>({
+    isOpen: false,
+    // Removed feedbackResult - scoring system removed
+  });
+
+  // Track simple interactions for feedback
+
+
   // Case completion debrief state
   const [caseCompletionDebrief, setCaseCompletionDebrief] = useState<{
     isOpen: boolean;
@@ -136,6 +152,7 @@ export default function Simulator() {
     feedback: any;
     evidenceSources: any[];
     failureReason?: string;
+    // Removed scoringResult - scoring system removed
   }>({
     isOpen: false,
     caseData: {},
@@ -143,6 +160,8 @@ export default function Simulator() {
     feedback: {},
     evidenceSources: []
   });
+
+
 
   // Stage progression engine
   const [stageProgressionEngine, setStageProgressionEngine] = useState<StageProgressionEngine | null>(null);
@@ -153,8 +172,7 @@ export default function Simulator() {
 
   const [aiExplanation, setAiExplanation] = useState("");
   const [caseComplete, setCaseComplete] = useState(false);
-  const [score, setScore] = useState(0);
-  const [feedback, setFeedback] = useState<string[]>([]);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [emergencyEvents, setEmergencyEvents] = useState<string[]>([]);
@@ -279,6 +297,9 @@ export default function Simulator() {
           console.log('Setting vitals from simulation data (1):', simulationData.vitals);
           setVitals(simulationData.vitals);
           
+          // Initialize scoring system for the case
+          initializeScoringSystem(simulationData.caseDefinition);
+          
           // Initialize stage progression engine
           const engine = new StageProgressionEngine(simulationData.caseDefinition, 'child'); // Default age band
           setStageProgressionEngine(engine);
@@ -319,6 +340,94 @@ export default function Simulator() {
     initializeSimulator();
     console.log('initializeSimulator called');
   }, []); // Remove location dependency to run only once on mount
+
+  // Check for Stage 3 completion on every render
+  useEffect(() => {
+    console.log('🔍 Completion check effect triggered with:', {
+      currentStage,
+      hasCurrentCase: !!currentCase,
+      caseComplete,
+      allAppliedInterventionsLength: allAppliedInterventions.length
+    });
+    
+    // Always log this to see if the effect is running
+    console.log('🔍 Effect is running - checking conditions...');
+    
+    // Test if the functions are available
+    console.log('🔍 Testing function availability:', {
+      getStage3RequiredInterventions: typeof getStage3RequiredInterventions,
+      checkStage3Completion: typeof checkStage3Completion
+    });
+    
+    if (currentStage === 3 && currentCase && !caseComplete) {
+      console.log('🔍 Running completion check on render...');
+      
+      try {
+        const stage3RequiredInterventions = getStage3RequiredInterventions(currentCase);
+        console.log('🔍 Stage 3 required interventions from render check:', stage3RequiredInterventions);
+        console.log('🔍 All applied interventions from render check:', allAppliedInterventions);
+        
+        if (stage3RequiredInterventions.length > 0) {
+          const isCompleted = checkStage3Completion(stage3RequiredInterventions, allAppliedInterventions);
+          console.log('🔍 Is completed from render check:', isCompleted);
+          
+          if (isCompleted) {
+            console.log('🏁 All Stage 3 required interventions completed - triggering case completion from render check');
+            handleCaseCompletion(stage3RequiredInterventions);
+          }
+        }
+      } catch (error) {
+        console.error('🔍 Error in completion check:', error);
+      }
+    } else {
+      console.log('🔍 Completion check skipped - conditions not met:', {
+        currentStage,
+        hasCurrentCase: !!currentCase,
+        caseComplete
+      });
+    }
+  }, [currentStage, currentCase, allAppliedInterventions, caseComplete]);
+
+  // Simple test effect to see if useEffect is working at all
+  useEffect(() => {
+    console.log('🧪 TEST EFFECT: This should run on every render');
+  });
+
+  // Simple debug effect
+  useEffect(() => {
+    console.log('🔍 DEBUG: Simple debug effect running');
+  });
+
+  // Simple completion check effect
+  useEffect(() => {
+    console.log('🔍 COMPLETION CHECK: Effect running');
+    console.log('🔍 COMPLETION CHECK: Current stage:', currentStage);
+    console.log('🔍 COMPLETION CHECK: Case complete:', caseComplete);
+    console.log('🔍 COMPLETION CHECK: All applied interventions:', allAppliedInterventions);
+    
+    if (currentStage === 3 && !caseComplete) {
+      console.log('🔍 COMPLETION CHECK: In Stage 3, checking completion...');
+      
+      try {
+        const stage3RequiredInterventions = getStage3RequiredInterventions(currentCase);
+        console.log('🔍 COMPLETION CHECK: Stage 3 required interventions:', stage3RequiredInterventions);
+        
+        if (stage3RequiredInterventions.length > 0) {
+          const isCompleted = checkStage3Completion(stage3RequiredInterventions, allAppliedInterventions);
+          console.log('🔍 COMPLETION CHECK: Is completed:', isCompleted);
+          
+          if (isCompleted) {
+            console.log('🏁 COMPLETION CHECK: All Stage 3 required interventions completed!');
+            handleCaseCompletion(stage3RequiredInterventions);
+          }
+        } else {
+          console.log('🔍 COMPLETION CHECK: No Stage 3 required interventions found');
+        }
+      } catch (error) {
+        console.error('🔍 COMPLETION CHECK: Error in completion check:', error);
+      }
+    }
+  }, [currentStage, caseComplete, allAppliedInterventions, currentCase]);
 
   // Function to fetch interventions for a specific stage
   const fetchStageInterventions = async (stage: number, caseId: string) => {
@@ -609,84 +718,73 @@ export default function Simulator() {
         setTimeElapsed(prev => prev + 1);
         setStageTime(prev => prev + 1);
         
-        // Check if it's time for a 10-second tick
+        // DISABLED: 10-second vital deterioration removed
+        // Vitals now only change for specific interventions (epinephrine, oxygen, IV fluids)
+        // Keep timer running for UI updates but don't apply deterioration
         const currentTime = Date.now();
         if (currentTime - lastTickTime >= 10000) { // 10 seconds
           setLastTickTime(currentTime);
           setTickTimer(prev => prev + 1);
           
-          // Process stage progression tick
-          console.log('Processing tick with vitals:', vitals);
-          console.log('Vitals type check:', {
-            hasHeartRate: typeof vitals.heartRate === 'number',
-            hasRespRate: typeof vitals.respRate === 'number',
-            hasBloodPressureSys: typeof vitals.bloodPressureSys === 'number',
-            hasBloodPressureDia: typeof vitals.bloodPressureDia === 'number',
-            hasSpo2: typeof (vitals.spo2 || vitals.oxygenSat) === 'number',
-            hasTemperature: typeof vitals.temperature === 'number',
-            hasConsciousness: typeof vitals.consciousness === 'string',
-            hasCapillaryRefill: typeof vitals.capillaryRefill === 'number'
-          });
+          // DISABLED: Vital deterioration processing
+          // console.log('Processing tick with vitals:', vitals);
+          // const progressionResult = stageProgressionEngine.processTick(vitals, timeElapsed);
+          // console.log('Progression result:', progressionResult);
           
-          const progressionResult = stageProgressionEngine.processTick(vitals, timeElapsed);
-          console.log('Progression result:', progressionResult);
-          console.log('Vitals before tick:', vitals);
-          console.log('Vitals after tick:', progressionResult.vitalsUpdated);
-          
-          // Update vitals based on progression result
-          if (progressionResult.vitalsUpdated) {
-            console.log('Updating vitals from stage progression (1):', progressionResult.vitalsUpdated);
-            setVitals(progressionResult.vitalsUpdated);
-          }
+          // // Update vitals based on progression result
+          // if (progressionResult.vitalsUpdated) {
+          //   console.log('Updating vitals from stage progression (1):', progressionResult.vitalsUpdated);
+          //   setVitals(progressionResult.vitalsUpdated);
+          // }
             
-          // Check for physiologic failure
-          if (progressionResult.physiologicFailure) {
-            handleSimulationFailure(progressionResult.failureReason || 'Physiologic instability');
-            return;
-          }
+          // // Check for physiologic failure
+          // if (progressionResult.physiologicFailure) {
+          //   console.log('⚠️ Physiologic failure ignored - case completion only via Stage 3 completion');
+          //   return;
+          // }
           
-          // Check for stage advancement
-          if (progressionResult.shouldAdvance && progressionResult.newStage) {
-            handleStageAdvancement(progressionResult.newStage);
-          }
+          // // Check for stage advancement
+          // if (progressionResult.shouldAdvance && progressionResult.newStage) {
+          //   handleStageAdvancement(progressionResult.newStage);
+          // }
           
-          // Check for severity escalation
-          if (progressionResult.severityEscalated) {
-            // Update UI to show severity escalation
-            console.log('Stage severity escalated');
-          }
+          // // Check for severity escalation
+          // if (progressionResult.severityEscalated) {
+          //   console.log('Stage severity escalated');
+          // }
 
-          // Log deterioration if applied
-          if (progressionResult.deteriorationApplied) {
-            console.log('Vital deterioration applied due to unsolved stage');
-          }
+          // // Log deterioration if applied
+          // if (progressionResult.deteriorationApplied) {
+          //   console.log('Vital deterioration applied due to unsolved stage');
+          // }
         }
       }, 1000); // Check every second for UI updates, but process 10-second ticks when they occur
     }
     return () => clearInterval(interval);
   }, [isRunning, currentCase, stageProgressionEngine, vitals, timeElapsed, lastTickTime, isVitalsPaused]);
 
-  // Separate interval for real-time vital deterioration (every 10 seconds)
-  useEffect(() => {
-    if (!isRunning || !currentCase || !stageProgressionEngine || isVitalsPaused) return;
+  // DISABLED: Automatic vital deterioration removed
+  // Vitals now only change for specific interventions (epinephrine, oxygen, IV fluids)
+  // useEffect(() => {
+  //   if (!isRunning || !currentCase || !stageProgressionEngine || isVitalsPaused) return;
 
-    const deteriorationInterval = setInterval(() => {
-      if (isRunning && currentCase && stageProgressionEngine && !isVitalsPaused) {
-        // Apply deterioration every 10 seconds if stage is not solved
-        const progressionResult = stageProgressionEngine.processTick(vitals, timeElapsed);
+  //   const deteriorationInterval = setInterval(() => {
+  //     if (isRunning && currentCase && stageProgressionEngine && !isVitalsPaused) {
+  //       // Apply deterioration every 10 seconds if stage is not solved
+  //       const progressionResult = stageProgressionEngine.processTick(vitals, timeElapsed);
         
-        if (progressionResult.deteriorationApplied) {
-          console.log('Real-time deterioration applied');
-          if (progressionResult.vitalsUpdated) {
-            console.log('Updating vitals from stage progression (2):', progressionResult.vitalsUpdated);
-            setVitals(progressionResult.vitalsUpdated);
-          }
-        }
-      }
-    }, 10000); // Every 10 seconds
+  //       if (progressionResult.deteriorationApplied) {
+  //         console.log('Real-time deterioration applied');
+  //         if (progressionResult.vitalsUpdated) {
+  //           console.log('Updating vitals from stage progression (2):', progressionResult.vitalsUpdated);
+  //           setVitals(progressionResult.vitalsUpdated);
+  //         }
+  //       }
+  //     }
+  //   }, 10000); // Every 10 seconds
 
-    return () => clearInterval(deteriorationInterval);
-  }, [isRunning, currentCase, stageProgressionEngine, vitals, timeElapsed, isVitalsPaused]);
+  //   return () => clearInterval(deteriorationInterval);
+  // }, [isRunning, currentCase, stageProgressionEngine, vitals, timeElapsed, isVitalsPaused]);
 
   // Old stage progression function removed - replaced by stage progression engine
 
@@ -727,14 +825,24 @@ export default function Simulator() {
     // Check for three-strike failure
     if (result.threeStrikeFailure) {
       console.log('Three-strike failure detected');
-      handleSimulationFailure(result.failureReason || 'Three harmful actions in this stage');
+      // DISABLED: Three-strike failure should not trigger case completion
+      // Case completion should ONLY happen when all Stage 3 required interventions are applied
+      // handleSimulationFailure(result.failureReason || 'Three harmful actions in this stage');
+      console.log('⚠️ Three-strike failure ignored - case completion only via Stage 3 completion');
       return;
     }
 
     // Check for physiologic failure
     if (result.physiologicFailure) {
-      console.log('Physiologic failure detected');
-      handleSimulationFailure(result.failureReason || 'Physiologic instability');
+      console.log('🚨 Physiologic failure detected:', result.physiologicFailure);
+      console.log('Current stage:', currentStage);
+      console.log('Current vitals:', vitals);
+      console.log('Vitals after intervention:', result.vitalsUpdated);
+      console.log('Intervention that caused failure:', intervention);
+      // DISABLED: Physiologic failure should not trigger case completion
+      // Case completion should ONLY happen when all Stage 3 required interventions are applied
+      // handleSimulationFailure(result.failureReason || 'Physiologic instability');
+      console.log('⚠️ Physiologic failure ignored - case completion only via Stage 3 completion');
       return;
     }
 
@@ -787,6 +895,9 @@ export default function Simulator() {
       }
     }
 
+    // Case completion logic - ONLY trigger on final stage after all required interventions
+    // Case completion is handled separately - only after stage 3 is complete
+
     // Check for stage advancement
     if (result.shouldAdvance && result.stageChange) {
       console.log('Stage advancement detected:', result.stageChange);
@@ -797,8 +908,33 @@ export default function Simulator() {
     const ragInsights = generateRAGInsights(interventionId, result.classification.type !== 'harmful', result.vitalsUpdated);
     const evidenceSources = generateEvidenceSources(interventionId);
 
+    // Generate specific feedback for certain interventions
+    const generateSpecificFeedback = (interventionName: string) => {
+      switch (interventionName.toLowerCase()) {
+        case 'nebulized albuterol':
+          return {
+            clinicalGuidance: 'Wheezing reduced, respiratory distress improves some',
+            suggestedNextSteps: ['Monitor respiratory status', 'Continue observation']
+          };
+        case 'diphenhydramine':
+          return {
+            clinicalGuidance: 'Rash fades a little, child feels less itchy',
+            suggestedNextSteps: ['Monitor for continued improvement', 'Assess for other allergic symptoms']
+          };
+        default:
+          return null;
+      }
+    };
+
+    const specificFeedback = generateSpecificFeedback(intervention.name);
+
     // Fetch clinical guidance for this intervention
     const fetchClinicalGuidance = async () => {
+      // If we have specific feedback for this intervention, use it
+      if (specificFeedback) {
+        return specificFeedback;
+      }
+
       try {
         const response = await fetch('/api/rag/clinical-guidance', {
           method: 'POST',
@@ -892,38 +1028,25 @@ export default function Simulator() {
       scoringCategory = 'neutral';
     }
     
-    recordInterventionForScoring(intervention.name, scoringCategory, isSuccess);
+
     
-    // Check if we're on the final stage and should complete the case
-    if (currentStage === (currentCase?.stages?.length || 0)) {
-      const finalStageData = currentCase?.stages?.find((s: any) => s.stage === currentStage);
-      if (finalStageData) {
-        const requiredInterventions = finalStageData.requiredInterventions || [];
-        
-        // Check which required interventions have been applied successfully
-        const completedRequiredInterventions = requiredInterventions.filter(requiredName => {
-          const matchingIntervention = availableInterventions.find(available => 
-            available.name === requiredName || available.id === requiredName
-          );
-          return matchingIntervention && matchingIntervention.applied && matchingIntervention.success;
-        });
-        
-        console.log(`🎯 Final stage completion check:`, {
-          currentStage,
-          totalStages: currentCase?.stages?.length,
-          requiredInterventions,
-          availableInterventions: availableInterventions.map(i => ({ name: i.name, id: i.id, applied: i.applied, success: i.success })),
-          completedRequiredInterventions,
-          completedCount: completedRequiredInterventions.length,
-          requiredCount: requiredInterventions.length
-        });
-        
-        // If all required interventions are completed, finish the case
-        if (completedRequiredInterventions.length >= requiredInterventions.length && requiredInterventions.length > 0) {
-          console.log(`🏁 All required interventions completed for final stage, completing case...`);
-          handleCaseCompletion();
-        }
+    // Check for Stage 3 completion using new logic
+    console.log('🔍 Completion check - Current stage:', currentStage, 'Case complete:', caseComplete);
+    console.log('🔍 Current case data:', currentCase);
+    if (currentStage === 3 && currentCase) {
+      const stage3RequiredInterventions = getStage3RequiredInterventions(currentCase);
+      console.log('🔍 Stage 3 required interventions:', stage3RequiredInterventions);
+      console.log('🔍 All applied interventions:', allAppliedInterventions);
+      const isCompleted = checkStage3Completion(stage3RequiredInterventions, allAppliedInterventions);
+      console.log('🔍 Is completed:', isCompleted);
+      
+      if (isCompleted && !caseComplete) {
+        console.log('🏁 All Stage 3 required interventions completed - triggering case completion');
+        handleCaseCompletion(stage3RequiredInterventions);
+        return; // Exit early since case is complete
       }
+    } else {
+      console.log('🔍 Not checking completion - Current stage:', currentStage, 'Expected: 3');
     }
     
     console.log('Intervention applied successfully');
@@ -973,8 +1096,6 @@ export default function Simulator() {
     });
     setAiExplanation("");
     setCaseComplete(false);
-    setScore(0);
-    setFeedback([]);
     setEmergencyEvents([]);
     setPatientDeterioration(false);
     setComplications([]);
@@ -1247,98 +1368,45 @@ export default function Simulator() {
     setAiExplanation(explanation);
   };
 
-  const completeCase = () => {
-    setIsRunning(false);
-    setCaseComplete(true);
-    
-    // Calculate score based on PALS/PEM standards
-    const criticalActions = currentCase?.stages.flatMap(s => s.criticalActions) || [];
-    const appliedActions = availableInterventions.filter(i => i.applied && i.success).map(i => i.name);
-    
-    let score = 0;
-    const missedActions: string[] = [];
-    const timeEfficiency = [];
-    
-    // Evaluate critical actions (70% of score)
-    criticalActions.forEach(action => {
-      if (action && appliedActions.includes(action)) {
-        score += 14; // 70% / 5 critical actions = 14 points each
-      } else if (action) {
-        missedActions.push(action);
-      }
-    });
-    
-    // Evaluate time efficiency (20% of score)
-    const expectedTime = typeof currentCase?.estimatedTime === 'number' ? currentCase.estimatedTime : 15;
-    const timeRatio = timeElapsed / (expectedTime * 60);
-    if (timeRatio <= 1.2) {
-      score += 20;
-      timeEfficiency.push("Excellent time management - met PALS time standards");
-    } else if (timeRatio <= 1.5) {
-      score += 15;
-      timeEfficiency.push("Good time management - within acceptable limits");
-    } else if (timeRatio <= 2.0) {
-      score += 10;
-      timeEfficiency.push("Moderate time management - consider efficiency improvements");
-    } else {
-      timeEfficiency.push("Time management needs improvement - review PALS time standards");
-    }
-    
-    // Evaluate intervention appropriateness (10% of score)
-    const appropriateInterventions = appliedActions.filter(action => {
-      const intervention = interventions[action];
-      return intervention && intervention.successRate > 0.7;
-    });
-    const appropriatenessScore = (appropriateInterventions.length / appliedActions.length) * 10;
-    score += appropriatenessScore;
-    
-    setScore(Math.min(100, Math.round(score)));
-    
-    // Generate evidence-based feedback
-    const feedbackItems = [];
-    
-    if (missedActions.length > 0) {
-      feedbackItems.push(`🚨 **Critical Actions Missed:** ${missedActions.join(', ')}`);
-      feedbackItems.push("These actions are essential for patient safety and PALS compliance");
-    }
-    
-    if (timeEfficiency.length > 0) {
-      feedbackItems.push(`⏱️ **${timeEfficiency[0]}`);
-    }
-    
-    // PALS-specific feedback
-    if (score >= 90) {
-      feedbackItems.push("🏆 **Outstanding Performance:** Excellent PALS protocol adherence and clinical decision-making!");
-      feedbackItems.push("You demonstrated mastery of pediatric emergency assessment and management");
-    } else if (score >= 80) {
-      feedbackItems.push("✅ **Excellent Performance:** Strong PALS protocol adherence with minor areas for improvement");
-      feedbackItems.push("Focus on time efficiency and intervention timing for even better outcomes");
-    } else if (score >= 70) {
-      feedbackItems.push("👍 **Good Performance:** Adequate PALS protocol adherence with room for improvement");
-      feedbackItems.push("Review critical action sequences and time management strategies");
-    } else if (score >= 60) {
-      feedbackItems.push("⚠️ **Fair Performance:** Basic PALS protocol understanding with significant improvement needed");
-      feedbackItems.push("Focus on critical action completion and evidence-based practice");
-    } else {
-      feedbackItems.push("❌ **Needs Improvement:** Review PALS protocols and evidence-based guidelines");
-      feedbackItems.push("Practice fundamental assessment and intervention skills");
-    }
-    
-    // Add specific learning recommendations
-    if (currentCase?.category === 'status_epilepticus') {
-      feedbackItems.push("📚 **Learning Focus:** Review AAP status epilepticus guidelines and PALS seizure management");
-    } else if (currentCase?.category === 'status_asthmaticus') {
-      feedbackItems.push("📚 **Learning Focus:** Review PALS respiratory assessment and AAP asthma protocols");
-    }
-    
-    setFeedback(feedbackItems);
-  };
+
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins}:${secs.toString().padStart(2, '0')}`;
   };
+
+  // Initialize scoring system for the current case
+  const initializeScoringSystem = useCallback((caseData: CaseDefinition) => {
+    if (!caseData || !caseData.stages) {
+      console.log('❌ Cannot initialize scoring system - missing case data or stages');
+      return;
+    }
+
+    console.log('🚀 Initializing scoring system for case:', caseData.id);
+    console.log('📋 Case stages:', caseData.stages.length);
+
+    // Create stage definitions for scoring
+    const stageDefinitions = caseData.stages.map((stage: any, index: number) => {
+      const stageDef = {
+        stageNumber: stage.stage || index + 1,
+        requiredLabels: stage.requiredInterventions || [],
+        timeLimitSec: stage.timeLimit,
+        criticalEarlyWindowSec: stage.criticalEarlyWindow,
+        criticalEarlyLabels: stage.criticalEarlyInterventions || []
+      };
+      console.log(`🎯 Stage ${stageDef.stageNumber} definition:`, stageDef);
+      return stageDef;
+    });
+
+    console.log('📊 Stage definitions created:', stageDefinitions);
+
+
+  }, []);
+
+
+
+
 
   const getVitalStatus = (vital: keyof VitalSigns, value: number | string | undefined) => {
     const status = {
@@ -1933,13 +2001,13 @@ export default function Simulator() {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="text-center">
-                <div className="text-4xl font-bold text-blue-400 mb-2">{score}%</div>
+                <div className="text-4xl font-bold text-blue-400 mb-2">100%</div>
                 <div className="text-lg text-slate-300">Final Score</div>
               </div>
               
               <div className="space-y-2">
                 <h3 className="font-semibold text-white">Feedback:</h3>
-                {feedback.map((item, idx) => (
+                {[].map((item: any, idx: number) => (
                   <div key={idx} className="flex items-center gap-2 text-slate-300">
                     <Info className="w-4 h-4 text-blue-400" />
                     {item}
@@ -2000,8 +2068,17 @@ export default function Simulator() {
     setIsRunning(false);
     setCaseComplete(true);
     
-    // Calculate performance metrics
-    const performance = calculatePerformanceMetrics();
+    // Create simple performance object with 100% score
+    const performance = {
+      accuracy: 100,
+      timeScore: 100,
+      compositeScore: 100,
+      totalTime: timeElapsed,
+      expectedTime: 900,
+      interventionsApplied: 0,
+      requiredInterventions: 0,
+      harmfulActions: 0
+    };
     const feedback = generateFailureFeedback(failureReason);
     
     // Show case completion debrief
@@ -2024,8 +2101,7 @@ export default function Simulator() {
     console.log(`🔄 === STAGE ADVANCEMENT ===`);
     console.log(`🎯 Advancing from stage ${currentStage} to stage ${newStage}`);
     
-    // Handle scoring stage progression
-    handleScoringStageProgression(newStage);
+
     
     setCurrentStage(newStage);
     setStageTime(0);
@@ -2061,223 +2137,35 @@ export default function Simulator() {
     }
     
     // Check if this is the final stage
-    if (newStage > (currentCase?.stages.length || 0)) {
-      console.log(`🏁 Final stage reached, completing case...`);
-      handleCaseCompletion();
-    } else if (newStage === (currentCase?.stages.length || 0)) {
-      // We're on the final stage, check if we should complete the case
-      console.log(`🎯 On final stage ${newStage}, checking completion conditions...`);
-      
-      // Get the final stage data
-      const finalStageData = currentCase?.stages?.find((s: any) => s.stage === newStage);
-      if (finalStageData) {
-        const requiredInterventions = finalStageData.requiredInterventions || [];
-        
-        // Check which required interventions have been applied successfully
-        const completedRequiredInterventions = requiredInterventions.filter(requiredName => {
-          const matchingIntervention = availableInterventions.find(available => 
-            available.name === requiredName || available.id === requiredName
-          );
-          return matchingIntervention && matchingIntervention.applied && matchingIntervention.success;
-        });
-        
-        console.log(`🎯 Stage advancement final stage check:`, {
-          newStage,
-          totalStages: currentCase?.stages?.length,
-          requiredInterventions,
-          availableInterventions: availableInterventions.map(i => ({ name: i.name, id: i.id, applied: i.applied, success: i.success })),
-          completedRequiredInterventions,
-          completedCount: completedRequiredInterventions.length,
-          requiredCount: requiredInterventions.length
-        });
-        
-        // If all required interventions are completed, finish the case
-        if (completedRequiredInterventions.length >= requiredInterventions.length && requiredInterventions.length > 0) {
-          console.log(`🏁 All required interventions completed for final stage, completing case...`);
-          handleCaseCompletion();
-        }
-      }
+    if (newStage > currentCase?.stages.length) {
+      console.log(`🏁 Final stage reached, but case completion handled separately`);
     }
   };
 
-  // Handle case completion
-  const handleCaseCompletion = () => {
-    console.log('🎯 handleCaseCompletion called with:', {
-      currentCase: !!currentCase,
-      currentStage,
-      totalStages: currentCase?.stages?.length || 0,
-      availableInterventions: availableInterventions.length,
-      appliedInterventions: availableInterventions.filter(i => i.applied && i.success).length
-    });
+  // Handle case completion - redirect to new Case Completed page
+  const handleCaseCompletion = (stage3Interventions: string[]) => {
+    console.log('🎯 handleCaseCompletion called - redirecting to Case Completed page');
     
-    // Only complete if we have a valid case and are on the final stage
-    if (!currentCase || currentStage !== (currentCase?.stages?.length || 0)) {
-      console.log('Case completion called but conditions not met:', {
-        currentCase: !!currentCase,
-        currentStage,
-        totalStages: currentCase?.stages?.length || 0,
-        reason: 'Not on final stage'
-      });
-      return;
-    }
-    
-    console.log('🏁 Case completion confirmed - all stages completed');
     setIsRunning(false);
     setCaseComplete(true);
     
-    // Navigate to case completed page
-    const urlParams = new URLSearchParams(window.location.search);
-    const caseId = urlParams.get('caseId') || 'aliem_case_01_anaphylaxis';
-    const caseName = currentCase?.name || 'Anaphylaxis - 6-year-old';
+    // Emit completion event for telemetry
+    const caseId = currentCase?.id || 'aliem_case_01_anaphylaxis';
+    emitCompletionEvent(caseId, stage3Interventions);
     
-    // Navigate to case completed page
-    window.location.href = `/case-completed?caseId=${encodeURIComponent(caseId)}&caseName=${encodeURIComponent(caseName)}`;
-  };
-
-  // Calculate performance metrics
-  const calculatePerformanceMetrics = () => {
-    console.log('🔍 calculatePerformanceMetrics - Debug Info:');
-    console.log('  currentCase exists:', !!currentCase);
-    console.log('  stageProgressionEngine exists:', !!stageProgressionEngine);
-    console.log('  availableInterventions count:', availableInterventions.length);
-    
-    if (!currentCase || !stageProgressionEngine) {
-      console.log('❌ Early return - missing requirements');
-      return {
-        accuracy: 0,
-        timeScore: 0,
-        compositeScore: 0,
-        totalTime: timeElapsed,
-        expectedTime: 0,
-        interventionsApplied: 0,
-        requiredInterventions: 0,
-        harmfulActions: 0
-      };
-    }
-
-    // When case is complete, we need to consider ALL stages, not just current stage
-    let totalRequiredInterventions = [];
-    
-    if (currentCase && currentCase.stages) {
-      console.log('  Case stages:', currentCase.stages.length);
-      // Collect required interventions from ALL stages
-      for (const stage of currentCase.stages) {
-        console.log(`  Stage ${stage.stage} required interventions:`, stage.requiredInterventions);
-        if (stage.requiredInterventions) {
-          totalRequiredInterventions = totalRequiredInterventions.concat(stage.requiredInterventions);
-        }
-      }
-    }
-    
-    console.log('  Total required interventions across all stages:', totalRequiredInterventions);
-    
-    // Count applied interventions from global intervention history (instead of current stage only)
-    console.log('  All applied interventions history:', allAppliedInterventions.map(i => ({id: i.id, name: i.name, success: i.success})));
-    
-    const appliedInterventionsData = allAppliedInterventions.filter(i => i.success);
-    const appliedInterventions = appliedInterventionsData.length;
-    
-    console.log('  Successfully applied interventions:', appliedInterventionsData.map(i => ({id: i.id, name: i.name})));
-    console.log('  Applied interventions count:', appliedInterventions);
-    
-    // Calculate accuracy based on required interventions completed across all stages
-    const accuracy = totalRequiredInterventions.length > 0 ? 
-      Math.min(100, (appliedInterventions / totalRequiredInterventions.length) * 100) : 100;
+    // Redirect to Case Completed page
+    setTimeout(() => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const caseId = urlParams.get('caseId') || 'aliem_case_01_anaphylaxis';
+      const caseName = currentCase?.name || 'Anaphylaxis - 6-year-old';
       
-    console.log('  Calculated accuracy:', accuracy, `(${appliedInterventions}/${totalRequiredInterventions.length})`);
-    
-    // Calculate time score based on expected time vs actual time
-    const expectedTime = currentCase.estimatedTime ? 
-      (typeof currentCase.estimatedTime === 'number' ? currentCase.estimatedTime : 15) * 60 : 900; // 15 minutes default
-    const timeRatio = timeElapsed / expectedTime;
-    
-    // Time score: 100% if completed within expected time, decreases linearly
-    const timeScore = timeRatio <= 1 ? 100 : Math.max(0, 100 - (timeRatio - 1) * 50);
-    
-    // Composite score: 70% accuracy + 30% time (as specified in requirements)
-    const compositeScore = Math.round(accuracy * 0.7 + timeScore * 0.3);
-    
-    // Count harmful actions from stage progression engine
-    const currentStageState = stageProgressionEngine.getCurrentStageState();
-    const harmfulActions = currentStageState?.incorrectCount || 0;
-    
-    return {
-      accuracy: Math.round(accuracy),
-      timeScore: Math.round(timeScore),
-      compositeScore,
-      totalTime: timeElapsed,
-      expectedTime,
-      interventionsApplied: appliedInterventions,
-      requiredInterventions: totalRequiredInterventions.length,
-      harmfulActions
-    };
+      // Navigate to Case Completed page with stage 3 interventions
+      const stage3InterventionsParam = encodeURIComponent(JSON.stringify(stage3Interventions));
+      window.location.href = `/case-completed?caseId=${encodeURIComponent(caseId)}&caseName=${encodeURIComponent(caseName)}&stage3Interventions=${stage3InterventionsParam}`;
+    }, 1000); // 1 second delay
   };
 
-  // Generate success feedback with grounded recommendations
-  const generateSuccessFeedback = () => {
-    const performance = calculatePerformanceMetrics();
-    
-    const strengths = [];
-    const areasForImprovement = [];
-    const learningRecommendations = [];
-    
-    // Strengths based on performance
-    if (performance.accuracy >= 90) {
-      strengths.push("Excellent clinical decision-making and intervention application");
-      strengths.push("Strong adherence to evidence-based guidelines");
-    } else if (performance.accuracy >= 80) {
-      strengths.push("Good clinical judgment and appropriate intervention selection");
-      strengths.push("Effective patient management approach");
-    } else {
-      strengths.push("Basic clinical assessment skills demonstrated");
-      strengths.push("Patient safety maintained throughout the case");
-    }
-    
-    if (performance.timeScore >= 90) {
-      strengths.push("Outstanding time management and efficiency");
-    } else if (performance.timeScore >= 80) {
-      strengths.push("Good time management within acceptable limits");
-    } else {
-      areasForImprovement.push("Time management could be improved");
-      areasForImprovement.push("Consider optimizing intervention timing");
-    }
-    
-    // Areas for improvement
-    if (performance.accuracy < 100) {
-      areasForImprovement.push("Some required interventions were missed");
-      areasForImprovement.push("Review the complete intervention sequence for this condition");
-    }
-    
-    if (performance.harmfulActions > 0) {
-      areasForImprovement.push(`${performance.harmfulActions} potentially harmful actions were taken`);
-      areasForImprovement.push("Review contraindications and alternative approaches");
-    }
-    
-    // Learning recommendations based on case type
-    if (currentCase?.category === 'anaphylaxis') {
-      learningRecommendations.push("Review PALS anaphylaxis guidelines and epinephrine administration protocols");
-      learningRecommendations.push("Practice rapid assessment and intervention sequencing for allergic reactions");
-    } else if (currentCase?.category === 'status_epilepticus') {
-      learningRecommendations.push("Review AAP status epilepticus guidelines and benzodiazepine protocols");
-      learningRecommendations.push("Practice seizure management and airway protection techniques");
-    } else if (currentCase?.category === 'status_asthmaticus') {
-      learningRecommendations.push("Review PALS respiratory assessment and asthma management protocols");
-      learningRecommendations.push("Practice bronchodilator administration and respiratory monitoring");
-    } else {
-      learningRecommendations.push("Review current clinical guidelines for this condition");
-      learningRecommendations.push("Practice systematic assessment and intervention approaches");
-    }
-    
-    // Add general learning recommendations
-    learningRecommendations.push("Focus on evidence-based practice and guideline adherence");
-    learningRecommendations.push("Consider simulation-based learning for skill development");
-    
-    return {
-      strengths,
-      areasForImprovement,
-      learningRecommendations
-    };
-  };
+
 
   // Generate evidence sources for debrief
   const generateEvidenceSourcesForDebrief = () => {
@@ -2383,6 +2271,8 @@ export default function Simulator() {
               onClick={() => {
                 if (!isRunning) {
                   // Starting simulation
+                  const now = Date.now();
+                  console.log('🎯 Simulation: Stage 1 started at', new Date(now).toISOString());
                 }
                 setIsRunning(!isRunning);
               }}
@@ -2556,35 +2446,7 @@ export default function Simulator() {
                   <div className="text-xl font-bold text-white mb-1">Stage {currentStage}</div>
                   <div className="text-xs text-slate-400 mb-2">{currentStageData?.name || 'Current stage description'}</div>
                   
-                  {/* Stage Severity and Tick Information */}
-                  {stageProgressionEngine && (
-                    <div className="space-y-2 mb-3">
-                      <div className="flex items-center justify-center gap-4">
-                        <div className="text-center">
-                          <div className="text-xs text-slate-400">Severity</div>
-                          <div className={`text-sm font-bold px-2 py-1 rounded ${
-                            stageProgressionEngine.getCurrentStageState()?.severity === 'low' ? 'bg-blue-500/20 text-blue-400' :
-                            stageProgressionEngine.getCurrentStageState()?.severity === 'moderate' ? 'bg-yellow-500/20 text-yellow-400' :
-                            'bg-red-500/20 text-red-400'
-                          }`}>
-                            {stageProgressionEngine.getCurrentStageState()?.severity?.toUpperCase() || 'MODERATE'}
-                          </div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-xs text-slate-400">Tick</div>
-                          <div className="text-sm font-bold text-white">{tickTimer}</div>
-                        </div>
-                        <div className="text-center">
-                          <div className="text-xs text-slate-400">Stabilized</div>
-                          <div className={`text-sm font-bold px-2 py-1 rounded ${
-                            stageProgressionEngine.getCurrentStageState()?.isStabilized ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-                          }`}>
-                            {stageProgressionEngine.getCurrentStageState()?.isStabilized ? 'YES' : 'NO'}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
+
                   
                   {(currentStageData?.timeLimit || currentStageData?.TTIsec) && (
                     <div className="space-y-2">
@@ -2944,7 +2806,7 @@ export default function Simulator() {
           const shouldShow = caseComplete && 
                            caseCompletionDebrief.isOpen && 
                            currentCase && 
-                           currentStage >= (currentCase.stages?.length || 0);
+                           currentStage >= currentCase.stages?.length;
           
           console.log('🎯 DEBRIEF RENDER CHECK:');
           console.log('  caseComplete:', caseComplete);
@@ -2952,7 +2814,7 @@ export default function Simulator() {
           console.log('  currentCase exists:', !!currentCase);
           console.log('  currentStage:', currentStage);
           console.log('  currentCase.stages?.length:', currentCase?.stages?.length);
-          console.log('  currentStage >= stages.length:', currentStage >= (currentCase?.stages?.length || 0));
+          console.log('  currentStage >= stages.length:', currentStage >= currentCase?.stages?.length);
           console.log('  shouldShow:', shouldShow);
           
           return shouldShow;
@@ -2967,18 +2829,11 @@ export default function Simulator() {
             performance={caseCompletionDebrief.performance}
             feedback={caseCompletionDebrief.feedback}
             evidenceSources={caseCompletionDebrief.evidenceSources}
+            // Removed scoringResult - scoring system removed
           />
         )}
         
-        {/* Debug info for case completion state */}
-        {process.env.NODE_ENV === 'development' && (
-          <div className="fixed bottom-4 right-4 bg-black bg-opacity-75 text-white p-2 text-xs rounded">
-            Case Complete: {caseComplete ? 'Yes' : 'No'}<br/>
-            Debrief Open: {caseCompletionDebrief.isOpen ? 'Yes' : 'No'}<br/>
-            Current Stage: {currentStage}<br/>
-            Total Stages: {currentCase?.stages?.length || 0}
-          </div>
-        )}
+
       </div>
     </div>
   );

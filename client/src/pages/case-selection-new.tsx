@@ -31,7 +31,7 @@ const aliEmCases = [
     difficulty: 'severe',
     description: 'Severe anaphylactic reaction requiring immediate epinephrine administration',
     presentingSymptoms: ['Respiratory distress', 'Hypotension', 'Urticaria', 'Angioedema'],
-    clinicalHistory: '6-year-old male with known peanut allergy, presenting with severe anaphylaxis after accidental exposure, requiring immediate intervention.',
+    clinicalHistory: 'A 6-year-old boy brought in by car with a parent presents with difficulty breathing, vomiting, rash, and facial swelling after eating at a restaurant. He has no previous allergic reactions.',
     estimatedTime: '5-10 minutes',
     stages: 2,
     sourceVersion: 'aliem-rescu-peds-03-29-21',

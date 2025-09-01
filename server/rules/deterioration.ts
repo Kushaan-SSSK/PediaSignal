@@ -306,69 +306,21 @@ function mapCaseTypeToCondition(caseType: string): string {
 }
 
 /**
- * Main deterioration tick function
+ * Main deterioration tick function - DISABLED
+ * Vitals now only change for specific interventions (epinephrine, oxygen, IV fluids)
  */
 export function tick(input: TickInput): TickOutput {
   const { caseType, stage, severity, vitals, elapsedSec } = input;
   
+  // DISABLED: Automatic vital deterioration removed
   // Map case ID to medical condition
   const conditionType = mapCaseTypeToCondition(caseType);
-  console.log(`🔄 Deterioration tick: ${caseType} → ${conditionType} (${severity}, stage ${stage}, ${elapsedSec}s)`);
+  console.log(`🔄 Deterioration tick DISABLED: ${caseType} → ${conditionType} (${severity}, stage ${stage}, ${elapsedSec}s)`);
   
-  // Get base trends for this condition type
-  const trends = CASE_TRENDS[conditionType as keyof typeof CASE_TRENDS] || CASE_TRENDS.default;
+  // Return vitals unchanged - no automatic deterioration
+  const updatedVitals = { ...vitals };
   
-  // Apply multipliers
-  const severityMult = CONFIG.severityMultiplier[severity];
-  const stageMult = CONFIG.stageMultiplier[stage as keyof typeof CONFIG.stageMultiplier] || 1.0;
-  const totalMult = severityMult * stageMult;
-  
-  // Calculate raw deltas based on elapsed time
-  const rawDeltas = {
-    heartRate: trends.heartRate * elapsedSec * totalMult,
-    respRate: trends.respRate * elapsedSec * totalMult,
-    bloodPressureSys: trends.bloodPressureSys * elapsedSec * totalMult,
-    bloodPressureDia: trends.bloodPressureDia * elapsedSec * totalMult,
-    spo2: trends.spo2 * elapsedSec * totalMult,
-    temperature: trends.temperature * elapsedSec * totalMult,
-    capillaryRefill: trends.capillaryRefill * elapsedSec * totalMult
-  };
-  
-  // Apply per-tick caps
-  const cappedDeltas = {
-    heartRate: Math.max(-CONFIG.maxDeltas.heartRate, Math.min(CONFIG.maxDeltas.heartRate, rawDeltas.heartRate)),
-    respRate: Math.max(-CONFIG.maxDeltas.respRate, Math.min(CONFIG.maxDeltas.respRate, rawDeltas.respRate)),
-    bloodPressureSys: Math.max(-CONFIG.maxDeltas.bloodPressureSys, Math.min(CONFIG.maxDeltas.bloodPressureSys, rawDeltas.bloodPressureSys)),
-    bloodPressureDia: Math.max(-CONFIG.maxDeltas.bloodPressureDia, Math.min(CONFIG.maxDeltas.bloodPressureDia, rawDeltas.bloodPressureDia)),
-    spo2: Math.max(-CONFIG.maxDeltas.spo2, Math.min(CONFIG.maxDeltas.spo2, rawDeltas.spo2)),
-    temperature: Math.max(-CONFIG.maxDeltas.temperature, Math.min(CONFIG.maxDeltas.temperature, rawDeltas.temperature)),
-    capillaryRefill: Math.max(-CONFIG.maxDeltas.capillaryRefill, Math.min(CONFIG.maxDeltas.capillaryRefill, rawDeltas.capillaryRefill))
-  };
-  
-  // Apply logistic braking near guardrails
-  const brakedDeltas = {
-    heartRate: applyLogisticBraking(vitals.heartRate, cappedDeltas.heartRate, CONFIG.guardrails.heartRate.min, CONFIG.guardrails.heartRate.max),
-    respRate: applyLogisticBraking(vitals.respRate, cappedDeltas.respRate, CONFIG.guardrails.respRate.min, CONFIG.guardrails.respRate.max),
-    bloodPressureSys: applyLogisticBraking(vitals.bloodPressureSys, cappedDeltas.bloodPressureSys, CONFIG.guardrails.bloodPressureSys.min, CONFIG.guardrails.bloodPressureSys.max),
-    bloodPressureDia: applyLogisticBraking(vitals.bloodPressureDia, cappedDeltas.bloodPressureDia, CONFIG.guardrails.bloodPressureDia.min, CONFIG.guardrails.bloodPressureDia.max),
-    spo2: applyLogisticBraking(vitals.spo2, cappedDeltas.spo2, CONFIG.guardrails.spo2.min, CONFIG.guardrails.spo2.max),
-    temperature: applyLogisticBraking(vitals.temperature, cappedDeltas.temperature, CONFIG.guardrails.temperature.min, CONFIG.guardrails.temperature.max),
-    capillaryRefill: applyLogisticBraking(vitals.capillaryRefill, cappedDeltas.capillaryRefill, CONFIG.guardrails.capillaryRefill.min, CONFIG.guardrails.capillaryRefill.max)
-  };
-  
-  // Apply deltas and clamp to guardrails
-  const updatedVitals = {
-    heartRate: Math.round(clamp(vitals.heartRate + brakedDeltas.heartRate, CONFIG.guardrails.heartRate.min, CONFIG.guardrails.heartRate.max)),
-    respRate: Math.round(clamp(vitals.respRate + brakedDeltas.respRate, CONFIG.guardrails.respRate.min, CONFIG.guardrails.respRate.max)),
-    bloodPressureSys: Math.round(clamp(vitals.bloodPressureSys + brakedDeltas.bloodPressureSys, CONFIG.guardrails.bloodPressureSys.min, CONFIG.guardrails.bloodPressureSys.max)),
-    bloodPressureDia: Math.round(clamp(vitals.bloodPressureDia + brakedDeltas.bloodPressureDia, CONFIG.guardrails.bloodPressureDia.min, CONFIG.guardrails.bloodPressureDia.max)),
-    spo2: Math.round(clamp(vitals.spo2 + brakedDeltas.spo2, CONFIG.guardrails.spo2.min, CONFIG.guardrails.spo2.max)),
-    temperature: Math.round((clamp(vitals.temperature + brakedDeltas.temperature, CONFIG.guardrails.temperature.min, CONFIG.guardrails.temperature.max)) * 10) / 10,
-    consciousness: vitals.consciousness, // Keep consciousness unchanged for now
-    capillaryRefill: Math.round((clamp(vitals.capillaryRefill + brakedDeltas.capillaryRefill, CONFIG.guardrails.capillaryRefill.min, CONFIG.guardrails.capillaryRefill.max)) * 10) / 10
-  };
-  
-  // Generate alerts
+  // Generate alerts (but no deterioration)
   const alerts = generateAlerts(updatedVitals, caseType);
   
   return {

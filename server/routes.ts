@@ -2326,11 +2326,90 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const medicalKnowledge = {
         'aliem_case_01_anaphylaxis': {
           1: {
-            'IM epinephrine': {
+            'Placement in resuscitation': {
+              explanation: 'Patient should be quickly moved to a resuscitation area for immediate assessment and treatment. This ensures access to all necessary equipment and medications for critical care.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Delayed placement may compromise care', 'Inadequate equipment access'],
+              nextStageRecommendations: ['Begin immediate assessment', 'Prepare for potential interventions']
+            },
+            'Exam including airway and lung assessment': {
+              explanation: 'Comprehensive airway and respiratory assessment is critical in anaphylaxis. Look for stridor, wheezing, respiratory distress, and signs of airway compromise.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Missed airway compromise', 'Incomplete assessment'],
+              nextStageRecommendations: ['Monitor airway status', 'Prepare for potential intubation']
+            },
+            'Placement on cardiovascular monitoring': {
+              explanation: 'Continuous cardiac monitoring is essential for detecting arrhythmias, monitoring response to treatment, and identifying cardiovascular compromise in anaphylaxis.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Missed arrhythmias', 'Inadequate monitoring'],
+              nextStageRecommendations: ['Monitor for arrhythmias', 'Assess cardiovascular status']
+            },
+            'IM epinephrine given': {
               explanation: 'IM epinephrine 0.01 mg/kg (max 0.3 mg) in anterolateral thigh is the gold standard first-line treatment for anaphylaxis. Administer immediately upon recognition of anaphylaxis symptoms. Delayed administration is associated with increased mortality.',
               evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
               riskFlags: ['Delayed administration increases mortality risk', 'Incorrect dosing can be ineffective or harmful'],
               nextStageRecommendations: ['Monitor airway status continuously', 'Prepare for potential intubation', 'Establish IV access']
+            },
+            'delay epinephrine': {
+              explanation: 'Delaying epinephrine administration in anaphylaxis is strongly associated with increased morbidity and mortality. Time to epinephrine is the most critical factor determining outcome in anaphylaxis.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Increased mortality risk with delayed administration', 'Risk of cardiac arrest', 'Prolonged hypotension and hypoxia'],
+              nextStageRecommendations: ['Administer epinephrine immediately', 'Establish IV access', 'Prepare for potential intubation']
+            },
+            'epinephrine PO': {
+              explanation: 'Oral epinephrine is contraindicated and dangerous in anaphylaxis management due to delayed absorption and inadequate bioavailability. Intramuscular administration is required for rapid onset and therapeutic levels.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Delayed absorption', 'Increased mortality risk', 'May mask symptoms without treating underlying cause'],
+              nextStageRecommendations: ['Administer IM epinephrine immediately', 'Establish IV access', 'Prepare for potential intubation']
+            },
+            'unnecessary intubation without indications': {
+              explanation: 'Unnecessary intubation without proper indications may cause harm and delay appropriate treatment. Intubation should only be performed when there is clear airway compromise or respiratory failure.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Iatrogenic complications', 'Delayed definitive treatment', 'Unnecessary sedation and paralysis'],
+              nextStageRecommendations: ['Assess airway status properly', 'Focus on epinephrine administration', 'Monitor for actual airway compromise']
+            },
+            'CBC': {
+              explanation: 'Complete blood count to assess for underlying infection, anemia, or hematologic abnormalities that may complicate anaphylaxis management.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Delayed results', 'May not change acute management'],
+              nextStageRecommendations: ['Review results when available', 'Assess for underlying infection']
+            },
+            'CXR (normal)': {
+              explanation: 'Chest X-ray to rule out pneumonia, pneumothorax, or other pulmonary pathology that could mimic or complicate anaphylaxis.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Radiation exposure', 'May not change acute management'],
+              nextStageRecommendations: ['Review results when available', 'Assess for pulmonary complications']
+            },
+            'Placement in resuscitation': {
+              explanation: 'Patient should be quickly moved to a resuscitation area for immediate assessment and treatment. This ensures access to all necessary equipment and medications for critical care.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Delayed placement may compromise care', 'Inadequate equipment access'],
+              nextStageRecommendations: ['Begin immediate assessment', 'Prepare for potential interventions']
+            },
+            'Exam including airway and lung assessment': {
+              explanation: 'Comprehensive airway and respiratory assessment is critical in anaphylaxis. Look for stridor, wheezing, respiratory distress, and signs of airway compromise.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Missed airway compromise', 'Incomplete assessment'],
+              nextStageRecommendations: ['Monitor airway status', 'Prepare for potential intubation']
+            },
+            'Placement on cardiovascular monitoring': {
+              explanation: 'Continuous cardiac monitoring is essential for detecting arrhythmias, monitoring response to treatment, and identifying cardiovascular compromise in anaphylaxis.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Missed arrhythmias', 'Inadequate monitoring'],
+              nextStageRecommendations: ['Monitor for arrhythmias', 'Assess cardiovascular status']
+            },
+            // Add missing Stage 1 interventions
+            'IV access establishment': {
+              explanation: 'Establish IV access for medication administration and fluid resuscitation. Critical for delivering epinephrine, antihistamines, and other medications.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['IV infiltration', 'Loss of access during critical moments'],
+              nextStageRecommendations: ['Secure IV lines', 'Prepare backup access if needed']
+            },
+            'Continuous vital signs monitoring': {
+              explanation: 'Continuous monitoring of heart rate, blood pressure, respiratory rate, and oxygen saturation every 5-15 minutes to detect early signs of deterioration or improvement.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Inadequate monitoring may miss deterioration', 'Too frequent monitoring may interfere with care'],
+              nextStageRecommendations: ['Document trends', 'Adjust monitoring frequency based on stability']
             },
             'IV fluids bolus': {
               explanation: 'Administer 20 mL/kg bolus of 0.9% NS for hypotension. Monitor for signs of fluid overload. Consider second bolus if persistent hypotension after epinephrine.',
@@ -2441,6 +2520,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
               evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
               riskFlags: ['Premature discharge may lead to biphasic reactions', 'Inadequate follow-up planning'],
               nextStageRecommendations: ['Ensure stability criteria met', 'Complete patient education']
+            },
+            'IV fluids': {
+              explanation: 'IV fluid bolus with 20 mL/kg normal saline is indicated for hypotension or signs of shock in anaphylaxis. This helps restore intravascular volume and improve perfusion.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Fluid overload in cardiac patients', 'Inadequate volume resuscitation'],
+              nextStageRecommendations: ['Monitor for fluid responsiveness', 'Assess for continued hypotension']
+            },
+            'steroids': {
+              explanation: 'Corticosteroids (methylprednisolone 1-2 mg/kg IV) help prevent biphasic reactions and reduce inflammation. They are adjunctive therapy but do not treat acute symptoms.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Delayed administration', 'Inadequate dosing'],
+              nextStageRecommendations: ['Monitor for biphasic reactions', 'Continue observation']
+            },
+            'H2 blocker': {
+              explanation: 'H2 blockers (ranitidine 1 mg/kg IV) help reduce histamine-mediated symptoms and are adjunctive therapy for anaphylaxis management.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Delayed administration', 'Inadequate dosing'],
+              nextStageRecommendations: ['Monitor response', 'Continue observation']
+            },
+            'diphenhydramine': {
+              explanation: 'Diphenhydramine (1 mg/kg IV/IM) is adjunctive therapy for histamine-mediated symptoms. It does not treat airway compromise or hypotension.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Delayed administration', 'Inadequate dosing'],
+              nextStageRecommendations: ['Monitor response', 'Continue observation']
+            },
+            'nebulized albuterol': {
+              explanation: 'Nebulized albuterol helps relieve bronchospasm and wheezing in anaphylaxis. It is adjunctive therapy for respiratory symptoms.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Delayed administration', 'Inadequate dosing'],
+              nextStageRecommendations: ['Monitor respiratory status', 'Continue observation']
+            },
+            'set up difficult airway equipment': {
+              explanation: 'Preparing difficult airway equipment is essential in anaphylaxis as airway compromise can develop rapidly. This includes laryngoscopes, endotracheal tubes, and rescue devices.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Inadequate preparation', 'Missing equipment'],
+              nextStageRecommendations: ['Monitor airway status', 'Be prepared for intubation']
             }
           },
           3: {
@@ -2497,6 +2612,220 @@ export async function registerRoutes(app: Express): Promise<Server> {
               evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
               riskFlags: ['Premature discharge', 'Inadequate preparation'],
               nextStageRecommendations: ['Ensure all criteria met', 'Complete discharge checklist']
+            },
+            // Stage 1 Interventions
+            'Placement in resuscitation': {
+              explanation: 'Patient should be quickly moved to a resuscitation area for immediate assessment and treatment. This ensures access to all necessary equipment and medications for critical care.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management', 'ALiEM ReSCu Peds Case 1'],
+              riskFlags: ['Delayed placement delays critical interventions', 'Inadequate monitoring in non-resuscitation area'],
+              nextStageRecommendations: ['Immediate airway assessment', 'Establish IV access', 'Prepare epinephrine']
+            },
+            'Exam including airway and lung assessment': {
+              explanation: 'Comprehensive airway and lung assessment to evaluate for stridor, wheezing, and respiratory compromise. Critical for determining severity and need for airway intervention.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Incomplete assessment may miss airway compromise', 'Delayed recognition of respiratory deterioration'],
+              nextStageRecommendations: ['Monitor airway status continuously', 'Prepare for potential intubation']
+            },
+            'Placement on cardiovascular monitoring': {
+              explanation: 'Continuous cardiac monitoring for heart rate, blood pressure, and rhythm. Essential for detecting cardiovascular compromise and response to treatment.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Inadequate monitoring may miss cardiovascular deterioration', 'Delayed recognition of shock'],
+              nextStageRecommendations: ['Monitor trends', 'Assess for arrhythmias']
+            },
+            'Oxygen administration by mask or nebulizer': {
+              explanation: 'Place oxygen on patient by mask or nebulizer to improve oxygenation. Any O2 administration will increase SpO2 to 99-100%. Essential for maintaining adequate tissue oxygenation.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Oxygen toxicity with prolonged high flow', 'Inadequate oxygenation'],
+              nextStageRecommendations: ['Titrate to maintain target SpO2', 'Assess for weaning readiness']
+            },
+            'IV access establishment': {
+              explanation: 'Establish IV access for medication administration and fluid resuscitation. Critical for delivering epinephrine, antihistamines, and other medications.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['IV infiltration', 'Loss of access during critical moments'],
+              nextStageRecommendations: ['Secure IV lines', 'Prepare backup access if needed']
+            },
+            'Continuous vital signs monitoring': {
+              explanation: 'Continuous monitoring of heart rate, blood pressure, respiratory rate, and oxygen saturation every 5-15 minutes to detect early signs of deterioration or improvement.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Inadequate monitoring may miss deterioration', 'Too frequent monitoring may interfere with care'],
+              nextStageRecommendations: ['Document trends', 'Adjust monitoring frequency based on stability']
+            },
+            // Stage 2 Interventions
+            'IV fluids': {
+              explanation: 'Administer 20 mL/kg bolus of 0.9% NS for hypotension. Monitor for signs of fluid overload. Consider second bolus if persistent hypotension after epinephrine.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Over-resuscitation can cause pulmonary edema', 'Inadequate fluids may not restore perfusion'],
+              nextStageRecommendations: ['Monitor vital signs every 5 minutes', 'Assess for fluid responsiveness']
+            },
+            'steroids': {
+              explanation: 'Administer methylprednisolone 1-2 mg/kg IV (max 125 mg) to prevent biphasic anaphylactic reactions and reduce inflammatory cascade. Onset of action is 4-6 hours.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Delayed onset of action', 'Not for acute symptom relief'],
+              nextStageRecommendations: ['Monitor for biphasic reactions', 'Continue observation period']
+            },
+            'H2 blocker': {
+              explanation: 'Administer ranitidine 1 mg/kg IV (max 50 mg) for H2 receptor blockade, targeting histamine-mediated vasodilation and cardiovascular effects.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['May cause hypotension through H2-mediated effects', 'Not a substitute for epinephrine'],
+              nextStageRecommendations: ['Monitor blood pressure every 2-3 minutes', 'Assess for synergistic effects with H1 blockers']
+            },
+            'diphenhydramine': {
+              explanation: 'Administer diphenhydramine 1 mg/kg IV (max 50 mg) as H1 antihistamine to block histamine-mediated symptoms including urticaria, angioedema, and bronchospasm.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Sedation may mask neurological deterioration', 'Not a substitute for epinephrine'],
+              nextStageRecommendations: ['Monitor level of consciousness every 5 minutes', 'Assess for resolution of urticaria']
+            },
+            'nebulized albuterol': {
+              explanation: 'Administer albuterol 2.5-5 mg nebulized to treat bronchospasm through beta-2 adrenergic receptor activation, causing bronchodilation and reduced airway resistance.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['May cause tachycardia', 'Not a substitute for epinephrine'],
+              nextStageRecommendations: ['Monitor respiratory status', 'Assess for continued bronchospasm']
+            },
+            'set up difficult airway equipment': {
+              explanation: 'Prepare difficult airway equipment including laryngoscopes, endotracheal tubes, and rescue devices in case of airway compromise requiring intubation.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Delayed preparation may compromise airway management', 'Inadequate equipment'],
+              nextStageRecommendations: ['Ensure equipment is ready', 'Have backup plans available']
+            },
+            'discharge without observation': {
+              explanation: 'Discharging without adequate observation period is contraindicated in anaphylaxis. Patients require 4-6 hours of monitoring for biphasic reactions.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Biphasic reactions', 'Inadequate observation period', 'Increased mortality risk'],
+              nextStageRecommendations: ['Continue observation', 'Monitor for symptom recurrence']
+            },
+            'inadequate monitoring': {
+              explanation: 'Inadequate monitoring may miss signs of deterioration or biphasic reactions. Continuous monitoring is essential for anaphylaxis patients.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Missed deterioration', 'Delayed recognition of complications'],
+              nextStageRecommendations: ['Establish continuous monitoring', 'Document all assessments']
+            },
+            'delay in medication administration': {
+              explanation: 'Delaying medication administration in anaphylaxis increases morbidity and mortality. Time to treatment is critical for outcomes.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Increased mortality risk', 'Prolonged symptoms', 'Risk of complications'],
+              nextStageRecommendations: ['Administer medications immediately', 'Establish treatment timeline']
+            },
+            'allergy testing': {
+              explanation: 'Allergy testing is not indicated during acute anaphylaxis management. Focus should be on stabilization and treatment of acute symptoms.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['May delay definitive care', 'Not appropriate during acute phase'],
+              nextStageRecommendations: ['Focus on acute management', 'Plan for outpatient testing']
+            },
+            'continuous vital signs monitoring': {
+              explanation: 'Continuous monitoring of heart rate, blood pressure, respiratory rate, and oxygen saturation every 5-15 minutes to detect early signs of deterioration or improvement.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Inadequate monitoring may miss deterioration', 'Too frequent monitoring may interfere with care'],
+              nextStageRecommendations: ['Document trends', 'Adjust monitoring frequency based on stability']
+            },
+            'oxygen therapy maintenance': {
+              explanation: 'Maintain supplemental oxygen to keep SpO2 >94% and ensure adequate tissue oxygenation during anaphylactic reaction.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Oxygen toxicity with prolonged high flow', 'Inadequate oxygenation'],
+              nextStageRecommendations: ['Titrate to maintain target SpO2', 'Assess for weaning readiness']
+            },
+            'capillary refill check': {
+              explanation: 'Assess capillary refill time every 15-30 minutes to evaluate peripheral perfusion and circulatory status.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['May be unreliable in cold extremities', 'Subjective assessment'],
+              nextStageRecommendations: ['Document trends', 'Correlate with other perfusion indicators']
+            },
+            'discharge planning': {
+              explanation: 'Begin discharge planning for clinically stable patients who have met observation criteria and show no signs of biphasic reaction.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Premature discharge may lead to biphasic reactions', 'Inadequate follow-up planning'],
+              nextStageRecommendations: ['Ensure stability criteria met', 'Complete patient education']
+            },
+            // Add missing Stage 2 interventions
+            'set up difficult airway equipment': {
+              explanation: 'Prepare difficult airway equipment including laryngoscopes, endotracheal tubes, and rescue devices in case of airway compromise requiring intubation.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Delayed preparation may compromise airway management', 'Inadequate equipment'],
+              nextStageRecommendations: ['Ensure equipment is ready', 'Have backup plans available']
+            },
+            'discharge without observation': {
+              explanation: 'Discharging without adequate observation period is contraindicated in anaphylaxis. Patients require 4-6 hours of monitoring for biphasic reactions.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Biphasic reactions', 'Inadequate observation period', 'Increased mortality risk'],
+              nextStageRecommendations: ['Continue observation', 'Monitor for symptom recurrence']
+            },
+            'inadequate monitoring': {
+              explanation: 'Inadequate monitoring may miss signs of deterioration or biphasic reactions. Continuous monitoring is essential for anaphylaxis patients.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Missed deterioration', 'Delayed recognition of complications'],
+              nextStageRecommendations: ['Establish continuous monitoring', 'Document all assessments']
+            },
+            'delay in medication administration': {
+              explanation: 'Delaying medication administration in anaphylaxis increases morbidity and mortality. Time to treatment is critical for outcomes.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Increased mortality risk', 'Prolonged symptoms', 'Risk of complications'],
+              nextStageRecommendations: ['Administer medications immediately', 'Establish treatment timeline']
+            },
+            'allergy testing': {
+              explanation: 'Allergy testing is not indicated during acute anaphylaxis management. Focus should be on stabilization and treatment of acute symptoms.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['May delay definitive care', 'Not appropriate during acute phase'],
+              nextStageRecommendations: ['Focus on acute management', 'Plan for outpatient testing']
+            },
+            // Stage 3 Interventions
+            'Discussion around need for admission': {
+              explanation: 'Critical decision point for patient disposition. Consider factors including severity of initial reaction, response to treatment, and risk factors for biphasic reactions.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Premature discharge', 'Inadequate observation period'],
+              nextStageRecommendations: ['Assess risk factors', 'Ensure adequate observation time']
+            },
+            'Discussion with family about anaphylaxis/allergic reactions': {
+              explanation: 'Essential family education and counseling about anaphylaxis recognition, treatment, and prevention. Critical for long-term management and prevention of future episodes.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Inadequate education', 'Poor understanding of condition'],
+              nextStageRecommendations: ['Provide written materials', 'Schedule follow-up education']
+            },
+            'Outpatient treatment and follow up discussion': {
+              explanation: 'Discharge planning and follow-up coordination including epinephrine auto-injector prescription, allergy referral, and emergency action plan development.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Inadequate follow-up planning', 'Poor compliance with recommendations'],
+              nextStageRecommendations: ['Ensure comprehensive plan', 'Verify understanding']
+            },
+            'vital signs reassessment': {
+              explanation: 'Reassess vital signs every 30-60 minutes during observation period. Document trends and any changes indicating stability or deterioration.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Missed deterioration', 'Inadequate monitoring'],
+              nextStageRecommendations: ['Document trends', 'Adjust monitoring frequency']
+            },
+            'allergy action plan creation': {
+              explanation: 'Create comprehensive allergy action plan including trigger identification, symptom recognition, and emergency response procedures.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Incomplete plan', 'Poor understanding by family'],
+              nextStageRecommendations: ['Review with family', 'Provide written copy']
+            },
+            'epinephrine auto-injector training': {
+              explanation: 'Provide hands-on training for epinephrine auto-injector use. Ensure family members can demonstrate proper technique and understand when to use.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Inadequate training', 'Poor technique demonstration'],
+              nextStageRecommendations: ['Verify demonstration', 'Provide written instructions']
+            },
+            'premature discharge': {
+              explanation: 'Avoid premature discharge. Patients should be observed for at least 4-6 hours after resolution of symptoms to monitor for biphasic reactions.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Biphasic reactions', 'Inadequate observation period'],
+              nextStageRecommendations: ['Ensure adequate observation time', 'Monitor for symptom recurrence']
+            },
+            'inadequate follow-up planning': {
+              explanation: 'Inadequate follow-up planning may lead to poor long-term outcomes and increased risk of future anaphylactic episodes.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Poor compliance', 'Increased risk of future episodes'],
+              nextStageRecommendations: ['Establish comprehensive follow-up', 'Ensure patient understanding']
+            },
+            'allergy referral': {
+              explanation: 'Refer patient to allergist for comprehensive evaluation, skin testing, and development of long-term allergy management plan.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Delayed referral', 'Incomplete allergy evaluation'],
+              nextStageRecommendations: ['Schedule appointment', 'Provide interim management plan']
+            },
+            'discharge instructions': {
+              explanation: 'Provide comprehensive discharge instructions including epinephrine auto-injector training, allergen avoidance strategies, and emergency action plan.',
+              evidenceSources: ['PALS Guidelines 2020 - Anaphylaxis Management'],
+              riskFlags: ['Inadequate education', 'Poor compliance with instructions'],
+              nextStageRecommendations: ['Verify understanding', 'Schedule follow-up']
             },
             'inadequate follow-up planning': {
               explanation: 'Ensure adequate follow-up planning including allergist appointment, primary care follow-up, and emergency plan review.',

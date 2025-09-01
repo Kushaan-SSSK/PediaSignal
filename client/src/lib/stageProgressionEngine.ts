@@ -198,8 +198,6 @@ export class StageProgressionEngine {
     // Check for physiologic bounds failure first
     const physiologicFailure = this.checkPhysiologicBounds(vitals, stage);
     if (physiologicFailure) {
-      console.log(`🚨 PHYSIOLOGIC FAILURE DETECTED in processTick: ${physiologicFailure}`);
-      console.log(`Current stage: ${stage.stage}, Vitals:`, vitals);
       return {
         shouldProgress: false,
         deteriorationApplied: false,
@@ -212,23 +210,22 @@ export class StageProgressionEngine {
 
     // Check if stage is already solved (≤10s stabilization override)
     const timeInStage = timeElapsed - this.currentStageState.stageStartAt;
-    // DISABLED: Early stabilization override - case completion should only happen in Stage 3
-    // const isStabilized = this.checkStabilization(stage, timeInStage);
-    const isStabilized = false; // Always false to prevent early completion
+    const isStabilized = this.checkStabilization(stage, timeInStage);
     
     if (isStabilized && !this.currentStageState.isStabilized) {
       this.currentStageState.isStabilized = true;
       console.log(`Stage ${this.currentStage} stabilized within 10s - deterioration frozen`);
     }
 
-    // Apply deterioration if not stabilized
+    // DISABLED: Automatic vital deterioration removed
+    // Vitals now only change for specific interventions (epinephrine, oxygen, IV fluids)
     let deteriorationApplied = false;
     let updatedVitals = { ...vitals };
     
-    if (!this.currentStageState.isStabilized) {
-      updatedVitals = this.applyDeterioration(vitals, stage, timeInStage);
-      deteriorationApplied = true;
-    }
+    // if (!this.currentStageState.isStabilized) {
+    //   updatedVitals = this.applyDeterioration(vitals, stage, timeInStage);
+    //   deteriorationApplied = true;
+    // }
 
     // Check for severity escalation after N ticks (N=3)
     const tickCount = Math.floor(timeInStage / 10);
@@ -324,8 +321,6 @@ export class StageProgressionEngine {
     // Check for physiologic bounds failure after intervention
     const physiologicFailure = this.checkPhysiologicBounds(vitalsUpdated, stage);
     if (physiologicFailure) {
-      console.log(`🚨 PHYSIOLOGIC FAILURE DETECTED in processIntervention: ${physiologicFailure}`);
-      console.log(`Current stage: ${stage.stage}, Vitals after intervention:`, vitalsUpdated);
       return {
         success: false,
         vitalsUpdated: vitalsUpdated,
@@ -392,32 +387,43 @@ export class StageProgressionEngine {
   private applyInterventionEffects(interventionId: string, vitals: VitalSigns, classification: { type: string; severity: string }): VitalSigns {
     const updatedVitals = { ...vitals };
     
-    // Get intervention from case definition or use default effects
-    const stage = this.caseDefinition.stages.find(s => s.stage === this.currentStage);
-    if (!stage) return updatedVitals;
-
-    // Apply effects based on classification
-    switch (classification.type) {
-      case 'required':
-      case 'helpful':
-        // Apply positive effects (improve vitals)
-        updatedVitals.heartRate = Math.max(60, updatedVitals.heartRate - 5);
-        updatedVitals.respRate = Math.max(12, updatedVitals.respRate - 2);
-        updatedVitals.bloodPressureSys = Math.min(140, updatedVitals.bloodPressureSys + 3);
-        updatedVitals.spo2 = Math.min(100, updatedVitals.spo2 + 2);
+    // Get intervention name for comparison
+    const interventionName = this.mapInterventionIdToName(interventionId, this.caseDefinition.stages.find(s => s.stage === this.currentStage)!);
+    
+    // Only apply vital changes for specific interventions
+    switch (interventionName.toLowerCase()) {
+      case 'im epinephrine given':
+        // Patient's heart rate increases by 20 beats per minute over next 1 minute. Respiratory rate decreases to 18 breaths/ minute.
+        updatedVitals.heartRate = Math.min(200, updatedVitals.heartRate + 20);
+        updatedVitals.respRate = 18;
+        console.log('💉 Epinephrine applied: HR +20, RR set to 18');
         break;
-      
-      case 'harmful':
-        // Apply negative effects (worsen vitals)
-        updatedVitals.heartRate = Math.min(200, updatedVitals.heartRate + 8);
-        updatedVitals.respRate = Math.min(60, updatedVitals.respRate + 3);
-        updatedVitals.bloodPressureSys = Math.max(60, updatedVitals.bloodPressureSys - 5);
-        updatedVitals.spo2 = Math.max(85, updatedVitals.spo2 - 3);
+        
+      case 'oxygen administration by mask or nebulizer':
+        // Any O2 administration will increase the SpO2 to 99-100%.
+        updatedVitals.spo2 = Math.min(100, Math.max(99, updatedVitals.spo2));
+        console.log('🫁 Oxygen applied: SpO2 set to 99-100%');
         break;
-      
-      case 'neutral':
+        
+      case 'iv fluids':
+        // HR decreases 20
+        updatedVitals.heartRate = Math.max(60, updatedVitals.heartRate - 20);
+        console.log('💧 IV fluids applied: HR -20');
+        break;
+        
+      case 'nebulized albuterol':
+        // No vital changes, but will show popup feedback
+        console.log('🫁 Albuterol nebulizer applied: Wheezing reduced, respiratory distress improves some');
+        break;
+        
+      case 'diphenhydramine':
+        // No vital changes, but will show popup feedback
+        console.log('💊 Diphenhydramine applied: Rash fades a little, child feels less itchy');
+        break;
+        
       default:
-        // No effect on vitals
+        // No vital changes for any other interventions
+        console.log(`📋 No vital changes for intervention: ${interventionName}`);
         break;
     }
 
@@ -472,46 +478,51 @@ export class StageProgressionEngine {
     const bounds = stage.vitalBounds || AGE_BASED_VITAL_BOUNDS[this.ageBand];
     if (!bounds) return null;
 
-    // Make physiologic failure detection extremely lenient - only trigger for truly critical values
-    // This prevents premature case completion during normal simulation progression
-    
-    // Critical heart rate failure (extremely low or extremely high)
-    if (vitals.heartRate < 30 || vitals.heartRate > 200) {
-      console.log(`🚨 CRITICAL: Heart rate ${vitals.heartRate} (critical bounds: 30-200)`);
-      return `Critical heart rate ${vitals.heartRate} (critical: <30 or >200)`;
+    // Check each vital against bounds
+    if (vitals.heartRate < bounds.heartRate.min || vitals.heartRate > bounds.heartRate.max) {
+      return `Heart rate ${vitals.heartRate} outside normal range (${bounds.heartRate.min}-${bounds.heartRate.max})`;
     }
     
-    // Critical respiratory rate failure (extremely low or extremely high)
-    if (vitals.respRate < 5 || vitals.respRate > 50) {
-      console.log(`🚨 CRITICAL: Respiratory rate ${vitals.respRate} (critical bounds: 5-50)`);
-      return `Critical respiratory rate ${vitals.respRate} (critical: <5 or >50)`;
+    if (vitals.respRate < bounds.respRate.min || vitals.respRate > bounds.respRate.max) {
+      return `Respiratory rate ${vitals.respRate} outside normal range (${bounds.respRate.min}-${bounds.respRate.max})`;
     }
     
-    // Critical blood pressure failure (extremely low)
-    if (vitals.bloodPressureSys < 50) {
-      console.log(`🚨 CRITICAL: Systolic BP ${vitals.bloodPressureSys} (critical min: 50)`);
-      return `Critical systolic BP ${vitals.bloodPressureSys} (critical: <50)`;
+    if (vitals.bloodPressureSys < bounds.bloodPressureSys.min || vitals.bloodPressureSys > bounds.bloodPressureSys.max) {
+      return `Systolic BP ${vitals.bloodPressureSys} outside normal range (${bounds.bloodPressureSys.min}-${bounds.bloodPressureSys.max})`;
     }
     
-    // Critical SpO2 failure (extremely low)
-    if (vitals.spo2 < 80) {
-      console.log(`🚨 CRITICAL: SpO2 ${vitals.spo2} (critical min: 80)`);
-      return `Critical SpO2 ${vitals.spo2} (critical: <80)`;
+    if (vitals.spo2 < bounds.spo2.min) {
+      return `SpO2 ${vitals.spo2} below critical threshold (${bounds.spo2.min})`;
     }
     
-    // Critical temperature failure (extremely low or extremely high) - use Fahrenheit bounds
-    // Normal body temperature is 97-99°F, critical would be <90°F or >110°F
-    if (vitals.temperature < 90 || vitals.temperature > 110) {
-      console.log(`🚨 CRITICAL: Temperature ${vitals.temperature}°F (critical bounds: 90-110°F)`);
-      return `Critical temperature ${vitals.temperature}°F (critical: <90°F or >110°F)`;
+    if (vitals.temperature < bounds.temperature.min || vitals.temperature > bounds.temperature.max) {
+      return `Temperature ${vitals.temperature} outside normal range (${bounds.temperature.min}-${bounds.temperature.max})`;
     }
 
     return null;
   }
 
   private checkStabilization(stage: CaseStage, timeInStage: number): boolean {
-    // DISABLED: Early stabilization logic to prevent premature case completion
-    // Case completion should ONLY happen when all Stage 3 required interventions are applied
+    // Early stabilization override: if all required interventions completed within 10s
+    if (timeInStage <= 10) {
+      // Check if requiredInterventions exists and has items
+      if (!stage.requiredInterventions || stage.requiredInterventions.length === 0) {
+        return false; // No required interventions to check
+      }
+      
+      const allRequiredCompleted = stage.requiredInterventions.every(req => 
+        this.currentStageState.requiredInterventionsCompleted.includes(req)
+      );
+      
+      if (allRequiredCompleted) {
+        // Check ordered requirement if applicable
+        if (stage.ordered) {
+          return this.checkOrderedCompletion(stage);
+        }
+        return true;
+      }
+    }
+    
     return false;
   }
 
