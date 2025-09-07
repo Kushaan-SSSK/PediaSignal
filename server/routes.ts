@@ -2908,8 +2908,177 @@ export async function registerRoutes(app: Express): Promise<Server> {
               nextStageRecommendations: ['Verify comprehension', 'Provide written copy']
             }
           }
+        },
+        'aliem_case_02_cardiac_tamponade': {
+          1: {
+            'Recognize respiratory distress': {
+              explanation: 'Recognize signs of respiratory distress including increased work of breathing, accessory muscle use, nasal flaring, and respiratory rate changes. In cardiac tamponade, this is due to decreased cardiac output and pulmonary congestion.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Missed respiratory compromise', 'Delayed recognition of severity'],
+              nextStageRecommendations: ['Obtain complete vital signs', 'Place on supplemental oxygen']
+            },
+            'Obtain complete vital signs': {
+              explanation: 'Obtain comprehensive vital signs including heart rate, blood pressure, respiratory rate, oxygen saturation, and temperature. Critical for assessing hemodynamic status and severity of tamponade.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Incomplete assessment', 'Missed vital sign abnormalities'],
+              nextStageRecommendations: ['Interpret vital signs', 'Recognize hypotension']
+            },
+            'Place on supplemental oxygen': {
+              explanation: 'Administer supplemental oxygen to improve oxygenation. In cardiac tamponade, this helps compensate for decreased cardiac output and pulmonary congestion.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Inadequate oxygenation', 'Delayed oxygen administration'],
+              nextStageRecommendations: ['Monitor oxygen saturation', 'Assess response to oxygen']
+            },
+            'Obtain focused history': {
+              explanation: 'Obtain focused history including recent illness, trauma, chest pain, dyspnea, and associated symptoms. Critical for identifying potential causes of pericardial effusion.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Incomplete history', 'Missed important details'],
+              nextStageRecommendations: ['Document history', 'Share with team']
+            },
+            'Perform focused physical exam': {
+              explanation: 'Perform focused physical examination looking for Beck\'s triad: hypotension, muffled heart sounds, and distended neck veins. Also assess for pulsus paradoxus and other signs of tamponade.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Incomplete examination', 'Missed physical findings'],
+              nextStageRecommendations: ['Document findings', 'Recognize abnormal findings']
+            },
+            'Order two large-bore peripheral IVs': {
+              explanation: 'Establish two large-bore peripheral IVs for fluid resuscitation and medication administration. Critical for maintaining preload and preparing for potential pericardiocentesis.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Inadequate IV access', 'Delayed fluid administration'],
+              nextStageRecommendations: ['Administer fluid bolus', 'Monitor response']
+            },
+            'Recognize hypotension': {
+              explanation: 'Recognize hypotension as a critical sign of cardiac tamponade. Low blood pressure indicates decreased cardiac output and requires immediate intervention.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Missed hypotension', 'Delayed recognition of severity'],
+              nextStageRecommendations: ['Administer fluid bolus', 'Prepare for pericardiocentesis']
+            },
+            'Give 20 mL/kg crystalloid bolus': {
+              explanation: 'Administer 20 mL/kg crystalloid bolus to increase preload and improve cardiac output. This is a temporizing measure while preparing for definitive treatment.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Fluid overload', 'Inadequate response'],
+              nextStageRecommendations: ['Monitor response', 'Prepare for pericardiocentesis']
+            }
+          },
+          2: {
+            'Recognize abnormal physical exam findings': {
+              explanation: 'Recognize and document abnormal physical examination findings including Beck\'s triad, pulsus paradoxus, and other signs of cardiac tamponade.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Missed findings', 'Incomplete documentation'],
+              nextStageRecommendations: ['Document findings', 'Formulate differential diagnosis']
+            },
+            'Formulate a broad, life-threatening differential': {
+              explanation: 'Formulate a broad differential diagnosis including cardiac tamponade, tension pneumothorax, massive PE, and other life-threatening conditions.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Narrow differential', 'Missed life-threatening conditions'],
+              nextStageRecommendations: ['Order diagnostic tests', 'Prepare for interventions']
+            },
+            'Order STAT portable CXR': {
+              explanation: 'Order STAT portable chest X-ray to assess for cardiomegaly, pulmonary congestion, and other findings suggestive of pericardial effusion.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Delayed imaging', 'Missed findings'],
+              nextStageRecommendations: ['Review CXR results', 'Interpret findings']
+            },
+            'Order STAT ECG': {
+              explanation: 'Order STAT ECG to assess for low voltage, electrical alternans, and other findings suggestive of pericardial effusion and tamponade.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Delayed ECG', 'Missed findings'],
+              nextStageRecommendations: ['Review ECG results', 'Interpret findings']
+            },
+            'Order appropriate blood tests': {
+              explanation: 'Order appropriate blood tests including CBC, electrolytes, cardiac enzymes, and inflammatory markers to assess for underlying cause.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Incomplete workup', 'Delayed results'],
+              nextStageRecommendations: ['Review results', 'Interpret findings']
+            },
+            'Order a second 20 mL/kg IV fluid bolus': {
+              explanation: 'Administer a second 20 mL/kg IV fluid bolus if patient remains hypotensive after initial fluid resuscitation.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Fluid overload', 'Inadequate response'],
+              nextStageRecommendations: ['Monitor response', 'Prepare for definitive intervention']
+            }
+          },
+          3: {
+            'Identify cardiomegaly on CXR': {
+              explanation: 'Identify cardiomegaly on chest X-ray as a sign of pericardial effusion. Look for enlarged cardiac silhouette and other findings.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Missed findings', 'Incorrect interpretation'],
+              nextStageRecommendations: ['Document findings', 'Prepare for ultrasound']
+            },
+            'Recognize low voltage and electrical alternans on ECG': {
+              explanation: 'Recognize low voltage and electrical alternans on ECG as signs of pericardial effusion and tamponade.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Missed findings', 'Incorrect interpretation'],
+              nextStageRecommendations: ['Document findings', 'Prepare for ultrasound']
+            },
+            'Interpret blood test results correctly': {
+              explanation: 'Interpret blood test results to assess for underlying cause of pericardial effusion including infection, inflammation, or other conditions.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Incorrect interpretation', 'Missed abnormalities'],
+              nextStageRecommendations: ['Document findings', 'Prepare for ultrasound']
+            }
+          },
+          4: {
+            'Perform bedside point-of-care ultrasound (heart/IVC)': {
+              explanation: 'Perform bedside point-of-care ultrasound to assess for pericardial effusion, cardiac function, and inferior vena cava status.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Inadequate imaging', 'Missed findings'],
+              nextStageRecommendations: ['Interpret findings', 'Recognize effusion']
+            },
+            'Recognize large pericardial effusion': {
+              explanation: 'Recognize large pericardial effusion on ultrasound as a critical finding requiring immediate intervention.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Missed effusion', 'Incorrect interpretation'],
+              nextStageRecommendations: ['Document findings', 'Recognize tamponade signs']
+            },
+            'Recognize sonographic signs of tamponade': {
+              explanation: 'Recognize sonographic signs of tamponade including right ventricular collapse, right atrial collapse, and inferior vena cava plethora.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Missed signs', 'Incorrect interpretation'],
+              nextStageRecommendations: ['Document findings', 'Prepare for pericardiocentesis']
+            }
+          },
+          5: {
+            'Recognize need for emergent pericardiocentesis': {
+              explanation: 'Recognize the need for emergent pericardiocentesis based on clinical findings, imaging results, and hemodynamic status.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Delayed recognition', 'Inadequate preparation'],
+              nextStageRecommendations: ['Prepare for procedure', 'Call specialists']
+            },
+            'Perform bedside pericardiocentesis under ultrasound guidance': {
+              explanation: 'Perform bedside pericardiocentesis under ultrasound guidance using subxiphoid approach. This is the definitive treatment for cardiac tamponade.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Procedure complications', 'Incomplete drainage'],
+              nextStageRecommendations: ['Monitor response', 'Call specialists']
+            },
+            'Call interventional cardiology / CT surgery': {
+              explanation: 'Call interventional cardiology or cardiothoracic surgery for definitive management and potential surgical intervention.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Delayed consultation', 'Inadequate communication'],
+              nextStageRecommendations: ['Provide handoff', 'Transfer patient']
+            }
+          },
+          6: {
+            'Discuss with pediatric intensivist': {
+              explanation: 'Discuss case with pediatric intensivist for ongoing management and potential PICU admission.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Inadequate communication', 'Delayed consultation'],
+              nextStageRecommendations: ['Provide handoff', 'Transfer patient']
+            },
+            'Transfer patient to the PICU': {
+              explanation: 'Transfer patient to the pediatric intensive care unit for ongoing monitoring and management.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Inadequate monitoring', 'Delayed transfer'],
+              nextStageRecommendations: ['Provide handoff', 'Update family']
+            },
+            'Update the family and provide handoff': {
+              explanation: 'Update the family on patient status and provide comprehensive handoff to receiving team.',
+              evidenceSources: ['PALS Guidelines 2020 - Cardiac Tamponade Management', 'ALiEM ReSCu Peds Case 2'],
+              riskFlags: ['Inadequate communication', 'Incomplete handoff'],
+              nextStageRecommendations: ['Document handoff', 'Ensure continuity of care']
+            }
+          }
         }
-        // Additional cases can be added here following the same pattern
       };
 
       // Find relevant medical knowledge with improved matching

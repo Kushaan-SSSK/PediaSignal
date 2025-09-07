@@ -221,24 +221,25 @@
   {
     "id": "aliem_case_02_cardiac_tamponade",
     "category": "Cardiac Tamponade",
-    "displayName": "Cardiac Tamponade - 12-year-old",
-    "name": "Cardiac Tamponade - 12-year-old",
-    "description": "Pericardial effusion with cardiac tamponade requiring immediate pericardiocentesis",
+    "displayName": "Cardiac Tamponade",
+    "name": "Cardiac Tamponade",
+    "description": "Pediatric patient in respiratory distress with hypotension, tachycardia, hypoxia, and fever; exam notable for JVD and distant heart sounds—concern for pericardial effusion/tamponade.",
     "sourceVersion": "aliem-rescu-peds-03-29-21",
     "license": "CC BY-NC-SA 4.0",
     "sourceCitation": "ALiEM EM ReSCu Peds – Case 2: Cardiac Tamponade",
     "difficulty": "Expert",
     "estimatedTime": "10-15 minutes",
-    "stages": 3,
+    "stages": 6,
     "presentingSymptoms": [
-      "Chest pain",
-      "Dyspnea",
-      "Tachycardia",
+      "Respiratory distress",
       "Hypotension",
-      "Muffled heart sounds",
-      "Pulsus paradoxus"
+      "Tachycardia",
+      "Hypoxia",
+      "Fever",
+      "JVD",
+      "Distant heart sounds"
     ],
-    "clinicalHistory": "12-year-old with recent viral illness presenting with chest pain, dyspnea, and signs of cardiac tamponade. Patient has muffled heart sounds and pulsus paradoxus on examination.",
+    "clinicalHistory": "Pediatric patient in respiratory distress with hypotension, tachycardia, hypoxia, and fever; exam notable for JVD and distant heart sounds—concern for pericardial effusion/tamponade.",
     "variants": [
       {
         "variantId": "A",
@@ -247,46 +248,153 @@
         "weightKg": 45,
         "initialVitals": {
           "heartRate": 140,
-          "respRate": 35,
-          "bloodPressureSys": 75,
-          "bloodPressureDia": 45,
-          "spo2": 88,
-          "temperature": 37.8,
+          "respRate": 62,
+          "bloodPressureSys": 77,
+          "bloodPressureDia": 42,
+          "spo2": 89,
+          "temperature": 38.3,
           "consciousness": "anxious",
           "capillaryRefill": 3
         },
         "stages": [
           {
             "stage": 1,
-            "name": "Recognition & Stabilization",
+            "name": "Initial Stabilization",
             "ordered": true,
             "severity": "critical",
-            "TTIsec": 30,
+            "TTIsec": 60,
             "requiredInterventions": [
-              "immediate pericardiocentesis",
-              "IV access",
-              "continuous monitoring"
+              "Recognize respiratory distress",
+              "Obtain complete vital signs",
+              "Place on supplemental oxygen",
+              "Obtain focused history",
+              "Perform focused physical exam",
+              "Order two large-bore peripheral IVs",
+              "Recognize hypotension",
+              "Give 20 mL/kg crystalloid bolus"
             ],
-            "helpful": [
-              "oxygen therapy",
-              "IV fluids bolus"
-            ],
-            "harmful": [
-              "delay in pericardiocentesis",
-              "inadequate monitoring"
-            ],
-            "neutral": [
-              "CBC",
-              "CXR"
-            ],
+            "helpful": [],
+            "harmful": [],
+            "neutral": [],
             "vitalEffects": {
-              "immediate pericardiocentesis": {
-                "heartRate": -30,
-                "respRate": -10,
-                "bloodPressureSys": 25,
-                "spo2": 8
+              "Place on supplemental oxygen": {
+                "heartRate": 0,
+                "respRate": 0,
+                "bloodPressureSys": 0,
+                "bloodPressureDia": 0,
+                "spo2": 5,
+                "notes": "SpO2 improves to 94%"
+              },
+              "Give 20 mL/kg crystalloid bolus": {
+                "heartRate": -10,
+                "respRate": -5,
+                "bloodPressureSys": 10,
+                "bloodPressureDia": 5,
+                "spo2": 0,
+                "notes": "HR decreases to 130, BP improves to 87/47"
               }
             }
+          },
+          {
+            "stage": 2,
+            "name": "Early Workup & Reassessment",
+            "ordered": true,
+            "severity": "critical",
+            "TTIsec": 120,
+            "requiredInterventions": [
+              "Recognize abnormal physical exam findings",
+              "Formulate a broad, life-threatening differential",
+              "Order STAT portable CXR",
+              "Order STAT ECG",
+              "Order appropriate blood tests",
+              "Order a second 20 mL/kg IV fluid bolus"
+            ],
+            "helpful": [],
+            "harmful": [],
+            "neutral": [],
+            "vitalEffects": {
+              "Order a second 20 mL/kg IV fluid bolus": {
+                "heartRate": -10,
+                "respRate": -5,
+                "bloodPressureSys": 10,
+                "bloodPressureDia": 5,
+                "spo2": 0,
+                "notes": "HR decreases to 120, BP improves to 97/52"
+              }
+            }
+          },
+          {
+            "stage": 3,
+            "name": "Interpret Early Diagnostics",
+            "ordered": true,
+            "severity": "critical",
+            "TTIsec": 180,
+            "requiredInterventions": [
+              "Identify cardiomegaly on CXR",
+              "Recognize low voltage and electrical alternans on ECG",
+              "Interpret blood test results correctly"
+            ],
+            "helpful": [],
+            "harmful": [],
+            "neutral": [],
+            "vitalEffects": {}
+          },
+          {
+            "stage": 4,
+            "name": "Point-of-Care Ultrasound",
+            "ordered": true,
+            "severity": "critical",
+            "TTIsec": 240,
+            "requiredInterventions": [
+              "Perform bedside point-of-care ultrasound (heart/IVC)",
+              "Recognize large pericardial effusion",
+              "Recognize sonographic signs of tamponade"
+            ],
+            "helpful": [],
+            "harmful": [],
+            "neutral": [],
+            "vitalEffects": {}
+          },
+          {
+            "stage": 5,
+            "name": "Definitive Intervention Pathway",
+            "ordered": true,
+            "severity": "critical",
+            "TTIsec": 300,
+            "requiredInterventions": [
+              "Recognize need for emergent pericardiocentesis",
+              "Perform bedside pericardiocentesis under ultrasound guidance",
+              "Call interventional cardiology / CT surgery"
+            ],
+            "helpful": [],
+            "harmful": [],
+            "neutral": [],
+            "vitalEffects": {
+              "Perform bedside pericardiocentesis under ultrasound guidance": {
+                "heartRate": -30,
+                "respRate": -15,
+                "bloodPressureSys": 25,
+                "bloodPressureDia": 15,
+                "spo2": 8,
+                "notes": "HR decreases to 90, BP improves to 122/67, SpO2 improves to 97%"
+              }
+            }
+          },
+          {
+            "stage": 6,
+            "name": "Disposition & Communication",
+            "ordered": true,
+            "severity": "moderate",
+            "TTIsec": 360,
+            "requiredInterventions": [
+              "Discuss with pediatric intensivist",
+              "Transfer patient to the PICU",
+              "Update the family and provide handoff"
+            ],
+            "helpful": [],
+            "harmful": [],
+            "neutral": [],
+            "vitalEffects": {}
           }
         ]
       }
