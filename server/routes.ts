@@ -18,6 +18,7 @@ import {
   classifyMisinformation, 
   generateTriageResponse 
 } from "./openai";
+import { getMedRAGClient } from "../services/medragClient";
 import { 
   getRandomCase, 
   getAvailableCategories, 
@@ -661,29 +662,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
 
       try {
-        // Import RAG compose for debrief synthesis
-        const { composeGroundedExplanation } = await import('./rag/compose');
+        // Use MedRAG for debrief synthesis
+        const medragClient = getMedRAGClient();
         
         // Generate comprehensive debrief
         const debriefQuery = `Generate a comprehensive debrief for ${caseDefinition.name} including learning objectives met, evidence-based interventions, risk factors identified, and recommendations for improvement.`;
-        const debriefBundle = await composeGroundedExplanation(
-          debriefQuery,
-          simulation.caseType,
-          simulation.stage,
-          simulation.userId.toString(),
-          `debrief_${simulationId}`
-        );
+        const medragResponse = await medragClient.askMedRAG(debriefQuery);
         
         debriefInsights = {
-          objectives: debriefBundle.objectiveHits,
-          evidenceSources: debriefBundle.evidenceSources,
-          riskFlags: debriefBundle.riskFlags,
-          recommendations: debriefBundle.nextStageRecommendations,
-          clinicalReasoning: debriefBundle.explanation
+          objectives: medragResponse.contexts.map(c => c.title),
+          evidenceSources: medragResponse.citations,
+          riskFlags: medragResponse.evidence_trail?.filter(e => e.weight > 0.7).map(e => e.title) || [],
+          recommendations: medragResponse.contexts.slice(0, 3).map(c => c.content.substring(0, 100) + "..."),
+          clinicalReasoning: medragResponse.answer
         };
         
-      } catch (ragError) {
-        console.warn('RAG debrief failed, using fallback:', ragError);
+      } catch (medragError) {
+        console.warn('MedRAG debrief failed, using fallback:', medragError);
         // Fallback to basic evaluation
         const session: SimulationSession = {
           id: `debrief_${simulationId}`,
@@ -856,22 +851,24 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       try {
-        const { searchPubMed } = await import('./rag/pubmed');
+        // Using MedRAG service instead of legacy PubMed search
+        const medragClient = getMedRAGClient();
         
-        const pubmedResult = await searchPubMed({
-          intervention: intervention,
-          caseType: caseType || 'pediatric_emergency',
-          ageGroup: ageGroup || 'pediatric',
-          limit: limit || 5,
-        });
+        const pubmedQuery = `Evidence for ${intervention} in ${caseType || 'pediatric emergency'} cases for ${ageGroup || 'pediatric'} patients`;
+        const medragResult = await medragClient.askMedRAG(pubmedQuery, { k: limit || 5 });
         
         res.json({
-          results: pubmedResult,
+          results: {
+            answer: medragResult.answer,
+            contexts: medragResult.contexts,
+            citations: medragResult.citations,
+            evidence_trail: medragResult.evidence_trail
+          },
           intervention,
           caseType,
           ageGroup,
           license: "CC BY-NC-SA 4.0",
-          sourceVersion: "aliem-rescu-peds-2021-03-29",
+          sourceVersion: "medrag-integrated",
           attribution: "ALiEM EM ReSCu Peds - Pediatric Emergency Medicine Cases"
         });
         
@@ -892,48 +889,63 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // New endpoint: RAG query for clinical reasoning
+  // Updated endpoint: RAG query for clinical reasoning (now using MedRAG)
   app.post('/api/rag/query', async (req, res) => {
     try {
-      const { query, caseId, stage, section, tags, limit, userId, sessionId } = req.body;
+      const { query, caseId, stage, section, tags, limit, userId, sessionId, options, ablate } = req.body;
       
       if (!query || !userId || !sessionId) {
         return res.status(400).json({ message: "Query, userId, and sessionId required" });
       }
 
       try {
-        const { retrievePassages } = await import('./rag/retriever');
+        const medragClient = getMedRAGClient();
         
-        const ragResult = await retrievePassages({
+        const medragResult = await medragClient.askMedRAG(
           query,
-          caseId,
-          stage,
-          section,
-          tags,
-          limit: limit || 10,
-          userId,
-          sessionId
-        });
+          {
+            k: limit || 10,
+            options: options,
+            ablate: ablate
+          }
+        );
         
         res.json({
-          ...ragResult,
+          success: true,
+          query: query,
+          timestamp: new Date().toISOString(),
+          answer: medragResult.answer,
+          contexts: medragResult.contexts,
+          citations: medragResult.citations,
+          evidence_trail: medragResult.evidence_trail,
+          answer_confidence: medragResult.answer_confidence,
+          metadata: {
+            model_info: medragResult.model_info,
+            latency_ms: medragResult.latency_ms,
+            proofpath_enabled: !!medragResult.proofpath_meta,
+            caseId,
+            stage,
+            section
+          },
           license: "CC BY-NC-SA 4.0",
-          sourceVersion: "aliem-rescu-peds-2021-03-29",
-          attribution: "ALiEM EM ReSCu Peds - Pediatric Emergency Medicine Cases"
+          sourceVersion: "medrag-integrated",
+          attribution: "MedRAG + ALiEM EM ReSCu Peds Integration"
         });
         
-      } catch (ragError) {
-        console.warn('RAG retrieval failed:', ragError);
+      } catch (medragError) {
+        console.warn('MedRAG retrieval failed:', medragError);
         res.status(500).json({ 
-          message: "Failed to retrieve RAG passages", 
-          error: (ragError instanceof Error ? ragError.message : 'Unknown error')
+          success: false,
+          message: "Failed to retrieve MedRAG passages", 
+          error: (medragError instanceof Error ? medragError.message : 'Unknown error')
         });
       }
 
     } catch (error) {
-      console.error('RAG query error:', error);
+      console.error('MedRAG query error:', error);
       res.status(500).json({ 
-        message: "Failed to process RAG query", 
+        success: false,
+        message: "Failed to process MedRAG query", 
         error: (error as Error).message 
       });
     }
@@ -953,31 +965,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const enhancedCases = await Promise.all(
         availableCases.map(async (case_) => {
           try {
-            // Import RAG compose for case enhancement
-            const { composeGroundedExplanation } = await import('./rag/compose');
+            // Use MedRAG for case enhancement
+            const medragClient = getMedRAGClient();
             
-            // Get case overview with RAG
+            // Get case overview with MedRAG
             const overviewQuery = `What are the key learning objectives and critical considerations for ${case_.name}?`;
-            const overviewBundle = await composeGroundedExplanation(
-              overviewQuery,
-              case_.id,
-              1,
-              'system',
-              'case-overview'
-            );
+            const overviewResponse = await medragClient.askMedRAG(overviewQuery, { k: 5 });
             
             return {
               ...case_,
-              enhancedObjectives: overviewBundle.objectiveHits,
-              riskFactors: overviewBundle.riskFlags,
-              evidenceLevel: overviewBundle.evidenceSources.length > 0 ? 'evidence-based' : 'guideline-based',
+              enhancedObjectives: overviewResponse.contexts.map(c => c.title),
+              riskFactors: overviewResponse.evidence_trail?.filter(e => e.weight > 0.8).map(e => e.title) || [],
+              evidenceLevel: overviewResponse.citations.length > 0 ? 'evidence-based' : 'guideline-based',
+              medragInsights: {
+                answer: overviewResponse.answer,
+                confidence: overviewResponse.answer_confidence,
+                citations: overviewResponse.citations
+              },
               license: "CC BY-NC-SA 4.0",
-              sourceVersion: "aliem-rescu-peds-2021-03-29",
-              attribution: "ALiEM EM ReSCu Peds - Pediatric Emergency Medicine Cases"
+              sourceVersion: "medrag-integrated",
+              attribution: "MedRAG + ALiEM EM ReSCu Peds Integration"
             };
             
-          } catch (ragError) {
-            console.warn(`RAG enhancement failed for case ${case_.id}:`, ragError);
+          } catch (medragError) {
+            console.warn(`MedRAG enhancement failed for case ${case_.id}:`, medragError);
             // Return case without enhancement
             return {
               ...case_,
@@ -1032,17 +1043,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
         };
         
         try {
-          // Import RAG retriever for stats
-          const { getCacheStats } = await import('./rag/retriever');
-          const cacheStats = getCacheStats();
+          // Get MedRAG service stats
+          const medragClient = getMedRAGClient();
+          const healthStatus = await medragClient.healthCheck();
           ragStats = {
-            totalQueries: cacheStats.totalEntries || 0,
-            evidenceSources: cacheStats.totalSessions || 0,
-            objectivesMet: cacheStats.totalEntries || 0,
-            riskFlagsIdentified: cacheStats.totalSessions || 0
+            totalQueries: 0, // Could be tracked separately if needed
+            evidenceSources: healthStatus.proofpath_enabled ? 1 : 0,
+            objectivesMet: 0, // Could be calculated from user simulation data
+            riskFlagsIdentified: 0, // Could be calculated from user simulation data
+            serviceStatus: healthStatus.status,
+            medragInitialized: healthStatus.medrag_initialized,
+            proofpathEnabled: healthStatus.proofpath_enabled
           };
-        } catch (ragError) {
-          console.warn('RAG stats failed:', ragError);
+        } catch (medragError) {
+          console.warn('MedRAG stats failed:', medragError);
         }
 
         // Get case category breakdown
@@ -1248,71 +1262,73 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // New endpoint: Get RAG cache statistics
+  // Updated endpoint: Get MedRAG service statistics
   app.get('/api/rag/stats', async (req, res) => {
     try {
       try {
-        const { getCacheStats, clearSessionCache } = await import('./rag/retriever');
-        const cacheStats = getCacheStats();
+        const medragClient = getMedRAGClient();
+        const healthStatus = await medragClient.healthCheck();
         
         res.json({
-          cacheStats,
+          serviceStats: {
+            status: healthStatus.status,
+            timestamp: healthStatus.timestamp,
+            medrag_initialized: healthStatus.medrag_initialized,
+            proofpath_enabled: healthStatus.proofpath_enabled
+          },
           license: "CC BY-NC-SA 4.0",
-          sourceVersion: "aliem-rescu-peds-2021-03-29",
-          attribution: "ALiEM EM ReSCu Peds - Pediatric Emergency Medicine Cases"
+          sourceVersion: "medrag-integrated",
+          attribution: "MedRAG + ALiEM EM ReSCu Peds Integration"
         });
         
-      } catch (ragError) {
-        console.warn('RAG stats failed:', ragError);
+      } catch (medragError) {
+        console.warn('MedRAG stats failed:', medragError);
         res.status(500).json({ 
-          message: "Failed to get RAG cache statistics", 
-          error: (ragError instanceof Error ? ragError.message : 'Unknown error')
+          message: "Failed to get MedRAG service statistics", 
+          error: (medragError instanceof Error ? medragError.message : 'Unknown error')
         });
       }
 
     } catch (error) {
-      console.error('RAG stats error:', error);
+      console.error('MedRAG stats error:', error);
       res.status(500).json({ 
-        message: "Failed to get RAG statistics", 
+        message: "Failed to get MedRAG statistics", 
         error: (error as Error).message 
       });
     }
   });
 
-  // New endpoint: Clear RAG session cache
+  // Updated endpoint: Clear MedRAG service cache (placeholder - actual clearing handled by service)
   app.post('/api/rag/clear-cache', async (req, res) => {
     try {
       const { sessionId } = req.body;
       
       try {
-        const { clearSessionCache } = await import('./rag/retriever');
+        // Note: MedRAG service handles its own caching internally
+        // This endpoint is maintained for API compatibility
+        // In a full implementation, you might call a MedRAG service cache clearing endpoint
         
-        if (sessionId) {
-          clearSessionCache(sessionId);
-        } else {
-          // Clear all sessions by clearing the entire cache
-          const { clearAllCache } = await import('./rag/retriever');
-          clearAllCache();
-        }
+        console.log(`Cache clear requested for session: ${sessionId || 'all'}`);
         
         res.json({
-          message: "Cache cleared successfully",
+          message: "MedRAG cache clear request acknowledged",
+          note: "MedRAG service manages its own cache internally",
           sessionId: sessionId || 'all',
           license: "CC BY-NC-SA 4.0",
-          sourceVersion: "aliem-rescu-peds-2021-03-29",
-          attribution: "ALiEM EM ReSCu Peds - Pediatric Emergency Medicine Cases"
+          sourceVersion: "medrag-integrated",
+          attribution: "MedRAG + ALiEM EM ReSCu Peds Integration"
         });
         
-      } catch (ragError) {
-        console.warn('RAG cache clear failed:', ragError);
+      } catch (medragError) {
+        console.warn('MedRAG cache clear failed:', medragError);
         res.status(500).json({ 
-          message: "Failed to clear RAG cache", 
-          error: (ragError instanceof Error ? ragError.message : 'Unknown error')
+          message: "Failed to clear MedRAG cache", 
+          error: (medragError instanceof Error ? medragError.message : 'Unknown error')
         });
       }
 
     } catch (error) {
-      console.error('RAG cache clear error:', error);
+      console.error('MedRAG cache clear error:', error);
       res.status(500).json({ 
         message: "Failed to clear cache", 
         error: (error as Error).message 
@@ -1368,14 +1384,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
 
       try {
-        const { searchPubMed } = await import('./rag/pubmed');
+        const medragClient = getMedRAGClient();
         
-        const suggestions = await searchPubMed({
-          intervention: query as string,
-          caseType: (caseType as string) || 'pediatric_emergency',
-          ageGroup: (ageGroup as "neonatal" | "infant" | "child" | "adolescent") || 'child',
-          limit: 3 // Just a few suggestions
-        });
+        const suggestionQuery = `Clinical suggestions for ${query} in ${(caseType as string) || 'pediatric emergency'} for ${(ageGroup as string) || 'child'} patients`;
+        const medragResult = await medragClient.askMedRAG(suggestionQuery, { k: 3 });
+        
+        const suggestions = {
+          answer: medragResult.answer,
+          contexts: medragResult.contexts,
+          citations: medragResult.citations
+        };
         
         res.json({
           suggestions,

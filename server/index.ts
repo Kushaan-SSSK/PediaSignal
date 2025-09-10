@@ -43,14 +43,9 @@ app.use((req, res, next) => {
 (async () => {
   const server = await registerRoutes(app);
 
-  // Initialize Knowledge Base for RAG system
-  try {
-    const { initializeKnowledgeBase } = await import('./rag/initKnowledgeBase');
-    await initializeKnowledgeBase();
-  } catch (error) {
-    console.error('Failed to initialize Knowledge Base:', error);
-    console.log('RAG system may not function properly');
-  }
+  // Note: MedRAG initialization is handled by the MedRAG service
+  // The TypeScript client will connect to the MedRAG FastAPI service
+  console.log('MedRAG integration: Using external MedRAG service for RAG functionality');
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
     const status = err.status || err.statusCode || 500;

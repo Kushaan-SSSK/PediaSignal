@@ -42,6 +42,7 @@ PediaSignal is a comprehensive full-stack platform focused on solving pediatric 
 - **Language**: TypeScript with ES modules
 - **Database**: PostgreSQL with Drizzle ORM
 - **AI Integration**: OpenAI GPT-4 for clinical explanations
+- **Medical RAG**: MedRAG integration with ProofPath™ evidence tracking
 - **Security**: Enterprise-grade middleware with HIPAA compliance
 
 ### Database Schema
@@ -56,8 +57,10 @@ PediaSignal is a comprehensive full-stack platform focused on solving pediatric 
 
 ### Prerequisites
 - Node.js 18+ 
+- Python 3.9+ (for MedRAG service)
 - PostgreSQL database
 - OpenAI API key
+- Java Runtime (for MedRAG BM25 retrieval)
 
 ### Installation
 
@@ -82,6 +85,8 @@ PediaSignal is a comprehensive full-stack platform focused on solving pediatric 
    DATABASE_URL=your_postgresql_connection_string
    OPENAI_API_KEY=your_openai_api_key
    SESSION_SECRET=your_session_secret
+   MEDRAG_SERVICE_URL=http://localhost:8000
+   PROOFPATH_ENABLED=true
    ```
 
 4. **Database Setup**
@@ -89,12 +94,34 @@ PediaSignal is a comprehensive full-stack platform focused on solving pediatric 
    npm run db:push
    ```
 
-5. **Start Development Server**
+5. **Setup MedRAG Service** 
    ```bash
+   # Navigate to MedRAG service
+   cd services/medrag
+   
+   # Create Python environment  
+   python -m venv medrag_env
+   source medrag_env/bin/activate  # On Windows: medrag_env\Scripts\activate
+   
+   # Install Python dependencies
+   pip install -r requirements.txt
+   
+   # Configure MedRAG environment
+   cp .env.example .env
+   # Edit .env with your OpenAI API key
+   
+   # Start MedRAG service
+   python main.py
+   ```
+
+6. **Start Main Application**
+   ```bash
+   # In the project root
    npm run dev
    ```
 
    The application will be available at `http://localhost:5000`
+   The MedRAG service will be available at `http://localhost:8000`
 
 ## 📖 API Documentation
 
@@ -111,6 +138,55 @@ PediaSignal is a comprehensive full-stack platform focused on solving pediatric 
 ### Admin Access
 - **Username**: `admin`
 - **Password**: `pediasignal2024`
+
+## 🧠 MedRAG + ProofPath™ Integration
+
+PediaSignal integrates **MedRAG** (Medical Retrieval-Augmented Generation) for evidence-based medical question answering, enhanced with our proprietary **ProofPath™** evidence tracking system.
+
+### Key Features
+- **Evidence-Based Responses**: Grounded in medical literature and guidelines
+- **ProofPath™ Evidence Tracking**: Ranked evidence contributions with confidence scoring
+- **Counterfactual Analysis**: "What-if" scenarios by excluding specific sources
+- **Multi-Modal Support**: Text, multiple-choice, and complex clinical scenarios
+
+### MedRAG Endpoints
+- `POST /api/rag/query` - Medical RAG queries with ProofPath™ evidence
+- `POST /api/rag/clinical-guidance` - Clinical decision support
+- `GET /api/rag/stats` - MedRAG service statistics
+- `GET /health` - MedRAG service health check (port 8000)
+
+### ProofPath™ Response Structure
+```json
+{
+  "answer": "Evidence-based medical response",
+  "contexts": [...],
+  "citations": [...],
+  "evidence_trail": [
+    {
+      "id": "passage_0",
+      "source_id": "guideline_001", 
+      "similarity": 0.92,
+      "weight": 0.85,
+      "title": "Clinical Guidelines"
+    }
+  ],
+  "answer_confidence": 0.87,
+  "proofpath_meta": {
+    "retriever_params": {...},
+    "latency_ms": {...},
+    "token_counts": {...}
+  }
+}
+```
+
+### Configuration
+```env
+MEDRAG_SERVICE_URL=http://localhost:8000
+PROOFPATH_ENABLED=true
+PROOFPATH_MAX_PASSAGES=32
+```
+
+For detailed documentation, see [docs/medrag.md](./docs/medrag.md) and [docs/proofpath.md](./docs/proofpath.md).
 
 ## 🎨 Design System
 
