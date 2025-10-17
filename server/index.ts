@@ -41,43 +41,51 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  const server = await registerRoutes(app);
+  try {
+    const server = await registerRoutes(app);
 
-  // Note: MedRAG initialization is handled by the MedRAG service
-  // The TypeScript client will connect to the MedRAG FastAPI service
-  console.log('MedRAG integration: Using external MedRAG service for RAG functionality');
+    // Note: MedRAG initialization is handled by the MedRAG service
+    // The TypeScript client will connect to the MedRAG FastAPI service
+    console.log('MedRAG integration: Using external MedRAG service for RAG functionality');
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
+    app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+      const status = err.status || err.statusCode || 500;
+      const message = err.message || "Internal Server Error";
 
-    res.status(status).json({ message });
-    throw err;
-  });
+      res.status(status).json({ message });
+      // Removed throw err; to prevent application crashes after error response
+    });
 
-  // importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
-    await setupVite(app, server);
-  } else {
-    serveStatic(app);
+    // importantly only setup vite in development and after
+    // setting up all the other routes so the catch-all route
+    // doesn't interfere with the other routes
+    if (app.get("env") === "development") {
+      await setupVite(app, server);
+    } else {
+      serveStatic(app);
+    }
+
+    // ALWAYS serve the app on the port specified in the environment variable PORT
+    // Other ports are firewalled. Default to 5000 if not specified.
+    // this serves both the API and the client.
+    // It is the only port that is not firewalled.
+    const port = parseInt(process.env.PORT || '5000', 10);
+
+    // Use localhost for Windows compatibility
+    const host = process.platform === 'win32' ? 'localhost' : '0.0.0.0';
+
+    server.listen({
+      port,
+      host,
+      reusePort: process.platform !== 'win32', // reusePort not supported on Windows
+    }, () => {
+      log(`serving on port ${port} at ${host}`);
+    });
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
   }
-
-  // ALWAYS serve the app on the port specified in the environment variable PORT
-  // Other ports are firewalled. Default to 5000 if not specified.
-  // this serves both the API and the client.
-  // It is the only port that is not firewalled.
-  const port = parseInt(process.env.PORT || '5000', 10);
-  
-  // Use localhost for Windows compatibility
-  const host = process.platform === 'win32' ? 'localhost' : '0.0.0.0';
-  
-  server.listen({
-    port,
-    host,
-    reusePort: process.platform !== 'win32', // reusePort not supported on Windows
-  }, () => {
-    log(`serving on port ${port} at ${host}`);
-  });
-})();
+})().catch((error) => {
+  console.error('Unhandled promise rejection in server startup:', error);
+  process.exit(1);
+});

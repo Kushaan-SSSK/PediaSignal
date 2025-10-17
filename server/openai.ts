@@ -1,8 +1,14 @@
 import OpenAI from "openai";
 
 // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
-const openai = new OpenAI({ 
-  apiKey: process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY_ENV_VAR || "default_key"
+// Validate API key at startup - don't allow fallback to default_key
+const apiKey = process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY_ENV_VAR;
+if (!apiKey) {
+  throw new Error('OpenAI API key is required. Set OPENAI_API_KEY environment variable.');
+}
+
+const openai = new OpenAI({
+  apiKey
 });
 
 interface VitalsData {

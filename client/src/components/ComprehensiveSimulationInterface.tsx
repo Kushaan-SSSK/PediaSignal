@@ -179,9 +179,10 @@ export function ComprehensiveSimulationInterface({
   };
 
   const handleInterventionSelect = (intervention: any) => {
+    const interventionName = intervention?.name || intervention || 'Unknown intervention';
     setSimulationState(prev => ({
       ...prev,
-      selectedInterventions: [...prev.selectedInterventions, intervention.name]
+      selectedInterventions: [...prev.selectedInterventions, interventionName]
     }));
   };
 
@@ -258,7 +259,7 @@ export function ComprehensiveSimulationInterface({
         <GuardrailBanner
           riskFlags={simulationState.riskFlags}
           evidenceSources={simulationState.evidenceSources}
-          onDismiss={() => handleDismissRisk(0)}
+          onDismiss={() => setSimulationState(prev => ({ ...prev, riskFlags: [] }))}
         />
       )}
 

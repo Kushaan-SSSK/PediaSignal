@@ -2303,10 +2303,12 @@ export default function Simulator() {
           <div className="w-full bg-slate-700 rounded-full h-3">
             <div 
               className="bg-gradient-to-r from-blue-500 to-green-500 h-3 rounded-full transition-all duration-500 ease-in-out"
-              style={{ 
-                width: isRunning 
-                  ? `${(currentStage / currentCase.stages.length) * 100}%` 
-                  : '0%' 
+              style={{
+                width: !isRunning
+                  ? '0%'
+                  : caseComplete
+                    ? '100%'
+                    : `${Math.max(5, ((currentStage - 1) / currentCase.stages.length) * 100 + (currentStage === 1 ? 15 : 0))}%`
               }}
             />
           </div>

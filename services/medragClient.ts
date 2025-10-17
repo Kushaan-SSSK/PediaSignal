@@ -3,7 +3,8 @@
  * Provides a clean interface for medical RAG queries with evidence tracking
  */
 
-import fetch from 'node-fetch';
+// Use native fetch - polyfilled in Node.js 18+
+// For older Node.js versions, install node-fetch as a dependency
 import { z } from 'zod';
 
 // Environment configuration
@@ -305,34 +306,34 @@ export class MedRAGClient {
     body: any,
     timeout?: number
   ): Promise<Response> {
-    let lastError: Error;
-    
+    let lastError: Error | null = null;
+
     for (let attempt = 1; attempt <= this.maxRetries; attempt++) {
       try {
         return await this.makeRequest(endpoint, 'POST', body, timeout);
       } catch (error) {
         lastError = error as Error;
-        
+
         // Don't retry on client errors (4xx) except timeout
-        if (error instanceof MedRAGError && error.statusCode && 
-            error.statusCode >= 400 && error.statusCode < 500 && 
+        if (error instanceof MedRAGError && error.statusCode &&
+            error.statusCode >= 400 && error.statusCode < 500 &&
             error.statusCode !== 408) {
           throw error;
         }
-        
+
         // Don't retry on last attempt
         if (attempt === this.maxRetries) {
           break;
         }
-        
+
         // Exponential backoff
         const delay = Math.min(1000 * Math.pow(2, attempt - 1), 10000);
         await new Promise(resolve => setTimeout(resolve, delay));
       }
     }
-    
+
     throw new MedRAGError(
-      `Failed after ${this.maxRetries} attempts: ${lastError.message}`,
+      `Failed after ${this.maxRetries} attempts: ${lastError?.message || 'Unknown error'}`,
       lastError instanceof MedRAGError ? lastError.statusCode : 500
     );
   }

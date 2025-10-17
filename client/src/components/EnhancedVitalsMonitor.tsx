@@ -426,7 +426,7 @@ export function EnhancedVitalsMonitor({
             <Clock className="h-4 w-4 text-amber-600" />
             <h5 className="font-medium text-amber-900 dark:text-amber-100">Deterioration Timeline</h5>
           </div>
-          <div className="text-sm text-amber-800 dark:amber-200">
+          <div className="text-sm text-amber-800 dark:text-amber-200">
             <p>Time elapsed: {Math.floor(timeElapsed / 60)}m {timeElapsed % 60}s</p>
             <p className="mt-1">Vitals deteriorating according to ALiEM/PALS guidelines. Critical thresholds will be reached without intervention.</p>
           </div>
