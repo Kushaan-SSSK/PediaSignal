@@ -1,0 +1,45 @@
+client/src/pages/simulator.tsx(1580,13): error TS2532: Object is possibly 'undefined'.
+client/src/pages/simulator.tsx(1599,13): error TS2532: Object is possibly 'undefined'.
+client/src/pages/simulator.tsx(1669,48): error TS2532: Object is possibly 'undefined'.
+client/src/pages/simulator.tsx(1759,21): error TS2345: Argument of type '(prev: VitalSigns) => { spo2: number | undefined; oxygenSat: number; heartRate: number; consciousness: string | undefined; temperature: number; respRate: number; bloodPressureSys: number; bloodPressureDia: number; bloodGlucose: number | undefined; capillaryRefill: number | undefined; }' is not assignable to parameter of type 'SetStateAction<VitalSigns>'.
+  Type '(prev: VitalSigns) => { spo2: number | undefined; oxygenSat: number; heartRate: number; consciousness: string | undefined; temperature: number; respRate: number; bloodPressureSys: number; bloodPressureDia: number; bloodGlucose: number | undefined; capillaryRefill: number | undefined; }' is not assignable to type '(prevState: VitalSigns) => VitalSigns'.
+    Call signature return types '{ spo2: number | undefined; oxygenSat: number; heartRate: number; consciousness: string | undefined; temperature: number; respRate: number; bloodPressureSys: number; bloodPressureDia: number; bloodGlucose: number | undefined; capillaryRefill: number | undefined; }' and 'VitalSigns' are incompatible.
+      The types of 'spo2' are incompatible between these types.
+        Type 'number | undefined' is not assignable to type 'number'.
+          Type 'undefined' is not assignable to type 'number'.
+client/src/pages/simulator.tsx(1761,64): error TS2532: Object is possibly 'undefined'.
+client/src/pages/simulator.tsx(1785,19): error TS2345: Argument of type '(prev: VitalSigns) => { spo2: number | undefined; oxygenSat: number; heartRate: number; consciousness: string; respRate: number; temperature: number; bloodPressureSys: number; bloodPressureDia: number; bloodGlucose: number | undefined; capillaryRefill: number | undefined; }' is not assignable to parameter of type 'SetStateAction<VitalSigns>'.
+  Type '(prev: VitalSigns) => { spo2: number | undefined; oxygenSat: number; heartRate: number; consciousness: string; respRate: number; temperature: number; bloodPressureSys: number; bloodPressureDia: number; bloodGlucose: number | undefined; capillaryRefill: number | undefined; }' is not assignable to type '(prevState: VitalSigns) => VitalSigns'.
+    Call signature return types '{ spo2: number | undefined; oxygenSat: number; heartRate: number; consciousness: string; respRate: number; temperature: number; bloodPressureSys: number; bloodPressureDia: number; bloodGlucose: number | undefined; capillaryRefill: number | undefined; }' and 'VitalSigns' are incompatible.
+      The types of 'spo2' are incompatible between these types.
+        Type 'number | undefined' is not assignable to type 'number'.
+          Type 'undefined' is not assignable to type 'number'.
+client/src/pages/simulator.tsx(1787,62): error TS2532: Object is possibly 'undefined'.
+client/src/pages/simulator.tsx(1824,46): error TS2532: Object is possibly 'undefined'.
+client/src/pages/simulator.tsx(2555,86): error TS2532: Object is possibly 'undefined'.
+client/src/pages/simulator.tsx(2556,62): error TS2532: Object is possibly 'undefined'.
+client/src/pages/simulator.tsx(2559,63): error TS2532: Object is possibly 'undefined'.
+client/src/pages/simulator.tsx(2560,63): error TS2532: Object is possibly 'undefined'.
+client/src/pages/simulator.tsx(2564,61): error TS2532: Object is possibly 'undefined'.
+client/src/pages/simulator.tsx(2565,61): error TS2532: Object is possibly 'undefined'.
+server/routes.ts(144,37): error TS2339: Property 'clinicalHistory' does not exist on type 'ALiEMCase'.
+server/routes.ts(288,29): error TS7053: Element implicitly has an 'any' type because expression of type 'string' can't be used to index type '{ aliem_case_01_anaphylaxis: { 1: { objectives: string[]; riskFlags: string[]; }; }; aliem_case_02_cardiac_tamponade: { 1: { objectives: string[]; riskFlags: string[]; }; }; }'.
+  No index signature with a parameter of type 'string' was found on type '{ aliem_case_01_anaphylaxis: { 1: { objectives: string[]; riskFlags: string[]; }; }; aliem_case_02_cardiac_tamponade: { 1: { objectives: string[]; riskFlags: string[]; }; }; }'.
+server/routes.ts(479,29): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ aliem_case_01_anaphylaxis: { 1: { 'Placement in resuscitation': { explanation: string; evidenceSources: string[]; riskFlags: string[]; objectiveHits: string[]; }; 'Exam including airway and lung assessment': { ...; }; 'Placement on cardiovascular monitoring': { ...; }; 'IM epinephrine given': { ...; }; 'Oxygen adm...'.
+server/routes.ts(675,11): error TS2322: Type '(string | undefined)[]' is not assignable to type 'string[]'.
+  Type 'string | undefined' is not assignable to type 'string'.
+    Type 'undefined' is not assignable to type 'string'.
+server/routes.ts(1438,44): error TS2722: Cannot invoke an object which is possibly 'undefined'.
+server/routes.ts(1438,55): error TS2349: This expression is not callable.
+  Not all constituents of type 'string | string[] | { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { ...; }, replaceValue: string): string; (searchValue: { ...; }, replacer: (substring: string, ...args: any[]) => string):...' are callable.
+    Type 'string' has no call signatures.
+server/routes.ts(1438,86): error TS2722: Cannot invoke an object which is possibly 'undefined'.
+server/routes.ts(1438,97): error TS2349: This expression is not callable.
+  Not all constituents of type 'string | string[] | { (searchValue: string | RegExp, replaceValue: string): string; (searchValue: string | RegExp, replacer: (substring: string, ...args: any[]) => string): string; (searchValue: { ...; }, replaceValue: string): string; (searchValue: { ...; }, replacer: (substring: string, ...args: any[]) => string):...' are callable.
+    Type 'string' has no call signatures.
+server/routes.ts(1629,64): error TS18046: 'error' is of type 'unknown'.
+server/routes.ts(1669,64): error TS18046: 'error' is of type 'unknown'.
+server/routes.ts(2983,29): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ aliem_case_01_anaphylaxis: { 1: { 'Placement in resuscitation': { explanation: string; evidenceSources: string[]; riskFlags: string[]; nextStageRecommendations: string[]; }; 'Exam including airway and lung assessment': { ...; }; ... 16 more ...; 'Delay Epinephrine (Harmful)': { ...; }; }; 2: { ...; }; 3: { ...; };...'.
+server/routes.ts(2983,57): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ aliem_case_01_anaphylaxis: { 1: { 'Placement in resuscitation': { explanation: string; evidenceSources: string[]; riskFlags: string[]; nextStageRecommendations: string[]; }; 'Exam including airway and lung assessment': { ...; }; ... 16 more ...; 'Delay Epinephrine (Harmful)': { ...; }; }; 2: { ...; }; 3: { ...; };...'.
+server/routes.ts(2983,104): error TS7053: Element implicitly has an 'any' type because expression of type 'any' can't be used to index type '{ aliem_case_01_anaphylaxis: { 1: { 'Placement in resuscitation': { explanation: string; evidenceSources: string[]; riskFlags: string[]; nextStageRecommendations: string[]; }; 'Exam including airway and lung assessment': { ...; }; ... 16 more ...; 'Delay Epinephrine (Harmful)': { ...; }; }; 2: { ...; }; 3: { ...; };...'.
+server/routes.ts(3059,81): error TS18046: 'ragError' is of type 'unknown'.

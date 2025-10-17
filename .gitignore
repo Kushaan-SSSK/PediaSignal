@@ -85,3 +85,11 @@ credentials.json
 # Testing
 .nyc_output/
 junit.xml
+
+# MedRAG dependencies (large files - install separately)
+services/medrag/jdk-*/
+services/medrag/corpus/textbooks/
+MedRAG-main/corpus/pubmed/
+
+# Windows reserved file names
+nul
