@@ -1,23 +1,20 @@
-// Complete ALiEM Cases - All 16 Pediatric Emergency Medicine Simulation Cases
-// Source: ALiEM EM ReSCu Peds Simulation eBook 03-29-21 (CC BY-NC-SA 4.0)
-
 export const COMPLETE_ALIEM_CASES = [
-  // Case 1: Anaphylaxis (Enhanced)
+  // 1. Anaphylaxis
   {
     id: "aliem_case_01_anaphylaxis",
     category: "Anaphylaxis",
     displayName: "Anaphylaxis - 6-year-old",
     name: "Anaphylaxis - 6-year-old",
-    description: "Severe anaphylactic reaction in a 6-year-old child with comprehensive management through 4 stages",
+    description: "Severe anaphylactic reaction in a 6-year-old child with comprehensive management through 3 stages",
     sourceVersion: "aliem-rescu-peds-03-29-21",
     license: "CC BY-NC-SA 4.0",
     sourceCitation: "ALiEM EM ReSCu Peds – Case 1: Anaphylaxis",
     difficulty: "Advanced",
     estimatedTime: "15-20 minutes",
-    stages: 4,
+    stages: 3,
     presentingSymptoms: [
       "Facial swelling",
-      "Difficulty breathing", 
+      "Difficulty breathing",
       "Wheezing",
       "Hypotension",
       "Tachycardia",
@@ -25,22 +22,22 @@ export const COMPLETE_ALIEM_CASES = [
       "Anxiety",
       "Nausea"
     ],
-    clinicalHistory: "6-year-old male child, weight 25kg, height 120cm, presents to the emergency department via EMS at 14:30 following accidental peanut exposure at school lunch (approximately 13:45). Patient was eating a peanut butter sandwich when he immediately developed facial angioedema, bilateral periorbital swelling, and difficulty breathing. EMS was called at 13:50 and arrived at 13:55. Patient has a documented history of severe peanut allergy diagnosed at age 2, with previous anaphylactic reactions at ages 3 and 4, both requiring IM epinephrine administration. Patient carries an EpiPen Jr (0.15mg) but it was not immediately available at school. Past medical history includes mild asthma (well-controlled with albuterol PRN), no other chronic conditions. Medications: albuterol inhaler PRN, no daily medications. Allergies: peanuts (severe), tree nuts (moderate), shellfish (mild). Family history: mother has seasonal allergies, father has no known allergies. Immunizations are up to date. Social history: lives with both parents, attends first grade, no tobacco exposure, no pets.",
+    clinicalHistory: "A 6-year-old boy brought in by car with a parent presents with difficulty breathing, vomiting, rash, and facial swelling after eating at a restaurant.",
     variants: [
       {
         variantId: "A",
         ageBand: "school",
         ageYears: 6,
-        weightKg: 25,
+        weightKg: 20,
         initialVitals: {
-          heartRate: 130,
-          respRate: 41,
+          heartRate: 140,
+          respRate: 32,
           bloodPressureSys: 85,
           bloodPressureDia: 50,
-          spo2: 93,
-          temperature: 38.5,
-          consciousness: "lethargic",
-          capillaryRefill: 4
+          spo2: 91,
+          temperature: 37.0,
+          consciousness: "anxious",
+          capillaryRefill: 3
         },
         stages: [
           {
@@ -50,475 +47,545 @@ export const COMPLETE_ALIEM_CASES = [
             severity: "severe",
             TTIsec: 60,
             requiredInterventions: [
-              "IM epinephrine",
-              "IV fluids bolus",
-              "diphenhydramine IV",
-              "H2 blocker IV",
-              "nebulized beta-agonist",
-              "steroids IV",
-              "CBC",
-              "CXR (normal)"
+              "Placement in resuscitation",
+              "Exam including airway and lung assessment",
+              "Placement on cardiovascular monitoring",
+              "IM epinephrine given"
             ],
-            helpful: [
-              "IV fluids bolus",
-              "diphenhydramine IV", 
-              "H2 blocker IV",
-              "nebulized beta-agonist",
-              "steroids IV",
-              "CBC",
-              "CXR (normal)"
-            ],
+            helpful: ["Oxygen", "IV access"],
             harmful: [
               "delay epinephrine",
-              "epinephrine PO",
-              "unnecessary intubation without indications"
+              "delay IM epinephrine"
             ],
-            neutral: [
-              "CBC",
-              "CXR (normal)"
-            ],
+            neutral: ["CBC", "CXR"],
             vitalEffects: {
-              "IM epinephrine": {
-                heartRate: -19,
-                respRate: -10,
-                bloodPressureSys: 20,
-                spo2: 4
-              },
-              "IV fluids bolus": {
-                bloodPressureSys: 8,
-                bloodPressureDia: 5
-              },
-              "diphenhydramine IV": {
-                heartRate: -5,
-                respRate: -2
-              },
-              "H2 blocker IV": {
-                heartRate: -3,
-                respRate: -1
-              },
-              "nebulized beta-agonist": {
-                respRate: -5,
-                spo2: 2
-              },
-              "steroids IV": {
-                heartRate: -2,
-                respRate: -1
-              }
+              "IM epinephrine given": { heartRate: -20, respRate: -5, bloodPressureSys: 15, spo2: 4 },
+              "delay epinephrine": { heartRate: 10, respRate: 5, bloodPressureSys: -10, spo2: -5 }
             }
           },
           {
             stage: 2,
-            name: "Stabilization & Monitoring",
+            name: "Stabilization",
             ordered: true,
             severity: "moderate",
             TTIsec: 300,
             requiredInterventions: [
-              "vital signs monitoring",
-              "oxygen therapy maintenance",
-              "IV access assessment",
-              "capillary refill check",
-              "urine output monitoring"
+              "Placement of an IV with medications",
+              "nebulized albuterol"
             ],
             helpful: [
-              "H2 blocker IV",
-              "steroids IV",
-              "albuterol nebulizer"
+              "steroids",
+              "H2 blocker",
+              "diphenhydramine",
+              "difficult airway equipment"
             ],
-            harmful: [
-              "discharge without observation",
-              "inadequate monitoring"
-            ],
-            neutral: [
-              "allergy testing",
-              "discharge planning"
-            ],
+            harmful: ["sedation without airway control"],
+            neutral: [],
             vitalEffects: {
-              "continuous monitoring": {},
-              "IV access maintenance": {},
-              "vital reassessment": {}
+              "nebulized albuterol": { respRate: -4, spo2: 2 },
+              "IV fluids": { bloodPressureSys: 5 },
+              "steroids": {},
+              "H2 blocker": {},
+              "diphenhydramine": {}
             }
           },
           {
             stage: 3,
-            name: "Observation & Prevention",
+            name: "Disposition",
             ordered: true,
-            severity: "moderate",
+            severity: "mild",
             TTIsec: 600,
             requiredInterventions: [
-              "extended observation period",
-              "vital signs reassessment",
-              "allergy action plan creation",
-              "epinephrine auto-injector training",
-              "discharge readiness assessment"
+              "Discussion around need for admission",
+              "Discussion with family about anaphylaxis/allergic reactions",
+              "Outpatient treatment and follow up discussion"
             ],
-            helpful: [
-              "oral antihistamines",
-              "epinephrine auto-injector training"
-            ],
-            harmful: [
-              "premature discharge",
-              "inadequate follow-up planning"
-            ],
-            neutral: [
-              "allergy referral",
-              "discharge instructions"
-            ],
-            vitalEffects: {
-              "extended observation": {},
-              "vital reassessment": {},
-              "prevention planning": {}
-            }
-          },
-          {
-            stage: 4,
-            name: "Discharge & Follow-up",
-            ordered: true,
-            severity: "low",
-            TTIsec: 900,
-            requiredInterventions: [
-              "epinephrine auto-injector prescription",
-              "comprehensive discharge instructions",
-              "allergist referral scheduling",
-              "school action plan distribution",
-              "follow-up appointment booking"
-            ],
-            helpful: [
-              "allergy referral",
-              "patient education"
-            ],
-            harmful: [
-              "missing epinephrine prescription",
-              "inadequate discharge instructions"
-            ],
-            neutral: [
-              "allergy testing scheduling",
-              "home monitoring instructions"
-            ],
-            vitalEffects: {
-              "epinephrine auto-injector prescription": {},
-              "discharge instructions": {},
-              "follow-up planning": {}
-            }
+            helpful: ["Epipen prescription"],
+            harmful: ["Early discharge"],
+            neutral: [],
+            vitalEffects: {}
           }
         ]
       }
     ]
   },
 
-  // Case 2: Cardiac Tamponade
+  // 2. Cardiac Tamponade
   {
     id: "aliem_case_02_cardiac_tamponade",
     category: "Cardiac Tamponade",
-    displayName: "Cardiac Tamponade - 12-year-old",
-    name: "Cardiac Tamponade - 12-year-old",
-    description: "Pericardial effusion with cardiac tamponade requiring immediate pericardiocentesis",
+    displayName: "Cardiac Tamponade",
+    name: "Cardiac Tamponade",
+    description: "Pediatric patient in respiratory distress with hypotension, tachycardia, hypoxia, and fever; exam notable for JVD and distant heart sounds.",
     sourceVersion: "aliem-rescu-peds-03-29-21",
     license: "CC BY-NC-SA 4.0",
     sourceCitation: "ALiEM EM ReSCu Peds – Case 2: Cardiac Tamponade",
     difficulty: "Expert",
-    estimatedTime: "10-15 minutes",
-    stages: 3,
-    presentingSymptoms: [
-      "Chest pain",
-      "Dyspnea",
-      "Tachycardia",
-      "Hypotension",
-      "Muffled heart sounds",
-      "Pulsus paradoxus"
-    ],
-    clinicalHistory: "12-year-old with recent viral illness presenting with chest pain, dyspnea, and signs of cardiac tamponade. Patient has muffled heart sounds and pulsus paradoxus on examination.",
+    estimatedTime: "15-20 minutes",
+    stages: 6,
+    presentingSymptoms: ["Respiratory distress", "Hypotension", "Tachycardia", "Hypoxia", "Fever"],
+    clinicalHistory: "Pediatric patient in respiratory distress with hypotension, tachycardia, hypoxia, and fever; exam notable for JVD and distant heart sounds—concern for pericardial effusion/tamponade.",
     variants: [
       {
         variantId: "A",
-        ageBand: "adolescent",
-        ageYears: 12,
-        weightKg: 45,
-        initialVitals: {
-          heartRate: 140,
-          respRate: 35,
-          bloodPressureSys: 75,
-          bloodPressureDia: 45,
-          spo2: 88,
-          temperature: 37.8,
-          consciousness: "anxious",
-          capillaryRefill: 3
-        },
-        stages: [
-          {
-            stage: 1,
-            name: "Recognition & Stabilization",
-            ordered: true,
-            severity: "critical",
-            TTIsec: 30,
-            requiredInterventions: [
-              "immediate pericardiocentesis",
-              "IV access",
-              "continuous monitoring"
-            ],
-            helpful: [
-              "oxygen therapy",
-              "IV fluids bolus"
-            ],
-            harmful: [
-              "delay in pericardiocentesis",
-              "inadequate monitoring"
-            ],
-            neutral: [
-              "CBC",
-              "CXR"
-            ],
-            vitalEffects: {
-              "immediate pericardiocentesis": {
-                heartRate: -30,
-                respRate: -10,
-                bloodPressureSys: 25,
-                spo2: 8
-              }
-            }
-          }
-        ]
-      }
-    ]
-  },
-
-  // Case 3: CAH/Adrenal Insufficiency
-  {
-    id: "aliem_case_03_cah_adrenal_insufficiency",
-    category: "CAH/Adrenal Insufficiency",
-    displayName: "CAH/Adrenal Insufficiency - 8-month-old",
-    name: "CAH/Adrenal Insufficiency - 8-month-old",
-    description: "Congenital adrenal hyperplasia with adrenal crisis requiring immediate steroids",
-    sourceVersion: "aliem-rescu-peds-03-29-21",
-    license: "CC BY-NC-SA 4.0",
-    sourceCitation: "ALiEM EM ReSCu Peds – Case 3: CAH/Adrenal Insufficiency",
-    difficulty: "Critical",
-    estimatedTime: "3-5 minutes",
-    stages: 2,
-    presentingSymptoms: [
-      "Hypotension",
-      "Hypoglycemia",
-      "Vomiting",
-      "Lethargy"
-    ],
-    clinicalHistory: "8-month-old infant with known CAH presenting in adrenal crisis, requiring immediate intervention.",
-    variants: [
-      {
-        variantId: "A",
-        ageBand: "infant",
-        ageYears: 0.67,
-        weightKg: 8,
-        initialVitals: {
-          heartRate: 160,
-          respRate: 45,
-          bloodPressureSys: 60,
-          bloodPressureDia: 35,
-          spo2: 95,
-          temperature: 36.0,
-          consciousness: "lethargic",
-          capillaryRefill: 4
-        },
-        stages: [
-          {
-            stage: 1,
-            name: "Immediate Stabilization",
-            ordered: true,
-            severity: "critical",
-            TTIsec: 30,
-            requiredInterventions: [
-              "IV hydrocortisone",
-              "IV glucose",
-              "IV fluids bolus"
-            ],
-            helpful: [
-              "continuous monitoring",
-              "vital reassessment"
-            ],
-            harmful: [
-              "delay in steroids",
-              "inadequate fluid resuscitation"
-            ],
-            neutral: [
-              "CBC",
-              "electrolytes"
-            ],
-            vitalEffects: {
-              "IV hydrocortisone": {
-                heartRate: -20,
-                bloodPressureSys: 20,
-                consciousness: 0
-              }
-            }
-          }
-        ]
-      }
-    ]
-  },
-
-  // Case 4: Congenital Heart Lesion
-  {
-    id: "aliem_case_04_congenital_heart_lesion",
-    category: "Congenital Heart Lesion",
-    displayName: "Congenital Heart Lesion - Neonate",
-    name: "Congenital Heart Lesion - Neonate",
-    description: "Critical congenital heart disease requiring PGE1 infusion",
-    sourceVersion: "aliem-rescu-peds-03-29-21",
-    license: "CC BY-NC-SA 4.0",
-    sourceCitation: "ALiEM EM ReSCu Peds – Case 4: Congenital Heart Lesion",
-    difficulty: "Critical",
-    estimatedTime: "2-3 minutes",
-    stages: 1,
-    presentingSymptoms: [
-      "Cyanosis",
-      "Tachypnea",
-      "Poor feeding",
-      "Lethargy"
-    ],
-    clinicalHistory: "Newborn with critical congenital heart disease requiring immediate prostaglandin therapy.",
-    variants: [
-      {
-        variantId: "A",
-        ageBand: "neonatal",
-        ageYears: 0.01,
-        weightKg: 3.2,
-        initialVitals: {
-          heartRate: 180,
-          respRate: 60,
-          bloodPressureSys: 55,
-          bloodPressureDia: 30,
-          spo2: 75,
-          temperature: 36.8,
-          consciousness: "lethargic",
-          capillaryRefill: 4
-        },
-        stages: [
-          {
-            stage: 1,
-            name: "Immediate Intervention",
-            ordered: true,
-            severity: "critical",
-            TTIsec: 30,
-            requiredInterventions: [
-              "PGE1 infusion",
-              "cardiology consultation",
-              "continuous monitoring"
-            ],
-            helpful: [
-              "oxygen therapy",
-              "IV access"
-            ],
-            harmful: [
-              "delay in PGE1",
-              "inadequate monitoring"
-            ],
-            neutral: [
-              "CXR",
-              "echocardiogram"
-            ],
-            vitalEffects: {
-              "PGE1 infusion": {
-                spo2: 15,
-                heartRate: -20,
-                respRate: -10
-              }
-            }
-          }
-        ]
-      }
-    ]
-  },
-
-  // Case 5: DKA
-  {
-    id: "aliem_case_05_dka",
-    category: "DKA",
-    displayName: "Diabetic Ketoacidosis - 14-year-old",
-    name: "Diabetic Ketoacidosis - 14-year-old",
-    description: "Severe DKA requiring fluid resuscitation and insulin therapy",
-    sourceVersion: "aliem-rescu-peds-03-29-21",
-    license: "CC BY-NC-SA 4.0",
-    sourceCitation: "ALiEM EM ReSCu Peds – Case 5: DKA",
-    difficulty: "Severe",
-    estimatedTime: "10-15 minutes",
-    stages: 1,
-    presentingSymptoms: [
-      "Polyuria",
-      "Polydipsia",
-      "Kussmaul breathing",
-      "Altered mental status"
-    ],
-    clinicalHistory: "14-year-old with new-onset diabetes presenting in severe DKA requiring immediate intervention.",
-    variants: [
-      {
-        variantId: "A",
-        ageBand: "adolescent",
-        ageYears: 14,
-        weightKg: 55,
+        ageBand: "school",
+        ageYears: 10,
+        weightKg: 30,
         initialVitals: {
           heartRate: 150,
           respRate: 40,
           bloodPressureSys: 80,
-          bloodPressureDia: 50,
-          spo2: 92,
-          temperature: 37.2,
+          bloodPressureDia: 40,
+          spo2: 88,
+          temperature: 39.0,
           consciousness: "lethargic",
-          capillaryRefill: 3
+          capillaryRefill: 4
         },
         stages: [
           {
             stage: 1,
-            name: "DKA Management",
+            name: "Initial Resuscitation",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 60,
+            requiredInterventions: [
+              "Recognize respiratory distress",
+              "Obtain complete vital signs",
+              "Place on supplemental oxygen",
+              "Obtain focused history",
+              "Perform focused physical exam",
+              "Order two large-bore peripheral IVs",
+              "Recognize hypotension",
+              "Give 20 mL/kg crystalloid bolus"
+            ],
+            helpful: [],
+            harmful: ["diuretic medication", "Lasix"],
+            neutral: [],
+            vitalEffects: {
+              "Give 20 mL/kg crystalloid bolus": { bloodPressureSys: 10, heartRate: -5 },
+              "Lasix": { bloodPressureSys: -10, heartRate: 10 }
+            }
+          },
+          {
+            stage: 2,
+            name: "Differential & Workup",
             ordered: true,
             severity: "severe",
             TTIsec: 300,
             requiredInterventions: [
-              "IV fluids bolus",
-              "insulin infusion",
-              "electrolyte monitoring"
+              "Recognize abnormal physical exam findings",
+              "Formulate a broad, life-threatening differential",
+              "Order STAT portable CXR",
+              "Order STAT ECG",
+              "Order appropriate blood tests",
+              "Order a second 20 mL/kg IV fluid bolus"
             ],
-            helpful: [
-              "continuous monitoring",
-              "vital reassessment"
-            ],
-            harmful: [
-              "delay in insulin",
-              "inadequate fluid resuscitation"
-            ],
-            neutral: [
-              "CBC",
-              "basic metabolic panel"
-            ],
+            helpful: [],
+            harmful: ["fluid restriction"],
+            neutral: [],
             vitalEffects: {
-              "IV fluids bolus": {
-                bloodPressureSys: 15,
-                heartRate: -10
-              }
+              "Order a second 20 mL/kg IV fluid bolus": { bloodPressureSys: 5 },
+              "fluid restriction": { bloodPressureSys: -5 }
             }
+          },
+          {
+            stage: 3,
+            name: "Diagnostic findings",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 400,
+            requiredInterventions: [
+              "Identify cardiomegaly on CXR",
+              "Recognize low voltage and electrical alternans on ECG",
+              "Interpret blood test results correctly"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          },
+          {
+            stage: 4,
+            name: "Ultrasound",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 500,
+            requiredInterventions: [
+              "Perform bedside point-of-care ultrasound (heart/IVC)",
+              "Recognize large pericardial effusion",
+              "Recognize sonographic signs of tamponade"
+            ],
+            helpful: [],
+            harmful: ["delay ultrasound"],
+            neutral: [],
+            vitalEffects: {}
+          },
+          {
+            stage: 5,
+            name: "Pericardiocentesis",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 600,
+            requiredInterventions: [
+              "Recognize need for emergent pericardiocentesis",
+              "Perform bedside pericardiocentesis under ultrasound guidance",
+              "Call interventional cardiology / CT surgery"
+            ],
+            helpful: [],
+            harmful: ["delay procedure"],
+            neutral: [],
+            vitalEffects: {
+              "Perform bedside pericardiocentesis under ultrasound guidance": { heartRate: -40, respRate: -15, bloodPressureSys: 30, spo2: 10 }
+            }
+          },
+          {
+            stage: 6,
+            name: "Disposition",
+            ordered: true,
+            severity: "moderate",
+            TTIsec: 900,
+            requiredInterventions: [
+              "Discuss with pediatric intensivist",
+              "Transfer patient to the PICU",
+              "Update the family and provide handoff"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
           }
         ]
       }
     ]
   },
 
-  // Case 6: Foreign Body Aspiration
+  // 3. Adrenal Crisis
   {
-    id: "aliem_case_06_foreign_body_aspiration",
-    category: "Foreign Body Aspiration",
-    displayName: "Foreign Body Aspiration - 2-year-old",
-    name: "Foreign Body Aspiration - 2-year-old",
-    description: "Foreign body aspiration requiring immediate intervention",
+    id: "aliem_case_03_adrenal_crisis",
+    category: "Adrenal Crisis",
+    displayName: "Adrenal Crisis (Hypoglycemia)",
+    name: "Adrenal Crisis (Hypoglycemia)",
+    description: "Pediatric patient in shock with hypoglycemia; concern for adrenal crisis.",
     sourceVersion: "aliem-rescu-peds-03-29-21",
     license: "CC BY-NC-SA 4.0",
-    sourceCitation: "ALiEM EM ReSCu Peds – Case 6: Foreign Body Aspiration",
-    difficulty: "Severe",
-    estimatedTime: "2-5 minutes",
-    stages: 1,
-    presentingSymptoms: [
-      "Sudden onset cough",
-      "Respiratory distress",
-      "Cyanosis",
-      "Stridor"
-    ],
-    clinicalHistory: "2-year-old toddler with sudden onset respiratory distress after playing with small toys.",
+    sourceCitation: "ALiEM EM ReSCu Peds – Case 3: Adrenal Crisis",
+    difficulty: "Advanced",
+    estimatedTime: "10-15 minutes",
+    stages: 3,
+    presentingSymptoms: ["Shock", "Hypoglycemia", "Lethargy"],
+    clinicalHistory: "Pediatric patient in shock with hypoglycemia; concern for adrenal crisis requiring stress-dose steroids after initial dextrose and stabilization.",
+    variants: [
+      {
+        variantId: "A",
+        ageBand: "toddler",
+        ageYears: 3,
+        weightKg: 15,
+        initialVitals: {
+          heartRate: 160,
+          respRate: 35,
+          bloodPressureSys: 65,
+          bloodPressureDia: 35,
+          spo2: 94,
+          temperature: 37.0,
+          bloodGlucose: 35,
+          consciousness: "unresponsive",
+          capillaryRefill: 5
+        },
+        stages: [
+          {
+            stage: 1,
+            name: "Resuscitation & Hypoglycemia",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 60,
+            requiredInterventions: [
+              "Team leader assigns tasks",
+              "Obtain brief history from parent",
+              "Perform focused physical exam (ABCs)",
+              "Place patient on continuous cardiac monitor",
+              "Verbalize recognition of shock",
+              "Obtain point-of-care glucose",
+              "Obtain vascular access",
+              "Verbalize recognition of hypoglycemia",
+              "Administer D10W 5 mL/kg",
+              "Administer normal saline bolus 10–20 mL/kg",
+              "Administer antibiotics",
+              "Discuss progress and plan with parent"
+            ],
+            helpful: ["D25W 2 mL/kg"],
+            harmful: ["delay glucose"],
+            neutral: [],
+            vitalEffects: {
+              "Administer D10W 5 mL/kg": { consciousness: 1, heartRate: -10 },
+              "Administer normal saline bolus 10–20 mL/kg": { bloodPressureSys: 10 }
+            }
+          },
+          {
+            stage: 2,
+            name: "Steroids",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 300,
+            requiredInterventions: [
+              "Verbalize recognition of adrenal crisis",
+              "Administer hydrocortisone 2 mg/kg IV bolus"
+            ],
+            helpful: [],
+            harmful: ["Thyroid hormone", "levothyroxine", "steroids before dextrose"],
+            vitalEffects: {
+              "Administer hydrocortisone 2 mg/kg IV bolus": { bloodPressureSys: 15, heartRate: -10 },
+              "levothyroxine": { heartRate: 20 }
+            }
+          },
+          {
+            stage: 3,
+            name: "Disposition",
+            ordered: true,
+            severity: "moderate",
+            TTIsec: 600,
+            requiredInterventions: [
+              "Explain diagnosis to parent and how it relates to presentation",
+              "Notify admission team (sign-out/transfer)"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          }
+        ]
+      }
+    ]
+  },
+
+  // 4. Ductal-Dependent Congenital Heart Lesion
+  {
+    id: "aliem_case_04_ductal_dependent",
+    category: "Congenital Heart Lesion",
+    displayName: "Ductal-Dependent Congenital Heart Lesion",
+    name: "Ductal-Dependent Congenital Heart Lesion",
+    description: "Infant with suspected ductal-dependent congenital heart disease.",
+    sourceVersion: "aliem-rescu-peds-03-29-21",
+    license: "CC BY-NC-SA 4.0",
+    sourceCitation: "ALiEM EM ReSCu Peds – Case 4",
+    difficulty: "Expert",
+    estimatedTime: "10-15 minutes",
+    stages: 4,
+    presentingSymptoms: ["Cyanosis", "Poor perfusion", "Shock", "Respiratory distress"],
+    clinicalHistory: "Infant with suspected ductal-dependent congenital heart disease; stabilize with ABCs/oxygen/IV access and labs, then initiate PGE1 and coordinate definitive care with cardiology and NICU/CICU.",
+    variants: [
+      {
+        variantId: "A",
+        ageBand: "neonate",
+        ageYears: 0.1,
+        weightKg: 3.5,
+        initialVitals: {
+          heartRate: 170,
+          respRate: 70,
+          bloodPressureSys: 55,
+          bloodPressureDia: 35,
+          spo2: 75,
+          temperature: 36.5,
+          consciousness: "lethargic",
+          capillaryRefill: 4
+        },
+        stages: [
+          {
+            stage: 1,
+            name: "Initial Stabilization",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 60,
+            requiredInterventions: [
+              "Assess ABCs",
+              "Obtain vital signs",
+              "Obtain IV access",
+              "Place on oxygen",
+              "Ask for POC glucose and labs"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {
+              "Place on oxygen": { spo2: 5 }
+            }
+          },
+          {
+            stage: 2,
+            name: "Workup",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 300,
+            requiredInterventions: [
+              "Attach ECG monitors",
+              "Interpret POC labs",
+              "Order normal saline bolus",
+              "Order antibiotics",
+              "Order chest X-ray"
+            ],
+            helpful: [],
+            harmful: ["too much fluid"],
+            neutral: [],
+            vitalEffects: {
+              "Order normal saline bolus": { bloodPressureSys: 5 },
+              "too much fluid": { respRate: 20, spo2: -10, notes: "Acute heart failure" }
+            }
+          },
+          {
+            stage: 3,
+            name: "PGE1",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 450,
+            requiredInterventions: [
+              "Order prostaglandin (PGE1)",
+              "Request a STAT cardiology consult",
+              "Repeat NS IV bolus"
+            ],
+            helpful: [],
+            harmful: ["delay PGE1"],
+            neutral: [],
+            vitalEffects: {
+              "Order prostaglandin (PGE1)": { spo2: 15, bloodPressureSys: 10, heartRate: -20 }
+            }
+          },
+          {
+            stage: 4,
+            name: "Disposition",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 600,
+            requiredInterventions: [
+              "Discuss patient with NICU and state appropriate disposition"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          }
+        ]
+      }
+    ]
+  },
+
+  // 5. Diabetic Ketoacidosis
+  {
+    id: "aliem_case_05_dka",
+    category: "DKA",
+    displayName: "Diabetic Ketoacidosis",
+    name: "Diabetic Ketoacidosis",
+    description: "Pediatric patient with hyperglycemia and suspected DKA.",
+    sourceVersion: "aliem-rescu-peds-03-29-21",
+    license: "CC BY-NC-SA 4.0",
+    sourceCitation: "ALiEM EM ReSCu Peds – Case 5",
+    difficulty: "Advanced",
+    estimatedTime: "20 minutes",
+    stages: 3,
+    presentingSymptoms: ["Vomiting", "Abdominal pain", "Polyuria", "Polydipsia", "Altered mental status"],
+    clinicalHistory: "Pediatric patient with hyperglycemia and suspected DKA; initial stabilization focuses on ABCs, monitoring, vascular access, labs, and recognition/treatment of hypokalemia, followed by fluid resuscitation, insulin infusion (after fluids), potassium repletion, frequent reassessment, and ICU/Endocrine involvement.",
+    variants: [
+      {
+        variantId: "A",
+        ageBand: "adolescent",
+        ageYears: 13,
+        weightKg: 50,
+        initialVitals: {
+          heartRate: 130,
+          respRate: 30,
+          bloodPressureSys: 100,
+          bloodPressureDia: 60,
+          spo2: 98,
+          temperature: 37.0,
+          bloodGlucose: 500,
+          consciousness: "confused",
+          capillaryRefill: 3
+        },
+        stages: [
+          {
+            stage: 1,
+            name: "Recognition & Initial Workup",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 60,
+            requiredInterventions: [
+              "Team leader assigns tasks",
+              "Obtain brief history from parent",
+              "Perform primary survey",
+              "Place on continuous cardiac monitor",
+              "Perform focused physical exam",
+              "Verbalize recognition of shock",
+              "Obtain point-of-care glucose (high)",
+              "Obtain vascular access",
+              "Verbalize recognition of hyperglycemia",
+              "Obtain point-of-care VBG/CBG and electrolytes",
+              "Identify hypokalemia on POC testing or via ECG changes",
+              "Discuss progress/plan with family"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          },
+          {
+            stage: 2,
+            name: "Fluid & Insulin Management",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 300,
+            requiredInterventions: [
+              "Verbalize recognition of DKA complicated by hypokalemia",
+              "Administer 10 mL/kg normal saline for moderate dehydration",
+              "Reassess perfusion status after bolus",
+              "Reassess mental status after bolus",
+              "Reassess glucose after bolus",
+              "Begin IV insulin after saline bolus (0.05–0.1 units/kg/hour)",
+              "Begin IV potassium for K < 3.5 mEq/L"
+            ],
+            helpful: [],
+            harmful: ["Too much fluid", "Insulin bolus"],
+            vitalEffects: {
+              "Administer 10 mL/kg normal saline for moderate dehydration": { heartRate: -10, bloodPressureSys: 5 },
+              "Begin IV insulin after saline bolus (0.05–0.1 units/kg/hour)": { bloodGlucose: -50 },
+              "Too much fluid": { consciousness: -2, notes: "Cerebral edema risk" }
+            }
+          },
+          {
+            stage: 3,
+            name: "Disposition & Monitoring",
+            ordered: true,
+            severity: "moderate",
+            TTIsec: 600,
+            requiredInterventions: [
+              "Verbalize need for repeat neuro checks for cerebral edema evaluation",
+              "Verbalize need for q2h electrolyte/glucose monitoring",
+              "Order STAT VBG + electrolytes if worse in any way",
+              "Explain diagnosis to parent and how it relates to presentation",
+              "Consult PICU and/or Endocrine for admission"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          }
+        ]
+      }
+    ]
+  },
+
+  // 6. Foreign Body Aspiration
+  {
+    id: "aliem_case_06_fb_aspiration",
+    category: "Foreign Body Aspiration",
+    displayName: "Foreign Body Aspiration",
+    name: "Foreign Body Aspiration",
+    description: "Pediatric patient with stridor and impending airway compromise.",
+    sourceVersion: "aliem-rescu-peds-03-29-21",
+    license: "CC BY-NC-SA 4.0",
+    sourceCitation: "ALiEM EM ReSCu Peds – Case 6",
+    difficulty: "Expert",
+    estimatedTime: "10-15 minutes",
+    stages: 5,
+    presentingSymptoms: ["Stridor", "Respiratory distress", "Coughing"],
+    clinicalHistory: "Pediatric patient with stridor and impending airway compromise; rapid primary survey and monitoring with escalation from intubation attempt to needle cricothyroidotomy and specialty consultation.",
     variants: [
       {
         variantId: "A",
@@ -526,70 +593,117 @@ export const COMPLETE_ALIEM_CASES = [
         ageYears: 2,
         weightKg: 12,
         initialVitals: {
-          heartRate: 160,
-          respRate: 50,
+          heartRate: 150,
+          respRate: 40,
           bloodPressureSys: 90,
           bloodPressureDia: 60,
-          spo2: 85,
+          spo2: 92,
           temperature: 37.0,
           consciousness: "anxious",
-          capillaryRefill: 3
+          capillaryRefill: 2
         },
         stages: [
           {
             stage: 1,
-            name: "Airway Management",
+            name: "Initial Assessment",
             ordered: true,
-            severity: "critical",
+            severity: "severe",
             TTIsec: 60,
             requiredInterventions: [
-              "back blows",
-              "chest thrusts",
-              "Heimlich maneuver"
+              "Team leader assigns tasks",
+              "Obtain relevant history from parent",
+              "Perform primary survey",
+              "Place patient on continuous cardiac monitor",
+              "Perform focused physical exam",
+              "Recognize stridor"
             ],
-            helpful: [
-              "oxygen therapy",
-              "continuous monitoring"
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          },
+          {
+            stage: 2,
+            name: "Airway Decision",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 120,
+            requiredInterventions: [
+              "Recognize airway difficulty and need for intubation",
+              "Establish vascular access"
             ],
-            harmful: [
-              "delay in intervention",
-              "inadequate airway management"
+            helpful: [],
+            harmful: ["delay intubation preparation"],
+            neutral: [],
+            vitalEffects: {}
+          },
+          {
+            stage: 3,
+            name: "Intubation Attempt",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 180,
+            requiredInterventions: [
+              "Intubation must be attempted",
+              "Verbalize unsuccessful intubation"
             ],
-            neutral: [
-              "CXR",
-              "vital monitoring"
-            ],
+            helpful: [],
+            harmful: ["Multiple intubation attempts"],
+            neutral: [],
             vitalEffects: {
-              "back blows": {},
-              "chest thrusts": {},
-              "Heimlich maneuver": {}
+              "Intubation must be attempted": { spo2: -10, heartRate: -20, notes: "Cannot pass tube" }
             }
+          },
+          {
+            stage: 4,
+            name: "Surgical Airway",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 240,
+            requiredInterventions: [
+              "Perform needle cricothyroidotomy"
+            ],
+            helpful: [],
+            harmful: ["delay cricothyroidotomy"],
+            neutral: [],
+            vitalEffects: {
+              "Perform needle cricothyroidotomy": { spo2: 15, heartRate: 20 }
+            }
+          },
+          {
+            stage: 5,
+            name: "Consultation",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 300,
+            requiredInterventions: [
+              "Surgical, ENT, or pulmonary consultation"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
           }
         ]
       }
     ]
   },
 
-  // Case 7: Multisystem Trauma
+  // 7. Multisystem Trauma
   {
     id: "aliem_case_07_multisystem_trauma",
     category: "Multisystem Trauma",
-    displayName: "Multisystem Trauma - 8-year-old",
-    name: "Multisystem Trauma - 8-year-old",
-    description: "Severe multisystem trauma requiring immediate resuscitation",
+    displayName: "Multisystem Trauma",
+    name: "Multisystem Trauma",
+    description: "Pediatric patient with multisystem trauma requiring rapid primary survey and resuscitation.",
     sourceVersion: "aliem-rescu-peds-03-29-21",
     license: "CC BY-NC-SA 4.0",
-    sourceCitation: "ALiEM EM ReSCu Peds – Case 7: Multisystem Trauma",
-    difficulty: "Critical",
-    estimatedTime: "5-10 minutes",
-    stages: 2,
-    presentingSymptoms: [
-      "Multiple injuries",
-      "Hypotension",
-      "Altered mental status",
-      "Respiratory distress"
-    ],
-    clinicalHistory: "8-year-old involved in motor vehicle accident with multiple injuries requiring immediate resuscitation.",
+    sourceCitation: "ALiEM EM ReSCu Peds – Case 7",
+    difficulty: "Expert",
+    estimatedTime: "15-20 minutes",
+    stages: 4,
+    presentingSymptoms: ["Trauma", "Hypotension", "Tachycardia", "Altered mental status"],
+    clinicalHistory: "Pediatric patient with multisystem trauma requiring rapid primary survey, early airway/ventilation support, fluid resuscitation, and preparation for transfer; subsequent secondary survey, fracture stabilization, ICP management, and definitively disposition to a trauma center.",
     variants: [
       {
         variantId: "A",
@@ -597,11 +711,11 @@ export const COMPLETE_ALIEM_CASES = [
         ageYears: 8,
         weightKg: 28,
         initialVitals: {
-          heartRate: 170,
-          respRate: 45,
-          bloodPressureSys: 70,
+          heartRate: 145,
+          respRate: 35,
+          bloodPressureSys: 80,
           bloodPressureDia: 40,
-          spo2: 88,
+          spo2: 94,
           temperature: 36.5,
           consciousness: "unresponsive",
           capillaryRefill: 4
@@ -609,352 +723,102 @@ export const COMPLETE_ALIEM_CASES = [
         stages: [
           {
             stage: 1,
-            name: "Primary Survey",
+            name: "Primary Survey & Resuscitation",
             ordered: true,
             severity: "critical",
             TTIsec: 60,
             requiredInterventions: [
-              "airway management",
-              "breathing assessment",
-              "circulation support"
+              "Team leader assigns tasks and uses Broselow/weight reference",
+              "Obtain history from parent",
+              "Perform primary survey",
+              "Perform BMV",
+              "Place patient on continuous cardiac monitor",
+              "Order vascular access at two sites",
+              "Obtain point-of-care glucose",
+              "Place cervical collar",
+              "Give two IV fluid boluses",
+              "Perform rapid sequence intubation (RSI)",
+              "Discuss progress and plan of care with the parent"
             ],
-            helpful: [
-              "IV access",
-              "continuous monitoring"
-            ],
-            harmful: [
-              "delay in intervention",
-              "inadequate assessment"
-            ],
-            neutral: [
-              "CXR",
-              "trauma series"
-            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
             vitalEffects: {
-              "airway management": {
-                spo2: 10,
-                consciousness: 0
-              }
+              "Perform BMV": { spo2: 4 },
+              "Give two IV fluid boluses": { bloodPressureSys: 15, heartRate: -10 }
             }
+          },
+          {
+            stage: 2,
+            name: "Before Transfer",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 300,
+            requiredInterventions: [
+              "Perform RSI if not already performed",
+              "Arrange transfer to trauma center with handoff to trauma physician",
+              "Splint tibia-fibula fracture prior to transfer"
+            ],
+            helpful: [],
+            harmful: ["skip splinting"],
+            neutral: [],
+            vitalEffects: {
+              "skip splinting": { heartRate: 20, bloodPressureSys: -10, notes: "Worsening vital signs due to pain/blood loss" }
+            }
+          },
+          {
+            stage: 3,
+            name: "ICP Management",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 450,
+            requiredInterventions: [
+              "Elevate head of bed",
+              "State need to hyperventilate to pCO₂ 30–35 mmHg and order a blood gas",
+              "Administer mannitol or hypertonic saline"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {
+              "Administer mannitol or hypertonic saline": { consciousness: 1 }
+            }
+          },
+          {
+            stage: 4,
+            name: "Handoff",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 600,
+            requiredInterventions: [
+              "Reassess patient and prepare for transfer",
+              "Provide handoff communication to accepting trauma physician"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
           }
         ]
       }
     ]
   },
 
-  // Case 8: Myocarditis
+  // 8. Myocarditis
   {
     id: "aliem_case_08_myocarditis",
     category: "Myocarditis",
-    displayName: "Myocarditis - 16-year-old",
-    name: "Myocarditis - 16-year-old",
-    description: "Viral myocarditis with cardiac dysfunction",
+    displayName: "Myocarditis",
+    name: "Myocarditis",
+    description: "Pediatric patient with suspected myocarditis presenting in compensated cardiogenic shock.",
     sourceVersion: "aliem-rescu-peds-03-29-21",
     license: "CC BY-NC-SA 4.0",
-    sourceCitation: "ALiEM EM ReSCu Peds – Case 8: Myocarditis",
+    sourceCitation: "ALiEM EM ReSCu Peds – Case 8",
     difficulty: "Advanced",
-    estimatedTime: "8-12 minutes",
-    stages: 2,
-    presentingSymptoms: [
-      "Chest pain",
-      "Fatigue",
-      "Dyspnea",
-      "Palpitations"
-    ],
-    clinicalHistory: "16-year-old with recent viral illness presenting with chest pain and signs of cardiac dysfunction.",
-    variants: [
-      {
-        variantId: "A",
-        ageBand: "adolescent",
-        ageYears: 16,
-        weightKg: 65,
-        initialVitals: {
-          heartRate: 140,
-          respRate: 35,
-          bloodPressureSys: 85,
-          bloodPressureDia: 55,
-          spo2: 90,
-          temperature: 37.5,
-          consciousness: "alert",
-          capillaryRefill: 3
-        },
-        stages: [
-          {
-            stage: 1,
-            name: "Cardiac Assessment",
-            ordered: true,
-            severity: "moderate",
-            TTIsec: 120,
-            requiredInterventions: [
-              "ECG",
-              "cardiac monitoring",
-              "cardiology consultation"
-            ],
-            helpful: [
-              "oxygen therapy",
-              "continuous monitoring"
-            ],
-            harmful: [
-              "delay in assessment",
-              "inadequate monitoring"
-            ],
-            neutral: [
-              "CBC",
-              "troponin"
-            ],
-            vitalEffects: {
-              "ECG": {},
-              "cardiac monitoring": {},
-              "cardiology consultation": {}
-            }
-          }
-        ]
-      }
-    ]
-  },
-
-  // Case 9: Neonatal Delivery
-  {
-    id: "aliem_case_09_neonatal_delivery",
-    category: "Neonatal Delivery",
-    displayName: "Neonatal Delivery - Newborn",
-    name: "Neonatal Delivery - Newborn",
-    description: "High-risk neonatal delivery requiring immediate resuscitation",
-    sourceVersion: "aliem-rescu-peds-03-29-21",
-    license: "CC BY-NC-SA 4.0",
-    sourceCitation: "ALiEM EM ReSCu Peds – Case 9: Neonatal Delivery",
-    difficulty: "Critical",
-    estimatedTime: "1-3 minutes",
-    stages: 1,
-    presentingSymptoms: [
-      "Respiratory distress",
-      "Bradycardia",
-      "Cyanosis",
-      "Poor tone"
-    ],
-    clinicalHistory: "High-risk delivery with newborn requiring immediate resuscitation.",
-    variants: [
-      {
-        variantId: "A",
-        ageBand: "neonatal",
-        ageYears: 0.001,
-        weightKg: 3.0,
-        initialVitals: {
-          heartRate: 80,
-          respRate: 20,
-          bloodPressureSys: 50,
-          bloodPressureDia: 25,
-          spo2: 70,
-          temperature: 36.0,
-          consciousness: "unresponsive",
-          capillaryRefill: 4
-        },
-        stages: [
-          {
-            stage: 1,
-            name: "Neonatal Resuscitation",
-            ordered: true,
-            severity: "critical",
-            TTIsec: 30,
-            requiredInterventions: [
-              "warm and dry",
-              "stimulation",
-              "positive pressure ventilation"
-            ],
-            helpful: [
-              "continuous monitoring",
-              "temperature management"
-            ],
-            harmful: [
-              "delay in intervention",
-              "inadequate ventilation"
-            ],
-            neutral: [
-              "vital monitoring",
-              "documentation"
-            ],
-            vitalEffects: {
-              "warm and dry": {
-                temperature: 1
-              },
-              "positive pressure ventilation": {
-                heartRate: 20,
-                spo2: 15
-              }
-            }
-          }
-        ]
-      }
-    ]
-  },
-
-  // Case 10: Non-Accidental Trauma
-  {
-    id: "aliem_case_10_non_accidental_trauma",
-    category: "Non-Accidental Trauma",
-    displayName: "Non-Accidental Trauma - 3-year-old",
-    name: "Non-Accidental Trauma - 3-year-old",
-    description: "Suspected child abuse requiring immediate intervention and reporting",
-    sourceVersion: "aliem-rescu-peds-03-29-21",
-    license: "CC BY-NC-SA 4.0",
-    sourceCitation: "ALiEM EM ReSCu Peds – Case 10: Non-Accidental Trauma",
-    difficulty: "Advanced",
-    estimatedTime: "10-15 minutes",
-    stages: 2,
-    presentingSymptoms: [
-      "Multiple injuries",
-      "Inconsistent history",
-      "Delayed presentation",
-      "Pattern injuries"
-    ],
-    clinicalHistory: "3-year-old with multiple injuries and inconsistent history, raising concern for non-accidental trauma.",
-    variants: [
-      {
-        variantId: "A",
-        ageBand: "preschool",
-        ageYears: 3,
-        weightKg: 15,
-        initialVitals: {
-          heartRate: 140,
-          respRate: 30,
-          bloodPressureSys: 85,
-          bloodPressureDia: 55,
-          spo2: 95,
-          temperature: 37.0,
-          consciousness: "alert",
-          capillaryRefill: 3
-        },
-        stages: [
-          {
-            stage: 1,
-            name: "Medical Stabilization",
-            ordered: true,
-            severity: "moderate",
-            TTIsec: 120,
-            requiredInterventions: [
-              "medical assessment",
-              "injury documentation",
-              "child protective services notification"
-            ],
-            helpful: [
-              "forensic photography",
-              "detailed documentation"
-            ],
-            harmful: [
-              "delay in reporting",
-              "inadequate documentation"
-            ],
-            neutral: [
-              "CBC",
-              "imaging studies"
-            ],
-            vitalEffects: {
-              "medical assessment": {},
-              "injury documentation": {},
-              "child protective services notification": {}
-            }
-          }
-        ]
-      }
-    ]
-  },
-
-  // Case 11: PEA/VF
-  {
-    id: "aliem_case_11_pea_vf",
-    category: "PEA/VF",
-    displayName: "PEA/VF - 7-year-old",
-    name: "PEA/VF - 7-year-old",
-    description: "Pulseless electrical activity/ventricular fibrillation requiring immediate ACLS",
-    sourceVersion: "aliem-rescu-peds-03-29-21",
-    license: "CC BY-NC-SA 4.0",
-    sourceCitation: "ALiEM EM ReSCu Peds – Case 11: PEA/VF",
-    difficulty: "Critical",
-    estimatedTime: "2-5 minutes",
-    stages: 1,
-    presentingSymptoms: [
-      "Unresponsive",
-      "No pulse",
-      "No breathing",
-      "Cardiac arrest"
-    ],
-    clinicalHistory: "7-year-old found unresponsive with no pulse, requiring immediate ACLS intervention.",
-    variants: [
-      {
-        variantId: "A",
-        ageBand: "school",
-        ageYears: 7,
-        weightKg: 25,
-        initialVitals: {
-          heartRate: 0,
-          respRate: 0,
-          bloodPressureSys: 0,
-          bloodPressureDia: 0,
-          spo2: 0,
-          temperature: 36.5,
-          consciousness: "unresponsive",
-          capillaryRefill: 0
-        },
-        stages: [
-          {
-            stage: 1,
-            name: "ACLS Protocol",
-            ordered: true,
-            severity: "critical",
-            TTIsec: 30,
-            requiredInterventions: [
-              "CPR",
-              "defibrillation",
-              "epinephrine"
-            ],
-            helpful: [
-              "continuous monitoring",
-              "vital reassessment"
-            ],
-            harmful: [
-              "delay in CPR",
-              "inadequate defibrillation"
-            ],
-            neutral: [
-              "documentation",
-              "team coordination"
-            ],
-            vitalEffects: {
-              "CPR": {
-                heartRate: 40,
-                spo2: 5
-              },
-              "defibrillation": {
-                heartRate: 80,
-                consciousness: 0
-              }
-            }
-          }
-        ]
-      }
-    ]
-  },
-
-  // Case 12: Penetrating Trauma
-  {
-    id: "aliem_case_12_penetrating_trauma",
-    category: "Penetrating Trauma",
-    displayName: "Penetrating Trauma - 15-year-old",
-    name: "Penetrating Trauma - 15-year-old",
-    description: "Gunshot wound requiring immediate intervention",
-    sourceVersion: "aliem-rescu-peds-03-29-21",
-    license: "CC BY-NC-SA 4.0",
-    sourceCitation: "ALiEM EM ReSCu Peds – Case 12: Penetrating Trauma",
-    difficulty: "Critical",
-    estimatedTime: "3-8 minutes",
-    stages: 2,
-    presentingSymptoms: [
-      "Gunshot wound",
-      "Hypotension",
-      "Respiratory distress",
-      "Altered mental status"
-    ],
-    clinicalHistory: "15-year-old with gunshot wound to chest requiring immediate intervention.",
+    estimatedTime: "15 minutes",
+    stages: 4,
+    presentingSymptoms: ["Respiratory distress", "Crackles", "Hepatomegaly", "Tachycardia"],
+    clinicalHistory: "Pediatric patient with suspected myocarditis presenting in compensated cardiogenic shock that may decompensate; workup with ECG/CXR/labs, early vasoactive support, possible VT with pulses requiring synchronized cardioversion, and PICU admission with cardiology involvement.",
     variants: [
       {
         variantId: "A",
@@ -962,296 +826,229 @@ export const COMPLETE_ALIEM_CASES = [
         ageYears: 15,
         weightKg: 60,
         initialVitals: {
-          heartRate: 160,
-          respRate: 45,
-          bloodPressureSys: 70,
-          bloodPressureDia: 45,
-          spo2: 85,
-          temperature: 36.8,
+          heartRate: 150,
+          respRate: 35,
+          bloodPressureSys: 95,
+          bloodPressureDia: 60,
+          spo2: 90,
+          temperature: 37.0,
           consciousness: "lethargic",
-          capillaryRefill: 4
+          capillaryRefill: 3
         },
         stages: [
           {
             stage: 1,
-            name: "Immediate Intervention",
+            name: "Initial Recognition",
             ordered: true,
-            severity: "critical",
+            severity: "severe",
             TTIsec: 60,
             requiredInterventions: [
-              "airway management",
-              "chest tube placement",
-              "IV access"
+              "Team leader identifies patient is high acuity",
+              "Obtain history from parent",
+              "Perform primary survey",
+              "Administer supplemental oxygen",
+              "Place patient on continuous cardiac monitor",
+              "Obtain vascular access",
+              "Perform focused physical exam and recognize right-sided crackles",
+              "Order diagnostic tests (ECG, CXR, labs)",
+              "Verbalize recognition of compensated shock",
+              "Discuss progress and plan of care with the parent"
             ],
-            helpful: [
-              "oxygen therapy",
-              "continuous monitoring"
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          },
+          {
+            stage: 2,
+            name: "Shock Management",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 300,
+            requiredInterventions: [
+              "Verbalize recognition of cardiogenic shock",
+              "Perform bedside cardiac ultrasound",
+              "Start pressor/inotropic agent (epinephrine, dobutamine, norepinephrine, milrinone)"
             ],
-            harmful: [
-              "delay in intervention",
-              "inadequate assessment"
-            ],
-            neutral: [
-              "CXR",
-              "trauma series"
-            ],
+            helpful: [],
+            harmful: ["excessive fluid"],
+            neutral: [],
             vitalEffects: {
-              "airway management": {
-                spo2: 10
-              },
-              "chest tube placement": {
-                respRate: -5,
-                spo2: 8
-              }
+              "excessive fluid": { spo2: -10, bloodPressureSys: -10, notes: "Worsens if >10cc/kg given" },
+              "Start pressor/inotropic agent (epinephrine, dobutamine, norepinephrine, milrinone)": { bloodPressureSys: 10, heartRate: 5 }
             }
+          },
+          {
+            stage: 3,
+            name: "Arrhythmia Management",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 450,
+            requiredInterventions: [
+              "Place defibrillator pads on patient",
+              "Perform synchronized cardioversion (for ventricular tachycardia with pulses)"
+            ],
+            helpful: [],
+            harmful: ["defibrillation (unsynchronized)"],
+            neutral: [],
+            vitalEffects: {
+              "defibrillation (unsynchronized)": { heartRate: 0, notes: "R-on-T phenomenon risk" },
+              "Perform synchronized cardioversion (for ventricular tachycardia with pulses)": { heartRate: -50, bloodPressureSys: 10 }
+            }
+          },
+          {
+            stage: 4,
+            name: "Disposition",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 600,
+            requiredInterventions: [
+              "Verbalize concern for myocarditis",
+              "Consult pediatric cardiology",
+              "Transfer care of the patient to the pediatric ICU",
+              "Address parental concerns and questions"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
           }
         ]
       }
     ]
   },
 
-  // Case 13: Pneumonia & Septic Shock
+  // 9. Neonatal Delivery
   {
-    id: "aliem_case_13_pneumonia_septic_shock",
-    category: "Pneumonia & Septic Shock",
-    displayName: "Pneumonia & Septic Shock - 4-year-old",
-    name: "Pneumonia & Septic Shock - 4-year-old",
-    description: "Severe pneumonia with septic shock requiring immediate intervention",
+    id: "aliem_case_09_neonatal_delivery",
+    category: "Neonatal Delivery",
+    displayName: "Neonatal Delivery",
+    name: "Neonatal Delivery",
+    description: "Newborn requiring NRP-guided resuscitation.",
     sourceVersion: "aliem-rescu-peds-03-29-21",
     license: "CC BY-NC-SA 4.0",
-    sourceCitation: "ALiEM EM ReSCu Peds – Case 13: Pneumonia & Septic Shock",
-    difficulty: "Critical",
-    estimatedTime: "8-12 minutes",
-    stages: 2,
-    presentingSymptoms: [
-      "Fever",
-      "Cough",
-      "Respiratory distress",
-      "Hypotension"
-    ],
-    clinicalHistory: "4-year-old with severe pneumonia presenting in septic shock requiring immediate intervention.",
+    sourceCitation: "ALiEM EM ReSCu Peds – Case 9",
+    difficulty: "Advanced",
+    estimatedTime: "10 minutes",
+    stages: 4,
+    presentingSymptoms: ["Apnea", "Bradycardia", "Poor tone", "Blue"],
+    clinicalHistory: "Newborn requiring NRP-guided resuscitation with PPV by 60 seconds, transition to CPAP, hypothermia prevention, UVC access after failed PIVs, correction of hypoglycemia, and antibiotics.",
     variants: [
       {
         variantId: "A",
-        ageBand: "preschool",
-        ageYears: 4,
-        weightKg: 18,
+        ageBand: "neonate",
+        ageYears: 0,
+        weightKg: 3.0,
         initialVitals: {
-          heartRate: 170,
-          respRate: 50,
-          bloodPressureSys: 65,
-          bloodPressureDia: 40,
-          spo2: 82,
-          temperature: 39.5,
-          consciousness: "lethargic",
-          capillaryRefill: 4
+          heartRate: 80,
+          respRate: 10,
+          bloodPressureSys: 50,
+          bloodPressureDia: 30,
+          spo2: 60,
+          temperature: 36.5,
+          consciousness: "unresponsive",
+          capillaryRefill: 5
         },
         stages: [
           {
             stage: 1,
-            name: "Septic Shock Management",
+            name: "Initial Steps & PPV",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 60,
+            requiredInterventions: [
+              "Call for OB/Peds/NICU help",
+              "Assemble supplies",
+              "Assign team roles",
+              "Acknowledge and follow the NRP algorithm",
+              "By 60 seconds of life start PPV"
+            ],
+            helpful: [],
+            harmful: ["delay PPV"],
+            neutral: [],
+            vitalEffects: {
+              "By 60 seconds of life start PPV": { heartRate: 40, spo2: 15 }
+            }
+          },
+          {
+            stage: 2,
+            name: "MR SOPA & CPAP",
             ordered: true,
             severity: "critical",
             TTIsec: 120,
             requiredInterventions: [
-              "IV fluids bolus",
-              "antibiotics",
-              "oxygen therapy"
+              "Continue NRP algorithm",
+              "Continue PPV with MR SOPA maneuvers",
+              "Note hypothermia and provide warming",
+              "Reassess respiratory effort after HR/SpO₂ improve with PPV",
+              "Recognize ongoing ventilatory needs",
+              "Initiate CPAP and request neonatal CPAP setup"
             ],
-            helpful: [
-              "continuous monitoring",
-              "vital reassessment"
-            ],
-            harmful: [
-              "delay in antibiotics",
-              "inadequate fluid resuscitation"
-            ],
-            neutral: [
-              "CBC",
-              "blood cultures"
-            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
             vitalEffects: {
-              "IV fluids bolus": {
-                bloodPressureSys: 15,
-                heartRate: -10
-              },
-              "antibiotics": {
-                temperature: -1
-              }
+              "Initiate CPAP and request neonatal CPAP setup": { spo2: 10, respRate: 30 }
             }
-          }
-        ]
-      }
-    ]
-  },
-
-  // Case 14: Status Asthmaticus
-  {
-    id: "aliem_case_14_status_asthmaticus",
-    category: "Status Asthmaticus",
-    displayName: "Status Asthmaticus - 10-year-old",
-    name: "Status Asthmaticus - 10-year-old",
-    description: "Severe asthma exacerbation requiring immediate intervention",
-    sourceVersion: "aliem-rescu-peds-03-29-21",
-    license: "CC BY-NC-SA 4.0",
-    sourceCitation: "ALiEM EM ReSCu Peds – Case 14: Status Asthmaticus",
-    difficulty: "Advanced",
-    estimatedTime: "8-12 minutes",
-    stages: 2,
-    presentingSymptoms: [
-      "Severe wheezing",
-      "Respiratory distress",
-      "Accessory muscle use",
-      "Hypoxemia"
-    ],
-    clinicalHistory: "10-year-old with severe asthma exacerbation requiring immediate intervention.",
-    variants: [
-      {
-        variantId: "A",
-        ageBand: "school",
-        ageYears: 10,
-        weightKg: 35,
-        initialVitals: {
-          heartRate: 150,
-          respRate: 45,
-          bloodPressureSys: 90,
-          bloodPressureDia: 60,
-          spo2: 85,
-          temperature: 37.2,
-          consciousness: "anxious",
-          capillaryRefill: 3
-        },
-        stages: [
+          },
           {
-            stage: 1,
-            name: "Asthma Management",
-            ordered: true,
-            severity: "severe",
-            TTIsec: 180,
-            requiredInterventions: [
-              "albuterol nebulizer",
-              "IV steroids",
-              "oxygen therapy"
-            ],
-            helpful: [
-              "continuous monitoring",
-              "vital reassessment"
-            ],
-            harmful: [
-              "delay in treatment",
-              "inadequate monitoring"
-            ],
-            neutral: [
-              "CBC",
-              "CXR"
-            ],
-            vitalEffects: {
-              "albuterol nebulizer": {
-                respRate: -8,
-                spo2: 8
-              },
-              "IV steroids": {
-                respRate: -3
-              }
-            }
-          }
-        ]
-      }
-    ]
-  },
-
-  // Case 15: Status Epilepticus
-  {
-    id: "aliem_case_15_status_epilepticus",
-    category: "Status Epilepticus",
-    displayName: "Status Epilepticus - 5-year-old",
-    name: "Status Epilepticus - 5-year-old",
-    description: "Prolonged seizure requiring immediate intervention",
-    sourceVersion: "aliem-rescu-peds-03-29-21",
-    license: "CC BY-NC-SA 4.0",
-    sourceCitation: "ALiEM EM ReSCu Peds – Case 15: Status Epilepticus",
-    difficulty: "Critical",
-    estimatedTime: "3-8 minutes",
-    stages: 2,
-    presentingSymptoms: [
-      "Prolonged seizure",
-      "Altered mental status",
-      "Post-ictal state",
-      "Fever"
-    ],
-    clinicalHistory: "5-year-old with prolonged seizure requiring immediate intervention.",
-    variants: [
-      {
-        variantId: "A",
-        ageBand: "preschool",
-        ageYears: 5,
-        weightKg: 20,
-        initialVitals: {
-          heartRate: 160,
-          respRate: 40,
-          bloodPressureSys: 95,
-          bloodPressureDia: 65,
-          spo2: 88,
-          temperature: 39.0,
-          consciousness: "post-ictal",
-          capillaryRefill: 3
-        },
-        stages: [
-          {
-            stage: 1,
-            name: "Seizure Management",
+            stage: 3,
+            name: "UVC & Labs",
             ordered: true,
             severity: "critical",
-            TTIsec: 60,
+            TTIsec: 300,
             requiredInterventions: [
-              "benzodiazepine administration",
-              "airway management",
-              "continuous monitoring"
+              "Continue CPAP and wean FiO₂",
+              "Place emergency UVC after two failed PIV attempts",
+              "Obtain POC labs and chest x-ray",
+              "Recognize hypoglycemia at 30 mg/dL (<40)",
+              "Give D10W bolus 2 mL/kg via UVC",
+              "Start D10W at 60 mL/kg/24 h",
+              "Order antibiotics (ampicillin and gentamicin)",
+              "Call NICU and discuss the case"
             ],
-            helpful: [
-              "oxygen therapy",
-              "vital reassessment"
-            ],
-            harmful: [
-              "delay in medication",
-              "inadequate airway management"
-            ],
-            neutral: [
-              "CBC",
-              "glucose"
-            ],
+            helpful: [],
+            harmful: ["unrecognized hypoglycemia"],
+            neutral: [],
             vitalEffects: {
-              "benzodiazepine administration": {
-                consciousness: 0,
-                respRate: -5
-              }
+              "Give D10W bolus 2 mL/kg via UVC": { bloodGlucose: 40, consciousness: 1 },
+              "unrecognized hypoglycemia": { heartRate: -60, notes: "Cardiac Arrest Risk" }
             }
+          },
+          {
+            stage: 4,
+            name: "Disposition",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 450,
+            requiredInterventions: [
+              "Discuss patient with NICU and state appropriate disposition"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
           }
         ]
       }
     ]
   },
 
-  // Case 16: SVT
+  // 10. Non-Accidental Trauma
   {
-    id: "aliem_case_16_svt",
-    category: "SVT",
-    displayName: "Supraventricular Tachycardia - 6-month-old",
-    name: "Supraventricular Tachycardia - 6-month-old",
-    description: "SVT requiring immediate intervention",
+    id: "aliem_case_10_nat",
+    category: "Non-Accidental Trauma",
+    displayName: "Non-Accidental Trauma",
+    name: "Non-Accidental Trauma",
+    description: "Infant with altered mental status and seizure.",
     sourceVersion: "aliem-rescu-peds-03-29-21",
     license: "CC BY-NC-SA 4.0",
-    sourceCitation: "ALiEM EM ReSCu Peds – Case 16: SVT",
+    sourceCitation: "ALiEM EM ReSCu Peds – Case 10",
     difficulty: "Advanced",
-    estimatedTime: "3-5 minutes",
-    stages: 1,
-    presentingSymptoms: [
-      "Tachycardia",
-      "Poor feeding",
-      "Irritability",
-      "Respiratory distress"
-    ],
-    clinicalHistory: "6-month-old with SVT requiring immediate intervention.",
+    estimatedTime: "15 minutes",
+    stages: 4,
+    presentingSymptoms: ["Altered mental status", "Seizure"],
+    clinicalHistory: "Infant with altered mental status; initial stabilization with oxygen, monitoring, and vascular access; broad labs; seizure and respiratory failure requiring RSI; post-intubation CXR shows posterior rib fractures; proceed to head CT, trauma/neurosurgery consults, ICP precautions, and mandated reporting.",
     variants: [
       {
         variantId: "A",
@@ -1259,47 +1056,732 @@ export const COMPLETE_ALIEM_CASES = [
         ageYears: 0.5,
         weightKg: 7,
         initialVitals: {
-          heartRate: 220,
-          respRate: 50,
-          bloodPressureSys: 70,
-          bloodPressureDia: 45,
-          spo2: 90,
+          heartRate: 160,
+          respRate: 45,
+          bloodPressureSys: 85,
+          bloodPressureDia: 50,
+          spo2: 94,
           temperature: 37.0,
-          consciousness: "irritable",
+          consciousness: "unresponsive",
+          capillaryRefill: 2
+        },
+        stages: [
+          {
+            stage: 1,
+            name: "Initial Stabilization",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 60,
+            requiredInterventions: [
+              "Team leader assigns tasks",
+              "Obtain history from parent",
+              "Perform primary survey",
+              "Administer supplemental oxygen",
+              "Place patient on continuous cardiac monitor",
+              "Obtain IO access after failed IV",
+              "Send labs once access obtained",
+              "Discuss progress and plan with the parent"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          },
+          {
+            stage: 2,
+            name: "Seizure & RSI",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 300,
+            requiredInterventions: [
+              "Demonstrate appropriate BMV technique",
+              "Perform endotracheal intubation with appropriate RSI meds",
+              "Manage seizure (benzodiazepine)",
+              "Request and correctly interpret CXR"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {
+              "Manage seizure (benzodiazepine)": { heartRate: -20, respRate: -10 }
+            }
+          },
+          {
+            stage: 3,
+            name: "CT and Consults",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 450,
+            requiredInterventions: [
+              "Obtain CT head",
+              "Consult trauma surgery and neurosurgery",
+              "Take ICP precautions and consider cervical spine immobilization"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          },
+          {
+            stage: 4,
+            name: "Reporting",
+            ordered: true,
+            severity: "moderate",
+            TTIsec: 600,
+            requiredInterventions: [
+              "Identify child abuse as likely etiology",
+              "Request social work and ophthalmology consults and skeletal survey",
+              "Discuss with parent why abuse is suspected and standard care/policy",
+              "Initiate phone call to CPS"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          }
+        ]
+      }
+    ]
+  },
+
+  // 11. PEA -> VF
+  {
+    id: "aliem_case_11_pea_vf",
+    category: "Cardiac Arrest",
+    displayName: "PEA to VF",
+    name: "PEA to VF",
+    description: "Pediatric cardiac arrest initially in PEA evolving to VF.",
+    sourceVersion: "aliem-rescu-peds-03-29-21",
+    license: "CC BY-NC-SA 4.0",
+    sourceCitation: "ALiEM EM ReSCu Peds – Case 11",
+    difficulty: "Critical",
+    estimatedTime: "10-15 minutes",
+    stages: 4,
+    presentingSymptoms: ["Cardiac arrest", "Unresponsive", "No pulse"],
+    clinicalHistory: "Pediatric cardiac arrest initially in PEA; immediate high-quality CPR/BMV, rapid IV/IO access, early epinephrine; rhythm evolves to VF requiring prompt defibrillation; post-ROSC stabilization.",
+    variants: [
+      {
+        variantId: "A",
+        ageBand: "child",
+        ageYears: 5,
+        weightKg: 20,
+        initialVitals: {
+          heartRate: 0,
+          respRate: 0,
+          bloodPressureSys: 0,
+          bloodPressureDia: 0,
+          spo2: 0,
+          temperature: 36.0,
+          consciousness: "unresponsive",
+          capillaryRefill: 99
+        },
+        stages: [
+          {
+            stage: 1,
+            name: "PEA Management",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 60,
+            requiredInterventions: [
+              "Team leader declares leadership",
+              "Check for a pulse and recognize pulselessness",
+              "Continue high-quality CPR with effective BMV",
+              "Place patient on continuous cardiac monitor",
+              "Apply defibrillator pads",
+              "Obtain IV/IO access",
+              "Estimate weight with length-based tape",
+              "Verbalize recognition of PEA"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          },
+          {
+            stage: 2,
+            name: "Epinephrine and Causes",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 180,
+            requiredInterventions: [
+              "Follow PALS algorithm for PEA",
+              "Give epinephrine 0.01 mg/kg IV/IO",
+              "Discuss and treat reversible causes (Hs and Ts)",
+              "Verbalize rhythm change to VF"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          },
+          {
+            stage: 3,
+            name: "VF Management",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 240,
+            requiredInterventions: [
+              "Continue BMV and CPR",
+              "Defer intubation now—attempt immediate defibrillation",
+              "Follow PALS VF algorithm and defibrillate (2–10 J/kg)",
+              "Resume CPR immediately after each shock",
+              "Recognize return of normal sinus rhythm (NSR)"
+            ],
+            helpful: [],
+            harmful: ["intubation before defibrillation"],
+            neutral: [],
+            vitalEffects: {
+              "Recognize return of normal sinus rhythm (NSR)": { heartRate: 110, bloodPressureSys: 80, spo2: 95 }
+            }
+          },
+          {
+            stage: 4,
+            name: "Post-ROSC",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 360,
+            requiredInterventions: [
+              "Recognize ROSC and stabilize",
+              "Titrate oxygen to SpO₂ 94–99%",
+              "Order blood gas/electrolytes/calcium",
+              "Update family",
+              "Plan disposition (admit vs transfer)"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          }
+        ]
+      }
+    ]
+  },
+
+  // 12. Penetrating Trauma
+  {
+    id: "aliem_case_12_penetrating_trauma",
+    category: "Penetrating Trauma",
+    displayName: "Penetrating Trauma",
+    name: "Penetrating Trauma",
+    description: "Pediatric patient with penetrating trauma.",
+    sourceVersion: "aliem-rescu-peds-03-29-21",
+    license: "CC BY-NC-SA 4.0",
+    sourceCitation: "ALiEM EM ReSCu Peds – Case 12",
+    difficulty: "Expert",
+    estimatedTime: "15 minutes",
+    stages: 3,
+    presentingSymptoms: ["Trauma", "Respiratory distress", "Shock"],
+    clinicalHistory: "Pediatric patient with penetrating trauma requiring rapid primary survey, recognition and decompression of tension pneumothorax, definitive airway, chest tube, hemorrhage control with MTP, and surgical disposition.",
+    variants: [
+      {
+        variantId: "A",
+        ageBand: "adolescent",
+        ageYears: 14,
+        weightKg: 50,
+        initialVitals: {
+          heartRate: 140,
+          respRate: 30,
+          bloodPressureSys: 80,
+          bloodPressureDia: 40,
+          spo2: 85,
+          temperature: 36.5,
+          consciousness: "confused",
           capillaryRefill: 3
         },
         stages: [
           {
             stage: 1,
-            name: "SVT Management",
+            name: "Primary Survey & Tension Pneumothorax",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 60,
+            requiredInterventions: [
+              "Team lead assigns roles",
+              "Place patient on monitor and obtain full set of vital signs",
+              "Obtain vascular access and order labs",
+              "Perform primary survey",
+              "Identify tension pneumothorax",
+              "Perform needle decompression",
+              "Manage pediatric airway",
+              "Initiate volume resuscitation (blood or saline)"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {
+              "Perform needle decompression": { spo2: 10, respRate: -5, bloodPressureSys: 10 }
+            }
+          },
+          {
+            stage: 2,
+            name: "Chest Tube & MTP",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 300,
+            requiredInterventions: [
+              "Complete secondary survey",
+              "Perform chest tube placement",
+              "Reassess volume resuscitation and initiate Massive Transfusion Protocol",
+              "Call pediatric trauma for disposition",
+              "Perform FAST exam and identify intra-abdominal hemorrhage"
+            ],
+            helpful: ["TXA"],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {
+              "Reassess volume resuscitation and initiate Massive Transfusion Protocol": { bloodPressureSys: 15, heartRate: -10 }
+            }
+          },
+          {
+            stage: 3,
+            name: "Disposition",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 600,
+            requiredInterventions: [
+              "Consult pediatric trauma surgery",
+              "Activate appropriate level trauma",
+              "Communicate effectively and compassionately with parents"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          }
+        ]
+      }
+    ]
+  },
+
+  // 13. Pneumonia & Septic Shock (Tracheostomy)
+  {
+    id: "aliem_case_13_pneumonia_sepsis",
+    category: "Sepsis",
+    displayName: "Pneumonia & Septic Shock (Trach)",
+    name: "Pneumonia & Septic Shock (Trach)",
+    description: "Tracheostomized pediatric patient in respiratory distress with suspected pneumonia and septic shock.",
+    sourceVersion: "aliem-rescu-peds-03-29-21",
+    license: "CC BY-NC-SA 4.0",
+    sourceCitation: "ALiEM EM ReSCu Peds – Case 13",
+    difficulty: "Advanced",
+    estimatedTime: "10-15 minutes",
+    stages: 3,
+    presentingSymptoms: ["Respiratory distress", "Fever", "Tachycardia", "Hypotension"],
+    clinicalHistory: "Tracheostomized pediatric patient in respiratory distress with suspected pneumonia and septic shock; requires rapid trach troubleshooting/replacement, oxygenation/ventilation support, fluid resuscitation, antibiotics, and PICU transfer.",
+    variants: [
+      {
+        variantId: "A",
+        ageBand: "child",
+        ageYears: 5,
+        weightKg: 18,
+        initialVitals: {
+          heartRate: 160,
+          respRate: 40,
+          bloodPressureSys: 70,
+          bloodPressureDia: 40,
+          spo2: 88,
+          temperature: 39.5,
+          consciousness: "lethargic",
+          capillaryRefill: 4
+        },
+        stages: [
+          {
+            stage: 1,
+            name: "Trach Management & ABCs",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 60,
+            requiredInterventions: [
+              "Team leader assigns tasks",
+              "Obtain relevant history from parent",
+              "Perform primary survey",
+              "Provide supplemental oxygen",
+              "Perform BMV through tracheostomy",
+              "Suction tracheostomy tube",
+              "Replace tracheostomy tube",
+              "Place patient on continuous cardiac monitor",
+              "Establish vascular access",
+              "Obtain point-of-care rapid glucose level"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {
+              "Replace tracheostomy tube": { spo2: 8 }
+            }
+          },
+          {
+            stage: 2,
+            name: "Sepsis Management",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 300,
+            requiredInterventions: [
+              "Recognize and promptly manage shock and pneumonia with IV fluids and antibiotics",
+              "Discuss progress and develop plan of care with the parent"
+            ],
+            helpful: ["RUSH POCUS"],
+            harmful: ["delay antibiotics", "delay fluids"],
+            neutral: [],
+            vitalEffects: {
+              "delay antibiotics": { bloodPressureSys: -5, heartRate: 5 },
+              "IV fluids": { bloodPressureSys: 10, heartRate: -5 }
+            }
+          },
+          {
+            stage: 3,
+            name: "Disposition",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 600,
+            requiredInterventions: [
+              "Plan transfer to pediatric ICU",
+              "Ensure family is updated on plan"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          }
+        ]
+      }
+    ]
+  },
+
+  // 14. Status Asthmaticus
+  {
+    id: "aliem_case_14_status_asthmaticus",
+    category: "Asthma",
+    displayName: "Status Asthmaticus",
+    name: "Status Asthmaticus",
+    description: "Pediatric patient with severe asthma exacerbation.",
+    sourceVersion: "aliem-rescu-peds-03-29-21",
+    license: "CC BY-NC-SA 4.0",
+    sourceCitation: "ALiEM EM ReSCu Peds – Case 14",
+    difficulty: "Severe",
+    estimatedTime: "15 minutes",
+    stages: 4,
+    presentingSymptoms: ["Wheezing", "Respiratory distress", "Hypoxia"],
+    clinicalHistory: "Pediatric patient with severe asthma exacerbation; rapid team huddle, immediate bronchodilators + steroids, escalation to second-line therapies with NIV, vigilance for pneumothorax.",
+    variants: [
+      {
+        variantId: "A",
+        ageBand: "school",
+        ageYears: 9,
+        weightKg: 30,
+        initialVitals: {
+          heartRate: 150,
+          respRate: 40,
+          bloodPressureSys: 110,
+          bloodPressureDia: 70,
+          spo2: 88,
+          temperature: 37.0,
+          consciousness: "anxious",
+          capillaryRefill: 2
+        },
+        stages: [
+          {
+            stage: 1,
+            name: "Initial Management",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 60,
+            requiredInterventions: [
+              "Identify team leader and roles",
+              "Prepare room",
+              "Deliver albuterol/ipratropium and steroids immediately",
+              "Bedside MD performs primary/secondary survey",
+              "RN/MD team orders/administers albuterol, ipratropium, steroids, oxygen",
+              "Place on monitor"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {
+              "Deliver albuterol/ipratropium and steroids immediately": { spo2: 5, respRate: -2 }
+            }
+          },
+          {
+            stage: 2,
+            name: "Escalation",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 300,
+            requiredInterventions: [
+              "Call for additional resources",
+              "Give at least two second-line medications (Magnesium, Terbutaline, Epinephrine)",
+              "Initiate noninvasive ventilation"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {
+              "Initiate noninvasive ventilation": { spo2: 5, respRate: -5 }
+            }
+          },
+          {
+            stage: 3,
+            name: "Complications",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 450,
+            requiredInterventions: [
+              "Recognize pneumothorax",
+              "Perform needle decompression",
+              "Give news to parent",
+              "Maintain global perspective"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {
+              "Perform needle decompression": { spo2: 5, respRate: -5 }
+            }
+          },
+          {
+            stage: 4,
+            name: "Disposition",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 600,
+            requiredInterventions: [
+              "Sign out to PICU team",
+              "Discuss further treatment/contingency planning"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          }
+        ]
+      }
+    ]
+  },
+
+  // 15. Status Epilepticus
+  {
+    id: "aliem_case_15_status_epilepticus",
+    category: "Seizure",
+    displayName: "Status Epilepticus",
+    name: "Status Epilepticus",
+    description: "Pediatric patient with ongoing seizure activity.",
+    sourceVersion: "aliem-rescu-peds-03-29-21",
+    license: "CC BY-NC-SA 4.0",
+    sourceCitation: "ALiEM EM ReSCu Peds – Case 15",
+    difficulty: "Severe",
+    estimatedTime: "15 minutes",
+    stages: 4,
+    presentingSymptoms: ["Seizure", "Unresponsive"],
+    clinicalHistory: "Pediatric patient with ongoing seizure activity; initial stabilization with airway protection, monitoring, labs, and two benzodiazepine doses; escalate to RSI for airway compromise; transition to second-line AEDs.",
+    variants: [
+      {
+        variantId: "A",
+        ageBand: "child",
+        ageYears: 4,
+        weightKg: 16,
+        initialVitals: {
+          heartRate: 155,
+          respRate: 20,
+          bloodPressureSys: 100,
+          bloodPressureDia: 60,
+          spo2: 92,
+          temperature: 37.5,
+          consciousness: "unresponsive",
+          capillaryRefill: 2
+        },
+        stages: [
+          {
+            stage: 1,
+            name: "Initial Stabilization & Benzos",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 60,
+            requiredInterventions: [
+              "Assign team roles",
+              "Obtain history from parent",
+              "Perform primary assessment",
+              "Place patient on side and suction",
+              "Position airway and consider adjuncts",
+              "Place patient on continuous cardiac monitor",
+              "Establish access",
+              "Send initial labs",
+              "Administer glucose for hypoglycemia (if needed)",
+              "Administer two rounds of benzodiazepines"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {
+              "Administer two rounds of benzodiazepines": { heartRate: -10 }
+            }
+          },
+          {
+            stage: 2,
+            name: "RSI",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 300,
+            requiredInterventions: [
+              "Select RSI medications",
+              "Provide bag-mask ventilation",
+              "Perform rapid sequence intubation"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {
+              "Perform rapid sequence intubation": { spo2: 6, respRate: 12 } // improving ventilation
+            }
+          },
+          {
+            stage: 3,
+            name: "Second-line Therapy",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 450,
+            requiredInterventions: [
+              "Identify appropriate antiepileptic medications and indications for second-line therapy",
+              "Discuss patient status with the family",
+              "Consult neurology"
+            ],
+            helpful: ["Levetiracetam", "Fosphenytoin", "Phenobarbital"],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          },
+          {
+            stage: 4,
+            name: "Disposition",
             ordered: true,
             severity: "moderate",
-            TTIsec: 120,
+            TTIsec: 600,
             requiredInterventions: [
-              "vagal maneuvers",
-              "adenosine administration",
-              "continuous monitoring"
+              "Determine disposition of patient",
+              "Discuss patient status with the family"
             ],
-            helpful: [
-              "oxygen therapy",
-              "vital reassessment"
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
+          }
+        ]
+      }
+    ]
+  },
+
+  // 16. SVT
+  {
+    id: "aliem_case_16_svt",
+    category: "SVT",
+    displayName: "Supraventricular Tachycardia",
+    name: "Supraventricular Tachycardia",
+    description: "Pediatric patient with SVT initially compensated.",
+    sourceVersion: "aliem-rescu-peds-03-29-21",
+    license: "CC BY-NC-SA 4.0",
+    sourceCitation: "ALiEM EM ReSCu Peds – Case 16",
+    difficulty: "Advanced",
+    estimatedTime: "15 minutes",
+    stages: 4,
+    presentingSymptoms: ["Tachycardia", "Palpitations", "Fussiness"],
+    clinicalHistory: "Pediatric patient with SVT initially compensated; treat with vagal maneuvers and adenosine, be ready to escalate to synchronized cardioversion if decompensated.",
+    variants: [
+      {
+        variantId: "A",
+        ageBand: "infant",
+        ageYears: 1,
+        weightKg: 10,
+        initialVitals: {
+          heartRate: 240,
+          respRate: 50,
+          bloodPressureSys: 80,
+          bloodPressureDia: 50,
+          spo2: 95,
+          temperature: 37.0,
+          consciousness: "irritable",
+          capillaryRefill: 2
+        },
+        stages: [
+          {
+            stage: 1,
+            name: "Initial Management & Adenosine",
+            ordered: true,
+            severity: "severe",
+            TTIsec: 60,
+            requiredInterventions: [
+              "Team leader assigns tasks",
+              "Obtain history from parent",
+              "Perform primary survey",
+              "Administer supplemental oxygen",
+              "Place patient on continuous cardiac monitor",
+              "Obtain vascular access",
+              "Perform focused physical exam",
+              "Verbalize recognition of SVT",
+              "Perform vagal maneuver",
+              "Administer normal saline bolus 5–10 mL/kg",
+              "Administer adenosine",
+              "Apply defibrillator pads prior to vagal maneuvers/adenosine"
             ],
-            harmful: [
-              "delay in treatment",
-              "inadequate monitoring"
-            ],
-            neutral: [
-              "ECG",
-              "CBC"
-            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
             vitalEffects: {
-              "vagal maneuvers": {
-                heartRate: -50
-              },
-              "adenosine administration": {
-                heartRate: -100
-              }
+              "Perform vagal maneuver": { heartRate: -40, notes: "Transient effect" },
+              "Administer adenosine": { heartRate: -100, notes: "Transient blocks AV node" }
             }
+          },
+          {
+            stage: 2,
+            name: "Decompensation & Cardioversion",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 180,
+            requiredInterventions: [
+              "Verbalize decompensated state",
+              "Support airway with BMV",
+              "Perform synchronized electrical cardioversion (1–2 J/kg)"
+            ],
+            helpful: [],
+            harmful: ["Unsynchronized cardioversion"],
+            neutral: [],
+            vitalEffects: {
+              "Perform synchronized electrical cardioversion (1–2 J/kg)": { heartRate: -100, bloodPressureSys: 10 }
+            }
+          },
+          {
+            stage: 3,
+            name: "Refractory SVT",
+            ordered: true,
+            severity: "critical",
+            TTIsec: 300,
+            requiredInterventions: [
+              "Verbalize cardioversion is not working (refractory SVT)",
+              "Support airway with BMV or intubation",
+              "Manage SVT with antiarrhythmic medication (amiodarone or procainamide)"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {
+              "Manage SVT with antiarrhythmic medication (amiodarone or procainamide)": { heartRate: -20 }
+            }
+          },
+          {
+            stage: 4,
+            name: "Disposition",
+            ordered: true,
+            severity: "moderate",
+            TTIsec: 600,
+            requiredInterventions: [
+              "Obtain post-conversion ECG and POC/baseline labs",
+              "Verbalize recognition of sinus rhythm",
+              "Explain diagnosis to parent and relation to presentation",
+              "Consult pediatric cardiology",
+              "Notify admission team / arrange transfer"
+            ],
+            helpful: [],
+            harmful: [],
+            neutral: [],
+            vitalEffects: {}
           }
         ]
       }
